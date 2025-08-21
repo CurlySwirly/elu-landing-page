@@ -24,6 +24,7 @@ import Impressum from './components/Impressum';
 import FAQ from './components/FAQ';
 import Datenschutz from './components/Datenschutz';
 import AGB from './components/AGB';
+import ExpertPage from './components/ExpertPage';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -222,6 +223,10 @@ function App() {
   
   if (currentPage === 'agb') {
     return <AGB onBack={() => setCurrentPage('home')} />;
+  }
+
+  if (currentPage === 'expert') {
+    return <ExpertPage onBack={() => setCurrentPage('home')} />;
   }
 
   return (
@@ -821,7 +826,7 @@ function App() {
           
           <div className="text-center">
             <button 
-              onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => setCurrentPage('expert')}
               className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#5a7ae8] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >

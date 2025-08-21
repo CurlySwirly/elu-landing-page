@@ -161,7 +161,7 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
 
         {/* Main headline */}
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#292B27] mb-6 md:mb-8 leading-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-          Gesund bleiben liegt in deiner Hand.
+          <span className="text-[#BADE4F]">Gesund bleiben</span> liegt in deiner Hand.
         </h1>
 
         {/* Subline */}

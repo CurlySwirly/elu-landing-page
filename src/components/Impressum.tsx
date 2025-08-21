@@ -77,7 +77,7 @@ const Impressum: React.FC<ImpressumProps> = ({ onBack }) => {
               </h2>
               <div className="space-y-2">
                 <p className="text-lg">Linda Breuer, MA</p>
-                <p className="text-lg">Dominik Dörr, MSc</p>
+                <p className="text-lg">Dominik Dorr, MSc</p>
                 <p className="text-lg">Arnold Stelzer, MSc</p>
               </div>
             </section>
