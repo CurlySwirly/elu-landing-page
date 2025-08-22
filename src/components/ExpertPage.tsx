@@ -429,7 +429,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                       />
                       <button
                         type="submit"
-                        className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-3 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200"
+                        className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200"
                       >
                         Infos erhalten
                       </button>
@@ -496,7 +496,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                       />
                       <button
                         type="submit"
-                        className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-3 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200"
+                        className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200"
                       >
                         Infos erhalten
                       </button>
