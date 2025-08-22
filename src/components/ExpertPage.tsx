@@ -276,7 +276,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               <div className="overflow-hidden">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentCard * (100/3)}%)` }}
+                  style={{ transform: `translateX(-${(currentCard - 1) * (100/3)}%)` }}
                 >
                   {appBenefits.map((benefit, index) => {
                     const IconComponent: React.ElementType = benefit.icon;
