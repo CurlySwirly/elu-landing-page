@@ -239,8 +239,8 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               alt="elu – elevate you" 
               className="w-8 h-8"
             />
-            <h1 className="text-xl font-bold" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              elu – elevate you
+            <h1 className="text-xl" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              <span className="font-bold">elu</span> – elevate you
             </h1>
           </div>
         </div>
