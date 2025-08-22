@@ -156,7 +156,7 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
         {/* Top pill badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 md:mb-12 bg-[#E2E8FB] text-[#292B27] rounded-full text-sm font-medium">
           <Check className="w-4 h-4 text-[#6D8EEC]" />
-          Warteliste limitiert – sei von Anfang an dabei
+          Beta-Plätze limitiert
         </div>
 
         {/* Main headline */}

@@ -269,8 +269,8 @@ function App() {
               </div>
             </div>
             
-            {/* Countdown Timer */}
-            <div className="flex-shrink-0">
+            {/* Countdown Timer - Centered */}
+            <div className="absolute left-1/2 transform -translate-x-1/2">
               <div className="hidden lg:flex flex-col items-center">
                 <p className="text-sm text-white font-medium mb-1" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   Beta-Launch startet in:
