@@ -44,6 +44,11 @@ function App() {
     privacy: false
   });
 
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   const experts = [
     {
       name: 'Lorenz',
@@ -227,18 +232,10 @@ function App() {
   }
 
   if (currentPage === 'expert') {
-    // Reset to top of page when navigating to expert page
-    React.useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
     return <ExpertPage onBack={() => setCurrentPage('home')} />;
   }
 
   if (currentPage === 'contact') {
-    // Reset to top of page when navigating to contact page
-    React.useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
     return <ContactPage onBack={() => setCurrentPage('home')} />;
   }
 
