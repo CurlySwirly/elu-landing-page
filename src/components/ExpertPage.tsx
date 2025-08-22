@@ -253,7 +253,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
             </p>
             
             {/* Carousel */}
-            <div className="relative mb-8">
+            <div className="relative mb-8 px-8 md:px-16">
               {/* Left Arrow */}
               <button
                 onClick={prevCard}
@@ -273,29 +273,49 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               </button>
 
               {/* Carousel Container */}
-              <div className="overflow-hidden px-8 md:px-16">
+              <div className="overflow-hidden">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
                   style={{ transform: `translateX(-${currentCard * 100}%)` }}
                 >
                   {appBenefits.map((benefit, index) => {
                     const IconComponent: React.ElementType = benefit.icon;
+                    const isCenter = index === currentCard;
+                    const isAdjacent = Math.abs(index - currentCard) === 1;
                     return (
                       <div
                         key={index}
-                        className="w-full flex-shrink-0 px-2 md:px-4"
+                        className="w-full flex-shrink-0 px-4 md:px-8"
                       >
-                        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#6D8EEC] h-48 md:h-64 max-w-sm mx-auto">
-                          <div className="w-12 h-12 md:w-16 md:h-16 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-4 md:mb-6 mx-auto">
-                            <IconComponent className="text-white w-6 h-6 md:w-8 md:h-8" />
+                        <div className={`bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 transition-all duration-300 h-48 md:h-64 max-w-sm mx-auto ${
+                          isCenter 
+                            ? 'border-[#6D8EEC] scale-100 opacity-100' 
+                            : isAdjacent 
+                              ? 'border-gray-200 scale-90 opacity-40' 
+                              : 'border-gray-100 scale-75 opacity-20'
+                        }`}>
+                          <div className={`rounded-xl flex items-center justify-center mb-4 md:mb-6 mx-auto transition-all duration-300 ${
+                            isCenter 
+                              ? 'w-12 h-12 md:w-16 md:h-16 bg-[#6D8EEC]' 
+                              : 'w-10 h-10 md:w-14 md:h-14 bg-gray-300'
+                          }`}>
+                            <IconComponent className={`${
+                              isCenter ? 'text-white' : 'text-gray-500'
+                            } w-5 h-5 md:w-7 md:h-7`} />
                           </div>
-                          <h3 className="text-lg md:text-xl font-bold text-[#292B27] mb-3 md:mb-4 tracking-tight text-center">
+                          <h3 className={`font-bold text-[#292B27] mb-3 md:mb-4 tracking-tight text-center transition-all duration-300 ${
+                            isCenter ? 'text-lg md:text-xl' : 'text-base md:text-lg'
+                          }`}>
                             {benefit.title}
                           </h3>
-                          <p className="text-[#292B27] opacity-75 leading-relaxed text-sm md:text-base text-center">
+                          <p className={`text-[#292B27] leading-relaxed text-sm md:text-base text-center transition-all duration-300 ${
+                            isCenter ? 'opacity-75' : 'opacity-50'
+                          }`}>
                             {benefit.description}
                           </p>
-                          <div className="w-8 md:w-10 h-1 bg-[#BADE4F] rounded-full mt-3 md:mt-4 mx-auto"></div>
+                          <div className={`rounded-full mt-3 md:mt-4 mx-auto transition-all duration-300 ${
+                            isCenter ? 'w-8 md:w-10 h-1 bg-[#BADE4F]' : 'w-6 md:w-8 h-0.5 bg-gray-300'
+                          }`}></div>
                         </div>
                       </div>
                     );
