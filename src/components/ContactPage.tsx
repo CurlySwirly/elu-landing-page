@@ -103,10 +103,10 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                 Social Media
               </h2>
               <div className="flex gap-4">
-                <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
+                <a href="#" className="bg-[#BADE4F] hover:bg-[#A8D13F] p-3 rounded-full transition-colors duration-300">
                   <Linkedin className="w-5 h-5 text-white" />
                 </a>
-                <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
+                <a href="#" className="bg-[#BADE4F] hover:bg-[#A8D13F] p-3 rounded-full transition-colors duration-300">
                   <Instagram className="w-5 h-5 text-white" />
                 </a>
               </div>
