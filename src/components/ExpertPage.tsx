@@ -253,7 +253,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
             </p>
             
             {/* Carousel */}
-            <div className="relative mb-8 px-8 md:px-16">
+            <div className="relative mb-8 px-4 md:px-8">
               {/* Left Arrow */}
               <button
                 onClick={prevCard}
@@ -276,7 +276,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               <div className="overflow-hidden">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentCard * 100}%)` }}
+                  style={{ transform: `translateX(-${currentCard * (100/3)}%)` }}
                 >
                   {appBenefits.map((benefit, index) => {
                     const IconComponent: React.ElementType = benefit.icon;
@@ -285,36 +285,36 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                     return (
                       <div
                         key={index}
-                        className="w-full flex-shrink-0 px-4 md:px-8"
+                        className="w-1/3 flex-shrink-0 px-2 md:px-4"
                       >
-                        <div className={`bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 transition-all duration-300 h-48 md:h-64 max-w-sm mx-auto ${
+                        <div className={`bg-white p-4 md:p-6 rounded-2xl shadow-lg border-2 transition-all duration-300 h-48 md:h-64 mx-auto ${
                           isCenter 
                             ? 'border-[#6D8EEC] scale-100 opacity-100' 
                             : isAdjacent 
                               ? 'border-gray-200 scale-90 opacity-40' 
                               : 'border-gray-100 scale-75 opacity-20'
                         }`}>
-                          <div className={`rounded-xl flex items-center justify-center mb-4 md:mb-6 mx-auto transition-all duration-300 ${
+                          <div className={`rounded-xl flex items-center justify-center mb-3 md:mb-4 mx-auto transition-all duration-300 ${
                             isCenter 
-                              ? 'w-12 h-12 md:w-16 md:h-16 bg-[#6D8EEC]' 
-                              : 'w-10 h-10 md:w-14 md:h-14 bg-gray-300'
+                              ? 'w-10 h-10 md:w-14 md:h-14 bg-[#6D8EEC]' 
+                              : 'w-8 h-8 md:w-12 md:h-12 bg-gray-300'
                           }`}>
                             <IconComponent className={`${
                               isCenter ? 'text-white' : 'text-gray-500'
-                            } w-5 h-5 md:w-7 md:h-7`} />
+                            } w-4 h-4 md:w-6 md:h-6`} />
                           </div>
-                          <h3 className={`font-bold text-[#292B27] mb-3 md:mb-4 tracking-tight text-center transition-all duration-300 ${
-                            isCenter ? 'text-lg md:text-xl' : 'text-base md:text-lg'
+                          <h3 className={`font-bold text-[#292B27] mb-2 md:mb-3 tracking-tight text-center transition-all duration-300 ${
+                            isCenter ? 'text-base md:text-lg' : 'text-sm md:text-base'
                           }`}>
                             {benefit.title}
                           </h3>
-                          <p className={`text-[#292B27] leading-relaxed text-sm md:text-base text-center transition-all duration-300 ${
+                          <p className={`text-[#292B27] leading-relaxed text-xs md:text-sm text-center transition-all duration-300 ${
                             isCenter ? 'opacity-75' : 'opacity-50'
                           }`}>
                             {benefit.description}
                           </p>
-                          <div className={`rounded-full mt-3 md:mt-4 mx-auto transition-all duration-300 ${
-                            isCenter ? 'w-8 md:w-10 h-1 bg-[#BADE4F]' : 'w-6 md:w-8 h-0.5 bg-gray-300'
+                          <div className={`rounded-full mt-2 md:mt-3 mx-auto transition-all duration-300 ${
+                            isCenter ? 'w-6 md:w-8 h-1 bg-[#BADE4F]' : 'w-4 md:w-6 h-0.5 bg-gray-300'
                           }`}></div>
                         </div>
                       </div>
