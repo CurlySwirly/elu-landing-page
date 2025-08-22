@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Users, 
   Eye, 
@@ -51,7 +51,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
   };
 
   // Initialize carousel to show first card
-  React.useEffect(() => {
+  useEffect(() => {
     setCurrentCard(0); // Start at first card
   }, []);
 
@@ -188,6 +188,15 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
       return next;
     });
   };
+
+  // Auto-advance carousel every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextCard();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const faqData = [
     {
