@@ -50,9 +50,9 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
     pro: { price: null, range: null }
   };
 
-  // Initialize carousel to show first card in center
+  // Initialize carousel to show first card
   React.useEffect(() => {
-    setCurrentCard(appBenefits.length); // Start at second set to allow infinite scroll
+    setCurrentCard(0); // Start at first card
   }, []);
 
   const toggleFaq = (index: number) => {
@@ -172,10 +172,8 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
   const nextCard = () => {
     setCurrentCard((prev) => {
       const next = prev + 1;
-      if (next >= appBenefits.length * 2) {
-        // Reset to start of second set for seamless infinite scroll
-        setTimeout(() => setCurrentCard(appBenefits.length), 0);
-        return next;
+      if (next >= appBenefits.length) {
+        return 0; // Loop back to first card
       }
       return next;
     });
@@ -185,9 +183,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
     setCurrentCard((prev) => {
       const next = prev - 1;
       if (next < 0) {
-        // Reset to end of second set for seamless infinite scroll
-        setTimeout(() => setCurrentCard(appBenefits.length * 2 - 1), 0);
-        return next;
+        return appBenefits.length - 1; // Loop to last card
       }
       return next;
     });
@@ -280,33 +276,26 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               <div className="overflow-hidden px-8 md:px-16">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${(currentCard - 1) * (100/3)}%)` }}
+                  style={{ transform: `translateX(-${currentCard * 100}%)` }}
                 >
-                  {[...appBenefits, ...appBenefits, ...appBenefits].map((benefit, index) => {
+                  {appBenefits.map((benefit, index) => {
                     const IconComponent: React.ElementType = benefit.icon;
-                    const adjustedIndex = index % appBenefits.length;
-                    const isCenter = index === currentCard;
                     return (
                       <div
                         key={index}
-                        className="w-full md:w-1/3 flex-shrink-0 px-2 md:px-4"
-                        style={{ minWidth: '100%' }}
+                        className="w-full flex-shrink-0 px-2 md:px-4"
                       >
-                        <div className={`bg-white p-4 md:p-6 rounded-2xl shadow-lg border-2 border-gray-100 h-48 md:h-64 transition-all duration-300 ${
-                          isCenter
-                            ? 'scale-100 opacity-100' 
-                            : 'scale-95 opacity-60'
-                        }`}>
-                          <div className="w-10 h-10 md:w-12 md:h-12 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-3 md:mb-4 mx-auto">
-                            <IconComponent className="text-white w-5 h-5 md:w-6 md:h-6" />
+                        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#6D8EEC] h-48 md:h-64 max-w-sm mx-auto">
+                          <div className="w-12 h-12 md:w-16 md:h-16 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-4 md:mb-6 mx-auto">
+                            <IconComponent className="text-white w-6 h-6 md:w-8 md:h-8" />
                           </div>
-                          <h3 className="text-base md:text-lg font-bold text-[#292B27] mb-2 md:mb-3 tracking-tight text-center">
+                          <h3 className="text-lg md:text-xl font-bold text-[#292B27] mb-3 md:mb-4 tracking-tight text-center">
                             {benefit.title}
                           </h3>
-                          <p className="text-[#292B27] opacity-75 leading-relaxed text-xs md:text-sm text-center">
+                          <p className="text-[#292B27] opacity-75 leading-relaxed text-sm md:text-base text-center">
                             {benefit.description}
                           </p>
-                          <div className="w-6 md:w-8 h-1 bg-[#BADE4F] rounded-full mt-2 md:mt-3 mx-auto"></div>
+                          <div className="w-8 md:w-10 h-1 bg-[#BADE4F] rounded-full mt-3 md:mt-4 mx-auto"></div>
                         </div>
                       </div>
                     );
@@ -320,9 +309,9 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               {appBenefits.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setCurrentCard(index + appBenefits.length)}
-                  className={`w-2 h-2 rounded-full transition-colors duration-200 ${
-                    index === (currentCard % appBenefits.length) ? 'bg-[#6D8EEC]' : 'bg-gray-300'
+                  onClick={() => setCurrentCard(index)}
+                  className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                    index === currentCard ? 'bg-[#6D8EEC]' : 'bg-gray-300'
                   }`}
                   aria-label={`Zeige Vorteil ${index + 1}`}
                 />
