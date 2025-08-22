@@ -243,7 +243,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
       </div>
 
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 overflow-hidden">
+      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-32 overflow-hidden">
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#BADE4F]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 to-[#6D8EEC]/10"></div>
         <div className="relative z-10">
@@ -261,26 +261,26 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               {/* Left Arrow */}
               <button
                 onClick={prevCard}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
+                className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
                 aria-label="Vorheriger Vorteil"
               >
-                <ChevronLeft className="text-[#6D8EEC]" size={24} />
+                <ChevronLeft className="text-[#6D8EEC] w-5 h-5 md:w-6 md:h-6" />
               </button>
 
               {/* Right Arrow */}
               <button
                 onClick={nextCard}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
+                className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
                 aria-label="Nächster Vorteil"
               >
-                <ChevronRight className="text-[#6D8EEC]" size={24} />
+                <ChevronRight className="text-[#6D8EEC] w-5 h-5 md:w-6 md:h-6" />
               </button>
 
               {/* Carousel Container */}
-              <div className="overflow-hidden px-16">
+              <div className="overflow-hidden px-8 md:px-16">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${(currentCard - 1) * 33.333}%)` }}
+                  style={{ transform: `translateX(-${(currentCard - 1) * (100/3)}%)` }}
                 >
                   {[...appBenefits, ...appBenefits, ...appBenefits].map((benefit, index) => {
                     const IconComponent: React.ElementType = benefit.icon;
@@ -289,23 +289,24 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                     return (
                       <div
                         key={index}
-                        className="w-1/3 flex-shrink-0 px-4"
+                        className="w-full md:w-1/3 flex-shrink-0 px-2 md:px-4"
+                        style={{ minWidth: '100%' }}
                       >
-                        <div className={`bg-white p-6 rounded-2xl shadow-lg border-2 border-gray-100 h-64 transition-all duration-300 ${
+                        <div className={`bg-white p-4 md:p-6 rounded-2xl shadow-lg border-2 border-gray-100 h-48 md:h-64 transition-all duration-300 ${
                           isCenter
                             ? 'scale-100 opacity-100' 
                             : 'scale-95 opacity-60'
                         }`}>
-                          <div className="w-12 h-12 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-4 mx-auto">
-                            <IconComponent className="text-white" size={24} />
+                          <div className="w-10 h-10 md:w-12 md:h-12 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-3 md:mb-4 mx-auto">
+                            <IconComponent className="text-white w-5 h-5 md:w-6 md:h-6" />
                           </div>
-                          <h3 className="text-lg font-bold text-[#292B27] mb-3 tracking-tight text-center">
+                          <h3 className="text-base md:text-lg font-bold text-[#292B27] mb-2 md:mb-3 tracking-tight text-center">
                             {benefit.title}
                           </h3>
-                          <p className="text-[#292B27] opacity-75 leading-relaxed text-sm text-center">
+                          <p className="text-[#292B27] opacity-75 leading-relaxed text-xs md:text-sm text-center">
                             {benefit.description}
                           </p>
-                          <div className="w-8 h-1 bg-[#BADE4F] rounded-full mt-3 mx-auto"></div>
+                          <div className="w-6 md:w-8 h-1 bg-[#BADE4F] rounded-full mt-2 md:mt-3 mx-auto"></div>
                         </div>
                       </div>
                     );
@@ -338,9 +339,9 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
           <h2 className="text-3xl lg:text-4xl font-bold text-[#292B27] text-center mb-16 tracking-tight">
             Unsere Preismodelle
           </h2>
-          <div className="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
             {/* Beta */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg border-2 border-[#BADE4F] relative">
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#BADE4F] relative">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#BADE4F] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold">
                   Jetzt verfügbar
@@ -386,7 +387,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
             </div>
 
             {/* Standard */}
-            <div className="bg-white p-8 rounded-2xl shadow-md border-2 border-gray-100 relative">
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#E2E8FB] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold border border-gray-200">
                   Geplant
@@ -453,7 +454,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
             </div>
 
             {/* Pro */}
-            <div className="bg-white p-8 rounded-2xl shadow-md border-2 border-gray-100 relative">
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#E2E8FB] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold border border-gray-200">
                   Geplant
@@ -538,12 +539,12 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
             {faqData.map((faq, index) => (
               <div key={index} className="bg-white rounded-2xl shadow-sm border border-gray-100">
                 <button
-                  className="w-full px-8 py-6 text-left flex justify-between items-center hover:bg-gray-50 rounded-2xl transition-colors duration-200"
+                  className="w-full px-4 md:px-8 py-4 md:py-6 text-left flex justify-between items-center hover:bg-gray-50 rounded-2xl transition-colors duration-200"
                   onClick={() => toggleFaq(index)}
                   aria-expanded={openFaq === index}
                   aria-controls={`faq-${index}`}
                 >
-                  <span className="text-lg font-semibold text-[#292B27] pr-4">
+                  <span className="text-base md:text-lg font-semibold text-[#292B27] pr-4">
                     {faq.question}
                   </span>
                   {openFaq === index ? (
@@ -553,8 +554,8 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                   )}
                 </button>
                 {openFaq === index && (
-                  <div id={`faq-${index}`} className="px-8 pb-6">
-                    <p className="text-[#292B27] opacity-75 leading-relaxed">
+                  <div id={`faq-${index}`} className="px-4 md:px-8 pb-4 md:pb-6">
+                    <p className="text-[#292B27] opacity-75 leading-relaxed text-sm md:text-base">
                       {faq.answer}
                     </p>
                   </div>
@@ -566,12 +567,12 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
       </section>
 
       {/* Finaler CTA */}
-      <section id="bereit-loszulegen" className="bg-[#E2E8FB] py-20 lg:py-24">
+      <section id="bereit-loszulegen" className="bg-[#E2E8FB] py-16 md:py-20 lg:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#292B27] mb-8 tracking-tight">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#292B27] mb-6 md:mb-8 tracking-tight">
             Bereit loszulegen?
           </h2>
-          <p className="text-lg text-[#292B27] opacity-80 mb-12 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-[#292B27] opacity-80 mb-8 md:mb-12 max-w-2xl mx-auto">
             Werde Teil einer Community, die Qualität schätzt und neue Wege geht- melde dich jetzt zur Warteliste an.
           </p>
           
@@ -589,8 +590,8 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleWaitlistSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
+              <form onSubmit={handleWaitlistSubmit} className="space-y-4 md:space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <div>
                     <label htmlFor="name-final" className="block text-sm font-semibold text-[#292B27] mb-2">
                       Name *
@@ -673,10 +674,10 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                 <div className="text-center pt-4">
                   <button
                     type="submit"
-                    className="bg-[#6D8EEC] text-white px-12 py-4 rounded-full font-semibold text-lg hover:bg-[#5A7BE8] transition-colors duration-200 inline-flex items-center gap-3 shadow-lg"
+                    className="bg-[#6D8EEC] text-white px-8 md:px-12 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg hover:bg-[#5A7BE8] transition-colors duration-200 inline-flex items-center gap-2 md:gap-3 shadow-lg"
                   >
                     Abschicken
-                    <ArrowRight size={20} />
+                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                   <p className="text-sm text-[#292B27] opacity-60 mt-4">
                     * Pflichtfelder. Wir respektieren deine Privatsphäre.

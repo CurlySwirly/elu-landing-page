@@ -226,6 +226,10 @@ function App() {
   }
 
   if (currentPage === 'expert') {
+    // Reset to top of page when navigating to expert page
+    React.useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
     return <ExpertPage onBack={() => setCurrentPage('home')} />;
   }
 

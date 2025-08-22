@@ -118,7 +118,7 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
 
   return (
     <section 
-      className="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 md:py-24"
+      className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-24 pb-16 md:pt-32 md:pb-24"
       style={{
         background: 'linear-gradient(135deg, rgba(186, 222, 79, 0.2) 0%, rgba(240, 240, 240, 0.3) 25%, rgba(240, 240, 240, 0.3) 75%, rgba(109, 142, 236, 0.2) 100%)'
       }}
