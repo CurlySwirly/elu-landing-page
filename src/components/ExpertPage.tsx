@@ -173,12 +173,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
     setCurrentCard((prev) => {
       const next = prev + 1;
       if (next >= appBenefits.length) {
-        // When reaching the end, smoothly transition to the cloned first card
-        // Then reset to the real first card without animation
-        setTimeout(() => {
-          setCurrentCard(0);
-        }, 500); // Wait for transition to complete
-        return next;
+        return 0; // Loop back to first card
       }
       return next;
     });
@@ -188,12 +183,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
     setCurrentCard((prev) => {
       const next = prev - 1;
       if (next < 0) {
-        // When going before the first, smoothly transition to the cloned last card
-        // Then reset to the real last card without animation
-        setTimeout(() => {
-          setCurrentCard(appBenefits.length - 1);
-        }, 500); // Wait for transition to complete
-        return next;
+        return appBenefits.length - 1; // Loop to last card
       }
       return next;
     });
@@ -272,7 +262,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
             </p>
             
             {/* Carousel */}
-            <div className="relative mb-8 px-4 md:px-8">
+            <div className="relative mb-8 px-8 md:px-16">
               {/* Left Arrow */}
               <button
                 onClick={prevCard}
@@ -295,33 +285,8 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               <div className="overflow-hidden">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${(currentCard + 1) * (100/3)}%)` }}
+                  style={{ transform: `translateX(-${currentCard * (100/3)}%)` }}
                 >
-                  {/* Clone last card at the beginning for seamless loop */}
-                  {appBenefits.slice(-1).map((benefit, index) => {
-                    const IconComponent: React.ElementType = benefit.icon;
-                    return (
-                      <div
-                        key={`clone-last-${index}`}
-                        className="w-1/3 flex-shrink-0 px-2 md:px-4"
-                      >
-                        <div className="bg-white p-4 md:p-6 rounded-2xl shadow-lg border-2 border-gray-100 scale-75 opacity-20 h-48 md:h-64 mx-auto">
-                          <div className="w-8 h-8 md:w-12 md:h-12 bg-gray-300 rounded-xl flex items-center justify-center mb-3 md:mb-4 mx-auto">
-                            <IconComponent className="text-gray-500 w-4 h-4 md:w-6 md:h-6" />
-                          </div>
-                          <h3 className="text-sm md:text-base font-bold text-[#292B27] mb-2 md:mb-3 tracking-tight text-center">
-                            {benefit.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-[#292B27] opacity-50 leading-relaxed text-center">
-                            {benefit.description}
-                          </p>
-                          <div className="w-4 md:w-6 h-0.5 bg-gray-300 rounded-full mt-2 md:mt-3 mx-auto"></div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                  
-                  {/* Original cards */}
                   {appBenefits.map((benefit, index) => {
                     const IconComponent: React.ElementType = benefit.icon;
                     const isCenter = index === currentCard;
@@ -360,30 +325,6 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                           <div className={`rounded-full mt-2 md:mt-3 mx-auto transition-all duration-300 ${
                             isCenter ? 'w-6 md:w-8 h-1 bg-[#BADE4F]' : 'w-4 md:w-6 h-0.5 bg-gray-300'
                           }`}></div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                  
-                  {/* Clone first card at the end for seamless loop */}
-                  {appBenefits.slice(0, 1).map((benefit, index) => {
-                    const IconComponent: React.ElementType = benefit.icon;
-                    return (
-                      <div
-                        key={`clone-first-${index}`}
-                        className="w-1/3 flex-shrink-0 px-2 md:px-4"
-                      >
-                        <div className="bg-white p-4 md:p-6 rounded-2xl shadow-lg border-2 border-gray-100 scale-75 opacity-20 h-48 md:h-64 mx-auto">
-                          <div className="w-8 h-8 md:w-12 md:h-12 bg-gray-300 rounded-xl flex items-center justify-center mb-3 md:mb-4 mx-auto">
-                            <IconComponent className="text-gray-500 w-4 h-4 md:w-6 md:h-6" />
-                          </div>
-                          <h3 className="text-sm md:text-base font-bold text-[#292B27] mb-2 md:mb-3 tracking-tight text-center">
-                            {benefit.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-[#292B27] opacity-50 leading-relaxed text-center">
-                            {benefit.description}
-                          </p>
-                          <div className="w-4 md:w-6 h-0.5 bg-gray-300 rounded-full mt-2 md:mt-3 mx-auto"></div>
                         </div>
                       </div>
                     );
