@@ -102,23 +102,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
               <h2 className="text-2xl font-bold text-[#292B27] mb-6" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                 Social Media
               </h2>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#0077B5] rounded-lg flex items-center justify-center">
-                    <Linkedin className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-[#292B27] font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Elevate You
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
-                    <Instagram className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-[#292B27] font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    @elevateyou.app
-                  </span>
-                </div>
+              <div className="flex gap-4">
+                <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
+                  <Linkedin className="w-5 h-5 text-white" />
+                </a>
+                <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
+                  <Instagram className="w-5 h-5 text-white" />
+                </a>
               </div>
             </div>
           </div>
@@ -188,7 +178,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-[#6D8EEC] text-white py-4 rounded-lg font-semibold text-lg hover:bg-[#5A7BE8] transition-colors duration-200 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl"
+                  className="w-full bg-[#6D8EEC] text-white py-4 rounded-full font-semibold text-lg hover:bg-[#5A7BE8] transition-colors duration-200 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 >
                   <Send className="w-5 h-5" />
