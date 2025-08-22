@@ -84,7 +84,24 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
         return [...prev, value];
       }
     });
+    // Don't auto-close for multi-select, but provide better UX
   };
+
+  // Close dropdown when clicking outside
+  const handleClickOutside = (event: MouseEvent) => {
+    const target = event.target as Element;
+    if (!target.closest('.expertise-dropdown')) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  // Add click outside listener
+  React.useEffect(() => {
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isDropdownOpen]);
 
   const handleStandardEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -626,11 +643,15 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                   <label htmlFor="expertise-final" className="block text-sm font-semibold text-[#292B27] mb-2">
                     Wähle dein Fachgebiet (Mehrfachauswahl möglich)
                   </label>
-                  <div className="relative">
+                  <div className="relative expertise-dropdown">
                     <button
                       type="button"
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="w-full px-4 py-4 border-2 border-gray-200 rounded-full focus:border-[#6D8EEC] focus:outline-none transition-colors duration-200 text-[#292B27] min-h-[56px] flex items-center justify-center bg-white"
+                      className={`w-full px-4 py-4 border-2 rounded-full focus:outline-none transition-all duration-200 text-[#292B27] min-h-[56px] flex items-center justify-center ${
+                        isDropdownOpen 
+                          ? 'border-[#6D8EEC] bg-[#F8F9FA]' 
+                          : 'border-gray-200 bg-white hover:border-gray-300'
+                      }`}
                     >
                       <span className="text-left">
                         {expertise.length === 0 
@@ -659,6 +680,17 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                             <span className="ml-3 text-[#292B27]">{option}</span>
                           </label>
                         ))}
+                        
+                        {/* Done button */}
+                        <div className="border-t border-gray-200 p-3">
+                          <button
+                            type="button"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="w-full bg-[#6D8EEC] text-white py-2 px-4 rounded-lg font-medium hover:bg-[#5A7BE8] transition-colors duration-200"
+                          >
+                            Fertig ({expertise.length} ausgewählt)
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
