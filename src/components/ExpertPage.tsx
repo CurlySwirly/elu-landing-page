@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Users, 
   Eye, 
@@ -51,8 +51,8 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
   };
 
   // Initialize carousel to show first card
-  useEffect(() => {
-    setCurrentCard(0); // Start at first card (position 1 in the carousel due to cloned card)
+  React.useEffect(() => {
+    setCurrentCard(0); // Start at first card
   }, []);
 
   const toggleFaq = (index: number) => {
@@ -189,15 +189,6 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
     });
   };
 
-  // Auto-advance carousel every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextCard();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const faqData = [
     {
       question: "Wie funktioniert die Abrechnung?",
@@ -262,7 +253,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
             </p>
             
             {/* Carousel */}
-            <div className="relative mb-8 px-4 md:px-8">
+            <div className="relative mb-8">
               {/* Left Arrow */}
               <button
                 onClick={prevCard}
@@ -282,49 +273,29 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               </button>
 
               {/* Carousel Container */}
-              <div className="overflow-hidden">
+              <div className="overflow-hidden px-8 md:px-16">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${(currentCard + 0.5) * (100/3)}%)` }}
+                  style={{ transform: `translateX(-${currentCard * 100}%)` }}
                 >
                   {appBenefits.map((benefit, index) => {
                     const IconComponent: React.ElementType = benefit.icon;
-                    const isCenter = index === currentCard;
-                    const isAdjacent = Math.abs(index - currentCard) === 1;
                     return (
                       <div
                         key={index}
-                        className="w-1/3 flex-shrink-0 px-2 md:px-4"
+                        className="w-full flex-shrink-0 px-2 md:px-4"
                       >
-                        <div className={`bg-white p-4 md:p-6 rounded-2xl shadow-lg border-2 transition-all duration-300 h-48 md:h-64 mx-auto ${
-                          isCenter 
-                            ? 'border-[#6D8EEC] scale-100 opacity-100' 
-                            : isAdjacent 
-                              ? 'border-gray-200 scale-90 opacity-40' 
-                              : 'border-gray-100 scale-75 opacity-20'
-                        }`}>
-                          <div className={`rounded-xl flex items-center justify-center mb-3 md:mb-4 mx-auto transition-all duration-300 ${
-                            isCenter 
-                              ? 'w-10 h-10 md:w-14 md:h-14 bg-[#6D8EEC]' 
-                              : 'w-8 h-8 md:w-12 md:h-12 bg-gray-300'
-                          }`}>
-                            <IconComponent className={`${
-                              isCenter ? 'text-white' : 'text-gray-500'
-                            } w-4 h-4 md:w-6 md:h-6`} />
+                        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#6D8EEC] h-48 md:h-64 max-w-sm mx-auto">
+                          <div className="w-12 h-12 md:w-16 md:h-16 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-4 md:mb-6 mx-auto">
+                            <IconComponent className="text-white w-6 h-6 md:w-8 md:h-8" />
                           </div>
-                          <h3 className={`font-bold text-[#292B27] mb-2 md:mb-3 tracking-tight text-center transition-all duration-300 ${
-                            isCenter ? 'text-base md:text-lg' : 'text-sm md:text-base'
-                          }`}>
+                          <h3 className="text-lg md:text-xl font-bold text-[#292B27] mb-3 md:mb-4 tracking-tight text-center">
                             {benefit.title}
                           </h3>
-                          <p className={`text-[#292B27] leading-relaxed text-xs md:text-sm text-center transition-all duration-300 ${
-                            isCenter ? 'opacity-75' : 'opacity-50'
-                          }`}>
+                          <p className="text-[#292B27] opacity-75 leading-relaxed text-sm md:text-base text-center">
                             {benefit.description}
                           </p>
-                          <div className={`rounded-full mt-2 md:mt-3 mx-auto transition-all duration-300 ${
-                            isCenter ? 'w-6 md:w-8 h-1 bg-[#BADE4F]' : 'w-4 md:w-6 h-0.5 bg-gray-300'
-                          }`}></div>
+                          <div className="w-8 md:w-10 h-1 bg-[#BADE4F] rounded-full mt-3 md:mt-4 mx-auto"></div>
                         </div>
                       </div>
                     );
@@ -362,12 +333,12 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
             <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#BADE4F] relative">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#BADE4F] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold">
-                  Jetzt verfügbar
+                  Coming Soon
                 </span>
               </div>
               <div className="text-center mb-8 pt-4">
                 <h3 className="text-2xl font-bold text-[#292B27] mb-4 tracking-tight">
-                  Beta (jetzt verfügbar)
+                  Beta
                 </h3>
                 {renderPriceDisplay(pricingConfig.beta)}
                 <p className="text-sm text-[#292B27] opacity-75">
