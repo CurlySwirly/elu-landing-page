@@ -25,6 +25,7 @@ import FAQ from './components/FAQ';
 import Datenschutz from './components/Datenschutz';
 import AGB from './components/AGB';
 import ExpertPage from './components/ExpertPage';
+import ContactPage from './components/ContactPage';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -231,6 +232,14 @@ function App() {
       window.scrollTo(0, 0);
     }, []);
     return <ExpertPage onBack={() => setCurrentPage('home')} />;
+  }
+
+  if (currentPage === 'contact') {
+    // Reset to top of page when navigating to contact page
+    React.useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+    return <ContactPage onBack={() => setCurrentPage('home')} />;
   }
 
   return (
@@ -989,7 +998,7 @@ function App() {
                 Kontakt
               </h4>
               <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Kontakt</a></li>
+                <li><button onClick={() => setCurrentPage('contact')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Kontakt</button></li>
                 <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Support</a></li>
                 <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Presse</a></li>
               </ul>
