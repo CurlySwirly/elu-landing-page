@@ -936,9 +936,12 @@ function App() {
                 />
                 <label htmlFor="privacy" className="text-sm text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
-                  <a href="#" className="text-[#6D8EEC] hover:underline">
+                  <button 
+                    onClick={() => setCurrentPage('datenschutz')} 
+                    className="text-[#6D8EEC] hover:underline cursor-pointer"
+                  >
                     Datenschutzerklärung
-                  </a>{' '}
+                  </button>{' '}
                   zu.*
                 </label>
               </div>
