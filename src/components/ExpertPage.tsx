@@ -226,20 +226,21 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
         </div>
       </header>
 
-      {/* Back Button */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <button 
-          onClick={onBack}
-          className="inline-flex items-center gap-2 text-[#6D8EEC] hover:text-[#5a7ae8] transition-colors duration-200 font-medium"
-          style={{ fontFamily: 'Open Sans, sans-serif' }}
-        >
-          <ChevronLeft className="w-4 h-4" />
-          Zurück
-        </button>
-      </div>
-
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-32 overflow-hidden">
+        {/* Back Button - positioned within hero section */}
+        <div className="absolute top-8 left-0 right-0 z-20">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <button 
+              onClick={onBack}
+              className="inline-flex items-center gap-2 text-[#6D8EEC] hover:text-[#5a7ae8] transition-colors duration-200 font-medium bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:bg-white transition-all duration-200"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Zurück
+            </button>
+          </div>
+        </div>
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#BADE4F]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 to-[#6D8EEC]/10"></div>
         <div className="relative z-10">
