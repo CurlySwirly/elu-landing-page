@@ -331,7 +331,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
             {/* Beta */}
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#BADE4F] relative">
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#BADE4F] relative flex flex-col">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#BADE4F] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold">
                   Coming Soon
@@ -346,7 +346,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                   + 10 % Kommission pro Buchung
                 </p>
               </div>
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-4 mb-8 flex-grow">
                 <li className="flex items-start gap-3">
                   <Check className="text-[#BADE4F] flex-shrink-0 mt-0.5" size={20} />
                   <span className="text-[#292B27]">Volle Profil-Sichtbarkeit</span>
@@ -370,14 +370,14 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               </ul>
               <button 
                 onClick={scrollToBereitLoszulegen}
-                className="w-full bg-[#6D8EEC] text-white py-4 rounded-full font-semibold hover:bg-[#5A7BE8] transition-colors duration-200"
+                className="w-full bg-[#6D8EEC] text-white py-4 rounded-full font-semibold hover:bg-[#5A7BE8] transition-colors duration-200 mt-auto"
               >
                 Beta-Zugang sichern
               </button>
             </div>
 
             {/* Standard */}
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative">
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative flex flex-col">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#E2E8FB] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold border border-gray-200">
                   Geplant
@@ -392,7 +392,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                   ab Launch
                 </p>
               </div>
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-4 mb-8 flex-grow">
                 <li className="flex items-start gap-3">
                   <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
                   <span className="text-[#292B27]">Bis zu 20 Buchungen pro Monat</span>
@@ -411,7 +411,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                 </li>
               </ul>
               {!pricingConfig.standard.price && !pricingConfig.standard.range ? (
-                <div className="space-y-4">
+                <div className="space-y-4 mt-auto">
                   {standardEmailSubmitted ? (
                     <div className="text-center p-3 bg-[#BADE4F] bg-opacity-20 rounded-xl" role="status" aria-live="polite">
                       <p className="text-sm text-[#292B27] font-semibold">Danke! Wir benachrichtigen dich.</p>
@@ -437,14 +437,14 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                   )}
                 </div>
               ) : (
-                <button className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200">
+                <button className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200 mt-auto">
                   Plan auswählen
                 </button>
               )}
             </div>
 
             {/* Pro */}
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative">
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative flex flex-col">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#E2E8FB] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold border border-gray-200">
                   Geplant
@@ -459,7 +459,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                   ab Launch
                 </p>
               </div>
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-4 mb-8 flex-grow">
                 <li className="flex items-start gap-3">
                   <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
                   <span className="text-[#292B27]">Unlimitierte Buchungen</span>
@@ -478,7 +478,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                 </li>
               </ul>
               {!pricingConfig.pro.price && !pricingConfig.pro.range ? (
-                <div className="space-y-4">
+                <div className="space-y-4 mt-auto">
                   {proEmailSubmitted ? (
                     <div className="text-center p-3 bg-[#BADE4F] bg-opacity-20 rounded-xl" role="status" aria-live="polite">
                       <p className="text-sm text-[#292B27] font-semibold">Danke! Wir benachrichtigen dich.</p>
@@ -504,7 +504,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                   )}
                 </div>
               ) : (
-                <button className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200">
+                <button className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200 mt-auto">
                   Plan auswählen
                 </button>
               )}
