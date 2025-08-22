@@ -240,7 +240,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               className="w-8 h-8"
             />
             <h1 className="text-xl" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              <span className="font-bold">elu</span> – elevate you
+              <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>
             </h1>
           </div>
         </div>
@@ -726,7 +726,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                   className="w-10 h-10"
                 />
                 <h3 className="text-2xl font-bold text-[#6D8EEC]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  elu – elevate you
+                  <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>
                 </h3>
               </div>
               <p className="text-gray-300 leading-relaxed mb-6" style={{ fontFamily: 'Open Sans, sans-serif' }}>
@@ -770,7 +770,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
           
           <div className="border-t border-gray-600 mt-12 pt-8 text-center">
             <p className="text-gray-400" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              © 2025 elu – elevate you. Alle Rechte vorbehalten.
+              © 2025 <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>. Alle Rechte vorbehalten.
             </p>
           </div>
         </div>
