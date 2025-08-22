@@ -319,10 +319,10 @@ function App() {
             <div className="flex-shrink-0">
               <button 
                 onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hidden lg:inline-flex bg-[#BADE4F] text-[#292B27] px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#a8c943] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="hidden lg:inline-flex bg-[#BADE4F] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#a8c943] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Beta-Zugang
+                Zur Warteliste
               </button>
             </div>
           </div>
