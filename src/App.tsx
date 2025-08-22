@@ -27,6 +27,7 @@ import AGB from './components/AGB';
 import ExpertPage from './components/ExpertPage';
 import ContactPage from './components/ContactPage';
 import SupportPage from './components/SupportPage';
+import PressPage from './components/PressPage';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -242,6 +243,10 @@ function App() {
 
         if (currentPage === 'support') {
           return <SupportPage onBack={() => setCurrentPage('home')} />;
+        }
+
+        if (currentPage === 'press') {
+          return <PressPage onBack={() => setCurrentPage('home')} />;
         }
 
   return (
@@ -1002,7 +1007,7 @@ function App() {
               <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                 <li><button onClick={() => setCurrentPage('contact')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Kontakt</button></li>
                 <li><button onClick={() => setCurrentPage('support')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Support</button></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Presse</a></li>
+                <li><button onClick={() => setCurrentPage('press')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Presse</button></li>
               </ul>
             </div>
           </div>
