@@ -28,6 +28,7 @@ import ExpertPage from './components/ExpertPage';
 import ContactPage from './components/ContactPage';
 import SupportPage from './components/SupportPage';
 import PressPage from './components/PressPage';
+import { formServices } from './lib/formServices';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -76,7 +77,7 @@ function App() {
     {
       name: 'Julian',
       specialty: 'Personal Training',
-      image: 'https://images.pexels.com/photos/8846129/pexels-photo-8846129.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      image: 'https://images.pexels.com/photos/866019/pexels-photo-866019.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
       rating: '5.0',
       specialtyInfo: 'Muskelaufbau & Fitness',
       focus: 'Krafttraining & Mobility',
@@ -108,7 +109,7 @@ function App() {
     {
       name: 'Michael',
       specialty: 'Sportphysiotherapie',
-      image: 'https://images.pexels.com/photos/7176026/pexels-photo-7176026.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      image: 'https://images.pexels.com/photos/8219055/pexels-photo-8219055.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
       rating: '4.9',
       specialtyInfo: 'Knieschmerzen & Rehabilitation',
       focus: 'Rehabilitation & Prävention',
@@ -210,14 +211,29 @@ function App() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.firstName || !formData.email || !formData.userType || !formData.privacy) {
       alert('Bitte fülle alle Felder aus und stimme der Datenschutzerklärung zu.');
       return;
     }
-    alert('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
-    setFormData({ firstName: '', email: '', userType: '', privacy: false });
+
+    try {
+      const result = await formServices.submitBetaSignup({
+        email: formData.email,
+        source: formData.userType
+      });
+
+      if (result.success) {
+        alert('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+        setFormData({ firstName: '', email: '', userType: '', privacy: false });
+      } else {
+        alert('Es gab einen Fehler. Bitte versuche es erneut.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Es gab einen Fehler. Bitte versuche es erneut.');
+    }
   };
 
   // Render different pages based on currentPage state
@@ -269,48 +285,14 @@ function App() {
               </div>
             </div>
             
-            {/* Countdown Timer - Centered */}
+            {/* Beta Launch Coming Soon - Centered */}
             <div className="absolute left-1/2 transform -translate-x-1/2">
               <div className="hidden lg:flex flex-col items-center">
                 <p className="text-sm text-white font-medium mb-1" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Beta-Launch startet in:
+                  Beta Launch
                 </p>
-                <div className="flex items-center gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                      {timeLeft.days.toString().padStart(2, '0')}
-                    </div>
-                    <div className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                      Tage
-                    </div>
-                  </div>
-                  <div className="text-[#BADE4F] text-xl font-bold">:</div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                      {timeLeft.hours.toString().padStart(2, '0')}
-                    </div>
-                    <div className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                      Std
-                    </div>
-                  </div>
-                  <div className="text-[#BADE4F] text-xl font-bold">:</div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                      {timeLeft.minutes.toString().padStart(2, '0')}
-                    </div>
-                    <div className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                      Min
-                    </div>
-                  </div>
-                  <div className="text-[#BADE4F] text-xl font-bold">:</div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                      {timeLeft.seconds.toString().padStart(2, '0')}
-                    </div>
-                    <div className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                      Sek
-                    </div>
-                  </div>
+                <div className="text-2xl font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Coming Soon
                 </div>
               </div>
             </div>
@@ -327,49 +309,15 @@ function App() {
             </div>
           </div>
           
-          {/* Mobile Countdown - Visible only on mobile */}
+          {/* Mobile Beta Launch - Visible only on mobile */}
           <div className="lg:hidden pb-3 border-t border-gray-600 mt-3 pt-3">
-            <div className="flex flex-col items-center">
-              <p className="text-xs text-white font-medium mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Beta-Launch startet in:
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="text-center">
-                  <div className="text-lg font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    {timeLeft.days.toString().padStart(2, '0')}
-                  </div>
-                  <div className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Tage
-                  </div>
-                </div>
-                <div className="text-[#BADE4F] text-lg font-bold">:</div>
-                <div className="text-center">
-                  <div className="text-lg font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    {timeLeft.hours.toString().padStart(2, '0')}
-                  </div>
-                  <div className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Std
-                  </div>
-                </div>
-                <div className="text-[#BADE4F] text-lg font-bold">:</div>
-                <div className="text-center">
-                  <div className="text-lg font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    {timeLeft.minutes.toString().padStart(2, '0')}
-                  </div>
-                  <div className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Min
-                  </div>
-                </div>
-                <div className="text-[#BADE4F] text-lg font-bold">:</div>
-                <div className="text-center">
-                  <div className="text-lg font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    {timeLeft.seconds.toString().padStart(2, '0')}
-                  </div>
-                  <div className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Sek
-                  </div>
-                </div>
-              </div>
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Beta Launch
+              </span>
+              <span className="text-sm font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                Coming Soon
+              </span>
             </div>
           </div>
         </div>
@@ -980,13 +928,13 @@ function App() {
                 Gesundheit ohne Umwege. Finde geprüfte Experten für alle Bereiche der Vorsorge und Prävention.
               </p>
               <div className="flex gap-4">
-                <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
+                <a href="https://www.instagram.com/elevateyou.app/" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
                   <Facebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
+                <a href="https://www.linkedin.com/company/108662379/" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
                   <Linkedin className="w-5 h-5" />
                 </a>
               </div>

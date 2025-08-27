@@ -21,6 +21,7 @@ import {
   Facebook,
   Linkedin
 } from 'lucide-react';
+import { formServices } from '../lib/formServices';
 
 interface ExpertPageProps {
   onBack?: () => void;
@@ -62,18 +63,35 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-  const handleWaitlistSubmit = (e: React.FormEvent) => {
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Waitlist signup:', { name, email, expertise });
-    setIsSubmitted(true);
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setName('');
-      setEmail('');
-      setExpertise([]);
-    }, 3000);
+    
+    try {
+      const result = await formServices.submitExpertApplication({
+        name,
+        email,
+        phone: '', // Not collected in this form
+        expertise,
+        experience_years: 0, // Not collected in this form
+        message: '' // Not collected in this form
+      });
+
+      if (result.success) {
+        setIsSubmitted(true);
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setName('');
+          setEmail('');
+          setExpertise([]);
+        }, 3000);
+      } else {
+        alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
+      }
+    } catch (error) {
+      console.error('Error submitting expert application:', error);
+      alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
+    }
   };
 
   const handleExpertiseChange = (value: string) => {
@@ -103,24 +121,64 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
     }
   }, [isDropdownOpen]);
 
-  const handleStandardEmailSubmit = (e: React.FormEvent) => {
+  const handleStandardEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Standard plan email:', standardEmail);
-    setStandardEmailSubmitted(true);
-    setTimeout(() => {
-      setStandardEmailSubmitted(false);
-      setStandardEmail('');
-    }, 3000);
+    console.log('Standard email form submitted:', standardEmail);
+    
+    try {
+      console.log('Calling formServices.submitPricingInfoEmail...');
+      const result = await formServices.submitPricingInfoEmail({
+        email: standardEmail,
+        plan_type: 'standard'
+      });
+
+      console.log('Result:', result);
+
+      if (result.success) {
+        console.log('Success! Setting submitted state...');
+        setStandardEmailSubmitted(true);
+        setTimeout(() => {
+          setStandardEmailSubmitted(false);
+          setStandardEmail('');
+        }, 3000);
+      } else {
+        console.error('Form submission failed:', result.error);
+        alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
+      }
+    } catch (error) {
+      console.error('Error submitting standard plan email:', error);
+      alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
+    }
   };
 
-  const handleProEmailSubmit = (e: React.FormEvent) => {
+  const handleProEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Pro plan email:', proEmail);
-    setProEmailSubmitted(true);
-    setTimeout(() => {
-      setProEmailSubmitted(false);
-      setProEmail('');
-    }, 3000);
+    console.log('Pro email form submitted:', proEmail);
+    
+    try {
+      console.log('Calling formServices.submitPricingInfoEmail...');
+      const result = await formServices.submitPricingInfoEmail({
+        email: proEmail,
+        plan_type: 'pro'
+      });
+
+      console.log('Result:', result);
+
+      if (result.success) {
+        console.log('Success! Setting submitted state...');
+        setProEmailSubmitted(true);
+        setTimeout(() => {
+          setProEmailSubmitted(false);
+          setProEmail('');
+        }, 3000);
+      } else {
+        console.error('Form submission failed:', result.error);
+        alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
+      }
+    } catch (error) {
+      console.error('Error submitting pro plan email:', error);
+      alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
+    }
   };
 
   const renderPriceDisplay = (planConfig: { price: string | null, range: string | null }) => {
@@ -733,13 +791,13 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                 Gesundheit ohne Umwege. Finde geprüfte Experten für alle Bereiche der Vorsorge und Prävention.
               </p>
               <div className="flex gap-4">
-                <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
+                <a href="https://www.instagram.com/elevateyou.app/" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
                   <Facebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
+                <a href="https://www.linkedin.com/company/108662379/" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
                   <Linkedin className="w-5 h-5" />
                 </a>
               </div>

@@ -195,13 +195,17 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
               </a>
               <div className="flex gap-2">
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/company/108662379/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-[#BADE4F] text-white rounded-lg hover:bg-[#A8D13F] focus:outline-none focus:ring-2 focus:ring-[#BADE4F] focus:ring-offset-2 transition-colors duration-200"
                 >
                   <Linkedin className="w-4 h-4" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.instagram.com/elevateyou.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-[#BADE4F] text-white rounded-lg hover:bg-[#A8D13F] focus:outline-none focus:ring-2 focus:ring-[#BADE4F] focus:ring-offset-2 transition-colors duration-200"
                 >
                   <Instagram className="w-4 h-4" />

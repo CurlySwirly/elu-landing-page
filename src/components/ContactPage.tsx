@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Mail, Linkedin, Instagram, Send } from 'lucide-react';
+import { formServices } from '../lib/formServices';
 
 interface ContactPageProps {
   onBack?: () => void;
@@ -17,12 +18,22 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic would go here
-    console.log('Contact form submitted:', formData);
-    // Reset form after submission
-    setFormData({ name: '', email: '', message: '' });
+    
+    try {
+      const result = await formServices.submitContactMessage(formData);
+
+      if (result.success) {
+        alert('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        alert('Es gab einen Fehler beim Senden der Nachricht. Bitte versuche es erneut.');
+      }
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      alert('Es gab einen Fehler beim Senden der Nachricht. Bitte versuche es erneut.');
+    }
   };
 
   return (
@@ -37,7 +48,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
               className="w-8 h-8"
             />
             <h1 className="text-xl font-bold" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              elu – elevate you
+              <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>
             </h1>
           </div>
         </div>
@@ -103,10 +114,10 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                 Social Media
               </h2>
               <div className="flex gap-4">
-                <a href="#" className="bg-[#BADE4F] hover:bg-[#A8D13F] p-3 rounded-full transition-colors duration-300">
+                <a href="https://www.linkedin.com/company/108662379/" target="_blank" rel="noopener noreferrer" className="bg-[#BADE4F] hover:bg-[#A8D13F] p-3 rounded-full transition-colors duration-300">
                   <Linkedin className="w-5 h-5 text-white" />
                 </a>
-                <a href="#" className="bg-[#BADE4F] hover:bg-[#A8D13F] p-3 rounded-full transition-colors duration-300">
+                <a href="https://www.instagram.com/elevateyou.app/" target="_blank" rel="noopener noreferrer" className="bg-[#BADE4F] hover:bg-[#A8D13F] p-3 rounded-full transition-colors duration-300">
                   <Instagram className="w-5 h-5 text-white" />
                 </a>
               </div>

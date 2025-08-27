@@ -16,14 +16,14 @@ const services = [
   {
     id: 'physio',
     label: 'Physiotherapie',
-    image: 'https://images.pexels.com/photos/7176026/pexels-photo-7176026.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-    alt: 'Physiotherapie – Bewegung und Rehabilitation'
+    image: 'https://images.pexels.com/photos/8219055/pexels-photo-8219055.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+    alt: 'Physiotherapie – Therapeutische Behandlung und Taping'
   },
   {
     id: 'pt',
     label: 'Personal Training',
-    image: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-    alt: 'Personal Training – Individuelles Fitnesstraining'
+    image: 'https://images.pexels.com/photos/866019/pexels-photo-866019.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+    alt: 'Personal Training – Individuelles Fitnesstraining und Workouts'
   },
   {
     id: 'ernaehrung',
@@ -189,11 +189,11 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
             <div 
               className="flex gap-4 md:gap-6 transition-transform duration-500 ease-out"
               style={{
-                transform: `translateX(calc(-${currentIndex * (100 / services.length)}% - ${currentIndex * (isDragging ? 0 : 24)}px + ${dragOffset}px))`
+                transform: `translateX(calc(-${currentIndex * (100 / services.length)}% - ${currentIndex * 24}px + ${dragOffset}px))`
               }}
             >
-              {/* Duplicate services for infinite scroll effect */}
-              {[...services, ...services, ...services].map((service, index) => {
+              {/* Services */}
+              {services.map((service, index) => {
                 return (
                   <div
                     key={`${service.id}-${index}`}
@@ -222,7 +222,10 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
           {/* Navigation controls */}
           <div className="flex items-center justify-center gap-4 mt-6">
             <button
-              onClick={() => setCurrentIndex((prev) => (prev - 1 + services.length) % services.length)}
+              onClick={() => {
+                const newIndex = currentIndex === 0 ? services.length - 1 : currentIndex - 1;
+                setCurrentIndex(newIndex);
+              }}
               className="p-2 rounded-full bg-[#F0F0F0] text-[#292B27] hover:bg-[#E2E8FB] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2"
               aria-label="Vorheriger Service"
             >
@@ -244,7 +247,10 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
             </div>
 
             <button
-              onClick={() => setCurrentIndex((prev) => (prev + 1) % services.length)}
+              onClick={() => {
+                const newIndex = currentIndex === services.length - 1 ? 0 : currentIndex + 1;
+                setCurrentIndex(newIndex);
+              }}
               className="p-2 rounded-full bg-[#F0F0F0] text-[#292B27] hover:bg-[#E2E8FB] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2"
               aria-label="Nächster Service"
             >
