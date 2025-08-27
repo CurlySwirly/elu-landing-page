@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
 
 interface HeroProps {
   heroBg?: string;
@@ -155,7 +155,7 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
       <div className="relative z-10 w-full max-w-4xl mx-auto text-center">
         {/* Top pill badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 md:mb-12 bg-[#E2E8FB] text-[#292B27] rounded-full text-sm font-medium">
-          <Check className="w-4 h-4 text-[#6D8EEC]" />
+          <AlertTriangle className="w-4 h-4 text-[#6D8EEC]" />
           Beta-Plätze limitiert
         </div>
 
