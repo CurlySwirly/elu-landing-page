@@ -30,13 +30,52 @@ import AGB from './components/AGB';
 // import SupportPage from './components/SupportPage';
 // import PressPage from './components/PressPage';
 
-// Temporary fallback formServices for deployment testing
-const formServices = {
-  submitBetaSignup: async (data: any) => ({ success: true, data }),
-  submitContactMessage: async (data: any) => ({ success: true, data }),
-  submitExpertApplication: async (data: any) => ({ success: true, data }),
-  submitPricingInfoEmail: async (data: any) => ({ success: true, data })
-};
+// Safe import of formServices with environment variable checking
+let formServices: any;
+
+// Check if Supabase environment variables are available
+const hasSupabaseConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (hasSupabaseConfig) {
+  try {
+    // Dynamic import of formServices
+    import('./lib/formServices').then(({ formServices: importedFormServices }) => {
+      formServices = importedFormServices;
+      console.log('✅ Supabase form services loaded successfully');
+    }).catch((error) => {
+      console.warn('Failed to load form services:', error);
+      formServices = createFallbackFormServices();
+    });
+  } catch (error) {
+    console.warn('Error loading form services:', error);
+    formServices = createFallbackFormServices();
+  }
+} else {
+  console.warn('⚠️ Supabase environment variables not found. Using fallback form services.');
+  formServices = createFallbackFormServices();
+}
+
+// Fallback form services for when Supabase is not available
+function createFallbackFormServices() {
+  return {
+    submitBetaSignup: async (data: any) => {
+      console.log('Form submission (fallback):', data);
+      return { success: true, data, message: 'Form submitted (fallback mode)' };
+    },
+    submitContactMessage: async (data: any) => {
+      console.log('Contact form (fallback):', data);
+      return { success: true, data, message: 'Message sent (fallback mode)' };
+    },
+    submitExpertApplication: async (data: any) => {
+      console.log('Expert application (fallback):', data);
+      return { success: true, data, message: 'Application submitted (fallback mode)' };
+    },
+    submitPricingInfoEmail: async (data: any) => {
+      console.log('Pricing info (fallback):', data);
+      return { success: true, data, message: 'Email saved (fallback mode)' };
+    }
+  };
+}
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -62,8 +101,11 @@ function App() {
     console.log('Environment check:', {
       nodeEnv: import.meta.env.MODE,
       hasSupabaseUrl: !!import.meta.env.VITE_SUPABASE_URL,
-      hasSupabaseKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY
+      hasSupabaseKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
+      supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
+      supabaseKeyLength: import.meta.env.VITE_SUPABASE_ANON_KEY?.length || 0
     });
+    console.log('Form services status:', formServices ? 'Loaded' : 'Not loaded');
   }, []);
 
   // Scroll to top when page changes
