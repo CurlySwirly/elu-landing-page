@@ -25,11 +25,18 @@ import Impressum from './components/Impressum';
 import FAQ from './components/FAQ';
 import Datenschutz from './components/Datenschutz';
 import AGB from './components/AGB';
-import ExpertPage from './components/ExpertPage';
-import ContactPage from './components/ContactPage';
-import SupportPage from './components/SupportPage';
-import PressPage from './components/PressPage';
-import { formServices } from './lib/formServices';
+// import ExpertPage from './components/ExpertPage';
+// import ContactPage from './components/ContactPage';
+// import SupportPage from './components/SupportPage';
+// import PressPage from './components/PressPage';
+
+// Temporary fallback formServices for deployment testing
+const formServices = {
+  submitBetaSignup: async (data: any) => ({ success: true, data }),
+  submitContactMessage: async (data: any) => ({ success: true, data }),
+  submitExpertApplication: async (data: any) => ({ success: true, data }),
+  submitPricingInfoEmail: async (data: any) => ({ success: true, data })
+};
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -315,21 +322,21 @@ function App() {
     return <AGB onBack={() => setCurrentPage('home')} />;
   }
 
-  if (currentPage === 'expert') {
-    return <ExpertPage onBack={() => setCurrentPage('home')} />;
-  }
+  // if (currentPage === 'expert') {
+  //   return <ExpertPage onBack={() => setCurrentPage('home')} />;
+  // }
 
-          if (currentPage === 'contact') {
-          return <ContactPage onBack={() => setCurrentPage('home')} />;
-        }
+  // if (currentPage === 'contact') {
+  //   return <ContactPage onBack={() => setCurrentPage('home')} />;
+  // }
 
-        if (currentPage === 'support') {
-          return <SupportPage onBack={() => setCurrentPage('home')} />;
-        }
+  // if (currentPage === 'support') {
+  //   return <SupportPage onBack={() => setCurrentPage('home')} />;
+  // }
 
-        if (currentPage === 'press') {
-          return <PressPage onBack={() => setCurrentPage('home')} />;
-        }
+  // if (currentPage === 'press') {
+  //   return <PressPage onBack={() => setCurrentPage('home')} />;
+  // }
 
   return (
     <div className="min-h-screen bg-white">
