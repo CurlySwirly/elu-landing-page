@@ -5,7 +5,7 @@ import {
   Star, 
   Shield, 
   Users, 
-  Zap,
+  Target,
   User,
   Search,
   Calendar,
@@ -17,7 +17,8 @@ import {
   Facebook,
   Linkedin,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Globe
 } from 'lucide-react';
 import Hero from './components/Hero';
 import Impressum from './components/Impressum';
@@ -54,110 +55,164 @@ function App() {
 
   const experts = [
     {
-      name: 'Lorenz',
+      name: 'Dominik Weber',
       specialty: 'Physiotherapie',
-      image: 'https://images.pexels.com/photos/5722164/pexels-photo-5722164.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      image: 'https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop&object-position=center',
       rating: '4.9',
       specialtyInfo: 'Rückenschmerzen & Haltung',
-      focus: 'Rücken & Haltungskorrektur',
+      focus: 'Knieverletzungen & Rehabilitation',
       experience: '8+ Jahre Praxis',
       availability: 'Praxis & Online',
-      usp: 'Spezialist für Büroarbeiter'
+      usp: 'Spezialist für Büroarbeiter',
+      certificationLevel: 'Master',
+      location: 'Wien-Innere Stadt',
+      languages: 'Deutsch, Englisch',
+      consultationType: 'Einzel- & Gruppentherapie',
+      specializations: ['Bandscheibenvorfall', 'Skoliose', 'Büroergonomie']
     },
     {
-      name: 'Anna',
+      name: 'Anna Schmidt, MSc.',
       specialty: 'Ernährungsberatung',
-      image: 'https://images.pexels.com/photos/8376177/pexels-photo-8376177.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      image: 'https://images.pexels.com/photos/3767342/pexels-photo-3767342.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop&object-position=center',
       rating: '4.8',
       specialtyInfo: 'Diabetes & Gewichtsmanagement',
-      focus: 'Ernährung bei Diabetes',
+      focus: 'Adipositas & Diabetes',
       experience: '12+ Jahre Praxis',
-      availability: 'Online & Hausbesuche'
+      availability: 'Online & Hausbesuche',
+      usp: 'Zertifizierte Diabetesberaterin',
+      certificationLevel: 'Master',
+      location: 'Wien-Landstraße',
+      languages: 'Deutsch, Englisch, Französisch',
+      consultationType: 'Persönlich & Online',
+      specializations: ['Typ 2 Diabetes', 'Gewichtsreduktion', 'Sportlerernährung']
     },
     {
-      name: 'Julian',
+      name: 'Julian Müller',
       specialty: 'Personal Training',
-      image: 'https://images.pexels.com/photos/866019/pexels-photo-866019.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      image: 'https://images.pexels.com/photos/10498088/pexels-photo-10498088.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
       rating: '5.0',
       specialtyInfo: 'Muskelaufbau & Fitness',
       focus: 'Krafttraining & Mobility',
       experience: '6+ Jahre Praxis',
       availability: 'Studio & Outdoor',
-      usp: 'Zertifizierter Functional Trainer'
+      usp: 'Zertifizierter Functional Trainer',
+      certificationLevel: 'Diploma',
+      location: 'Wien-Mariahilf',
+      languages: 'Deutsch, Englisch',
+      consultationType: 'Einzeltraining & Kleingruppen',
+      specializations: ['Kraftaufbau', 'Mobility Training', 'Rehabilitation']
     },
     {
-      name: 'Marie',
-      specialty: 'Yoga & Achtsamkeit',
-      image: 'https://images.pexels.com/photos/8436730/pexels-photo-8436730.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      name: 'Marie Chen',
+      specialty: 'Yoga',
+      image: 'https://images.pexels.com/photos/8068113/pexels-photo-8068113.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
       rating: '4.9',
       specialtyInfo: 'Stressabbau & Entspannung',
-      focus: 'Yoga für Rücken & Haltung',
+      focus: 'Stressmanagement & Meditation',
       experience: '10+ Jahre Praxis',
       availability: 'Online, Zuhause & Studio',
-      usp: 'Zertifiziert in Mindful Yoga'
+      usp: 'Zertifiziert in Mindful Yoga',
+      certificationLevel: 'Bachelor',
+      location: 'Wien-Wieden',
+      languages: 'Deutsch, Englisch, Mandarin',
+      consultationType: 'Privat & Gruppenkurse',
+      specializations: ['Stressmanagement', 'Rückengesundheit', 'Meditation']
     },
     {
-      name: 'Sandra',
-      specialty: 'Massage-Therapie',
-      image: 'https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      name: 'Robert Novak',
+      specialty: 'Massage',
+      image: 'https://images.pexels.com/photos/17637126/pexels-photo-17637126.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
       rating: '4.8',
       specialtyInfo: 'Verspannungen & Schmerzen',
-      focus: 'Massage bei Verspannungen',
+      focus: 'Triggerpunktmassage',
       experience: '15+ Jahre Praxis',
-      availability: 'Praxis & Hausbesuche'
+      availability: 'Praxis & Hausbesuche',
+      usp: 'Spezialist für Tiefengewebsmassage',
+      certificationLevel: 'Diploma',
+      location: 'Wien-Josefstadt',
+      languages: 'Deutsch, Englisch, Tschechisch',
+      consultationType: 'Einzelbehandlung',
+      specializations: ['Tiefengewebsmassage', 'Triggerpunkt-Therapie', 'Wellness']
     },
     {
-      name: 'Michael',
-      specialty: 'Sportphysiotherapie',
-      image: 'https://images.pexels.com/photos/8219055/pexels-photo-8219055.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      name: 'Sophie Bauer',
+      specialty: 'Physiotherapie',
+      image: 'https://images.pexels.com/photos/8019267/pexels-photo-8019267.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
       rating: '4.9',
       specialtyInfo: 'Knieschmerzen & Rehabilitation',
-      focus: 'Rehabilitation & Prävention',
+      focus: 'Sportverletzungen & Prävention',
       experience: '7+ Jahre Praxis',
       availability: 'Praxis & Online',
-      usp: 'Sportphysiotherapie für Senior:innen'
+      usp: 'Sportphysiotherapie für Senior:innen',
+      certificationLevel: 'Master',
+      location: 'Wien-Rudolfsheim',
+      languages: 'Deutsch, Englisch',
+      consultationType: 'Einzel- & Gruppentherapie',
+      specializations: ['Knieverletzungen', 'Sportrehabilitation', 'Prävention']
     },
     {
-      name: 'Lisa',
-      specialty: 'Mentalcoaching',
-      image: 'https://images.pexels.com/photos/8376232/pexels-photo-8376232.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      name: 'David Wagner, MA',
+      specialty: 'Leistungscoaching',
+      image: 'https://images.pexels.com/photos/30767572/pexels-photo-30767572.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
       rating: '5.0',
       specialtyInfo: 'Burnout & Stressmanagement',
-      focus: 'Stressmanagement & Resilienz',
+      focus: 'Burnout-Prävention & Resilienz',
       experience: '9+ Jahre Praxis',
-      availability: 'Online & Praxis'
+      availability: 'Online & Praxis',
+      usp: 'Spezialist für Work-Life-Balance',
+      certificationLevel: 'Master',
+      location: 'Wien-Neubau',
+      languages: 'Deutsch, Englisch, Spanisch',
+      consultationType: 'Einzelcoaching & Workshops',
+      specializations: ['Burnout-Prävention', 'Stressbewältigung', 'Achtsamkeit']
     },
     {
-      name: 'Tom',
-      specialty: 'Functional Training',
-      image: 'https://images.pexels.com/photos/8436729/pexels-photo-8436729.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      name: 'Tom Fischer',
+      specialty: 'Personal Training',
+      image: 'https://images.pexels.com/photos/7983716/pexels-photo-7983716.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
       rating: '4.7',
       specialtyInfo: 'Beweglichkeit & Koordination',
-      focus: 'Beweglichkeit & Kraft',
+      focus: 'Beweglichkeitstraining & Koordination',
       experience: '5+ Jahre Praxis',
       availability: 'Studio & Outdoor',
-      usp: 'Spezialist für Einsteiger'
+      usp: 'Spezialist für Einsteiger',
+      certificationLevel: 'Diploma',
+      location: 'Wien-Leopoldstadt',
+      languages: 'Deutsch, Englisch',
+      consultationType: 'Einzel- & Gruppentraining',
+      specializations: ['Beweglichkeitstraining', 'Koordination', 'Kraftaufbau']
     },
     {
-      name: 'Petra',
-      specialty: 'Heilpraktikerin',
-      image: 'https://images.pexels.com/photos/5794058/pexels-photo-5794058.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      name: 'Petra Hoffmann',
+      specialty: 'Ernährungsberatung',
+      image: 'https://images.pexels.com/photos/18243763/pexels-photo-18243763.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
       rating: '4.8',
       specialtyInfo: 'Naturheilkunde & Prävention',
-      focus: 'Naturheilkunde & Prävention',
+      focus: 'Phytotherapie & Prävention',
       experience: '20+ Jahre Praxis',
-      availability: 'Praxis & Beratung'
+      availability: 'Praxis & Beratung',
+      usp: 'Ganzheitliche Gesundheitsberatung',
+      certificationLevel: 'Diploma',
+      location: 'Wien-Hietzing',
+      languages: 'Deutsch, Englisch',
+      consultationType: 'Einzelberatung & Therapie',
+      specializations: ['Phytotherapie', 'Ernährungsberatung', 'Prävention']
     },
     {
-      name: 'David',
-      specialty: 'Pilates',
-      image: 'https://images.pexels.com/photos/8436728/pexels-photo-8436728.jpeg?auto=compress&cs=tinysrgb&w=300&h=400&fit=crop',
+      name: 'Lisa Kim',
+      specialty: 'Yoga',
+      image: 'https://images.pexels.com/photos/4534868/pexels-photo-4534868.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
       rating: '4.9',
       specialtyInfo: 'Core-Training & Haltung',
-      focus: 'Core-Stabilität & Haltung',
+      focus: 'Core-Stabilität & Haltungskorrektur',
       experience: '8+ Jahre Praxis',
       availability: 'Studio & Online',
-      usp: 'Zertifizierter Pilates-Instructor'
+      usp: 'Zertifizierte Pilates-Instructorin',
+      certificationLevel: 'Bachelor',
+      location: 'Wien-Margareten',
+      languages: 'Deutsch, Englisch, Koreanisch',
+      consultationType: 'Einzel- & Gruppenkurse',
+      specializations: ['Core-Training', 'Haltungskorrektur', 'Rückengesundheit']
     }
   ];
 
@@ -434,12 +489,15 @@ function App() {
                     key={index}
                     className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 flex-shrink-0 w-80"
                   >
-                    <div className="aspect-[4/3] relative overflow-hidden">
-                      <img
-                        src={expert.image}
-                        alt={`${expert.name} - ${expert.specialty}`}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="aspect-[3/2] relative overflow-hidden">
+                                              <img
+                          src={expert.image}
+                          alt={`${expert.name} - ${expert.specialty}`}
+                          className={`w-full h-full object-cover ${
+                            expert.name.includes('Anna') ? 'object-center' : 'object-top'
+                          }`}
+
+                        />
                       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur rounded-full px-2 py-1 flex items-center gap-1">
                         <Star className="w-4 h-4 text-yellow-400 fill-current" />
                         <span className="text-sm font-medium text-[#292B27]" style={{ fontFamily: 'Open Sans, sans-serif' }}>
@@ -448,28 +506,29 @@ function App() {
                       </div>
                     </div>
                     <div className="p-6">
+                      {/* First Name */}
                       <h3 className="text-xl font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                        {expert.name}
+                        {expert.name.split(' ')[0]}
                       </h3>
-                      <p className="text-[#6D8EEC] font-medium mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                      
+                      {/* Profession Name */}
+                      <p className="text-[#6D8EEC] font-medium text-sm mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                         {expert.specialty}
                       </p>
                       
-                      <div className="space-y-2 mb-4">
+                      {/* Icons with Information */}
+                      <div className="space-y-3">
+                                                  {/* Specification */}
+                          <div className="flex items-center gap-2">
+                            <Target className="w-4 h-4 text-[#BADE4F]" />
+                            <span className="text-sm text-gray-700" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                              {expert.focus}
+                            </span>
+                          </div>
+                        
+                        {/* Location/Availability */}
                         <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-[#BADE4F] rounded-full"></div>
-                          <span className="text-sm text-gray-700" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                            {expert.focus}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-[#BADE4F] rounded-full"></div>
-                          <span className="text-sm text-gray-700" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                            {expert.experience}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-[#BADE4F] rounded-full"></div>
+                          <MapPin className="w-4 h-4 text-[#BADE4F]" />
                           <span className="text-sm text-gray-700" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                             {expert.availability}
                           </span>
@@ -556,10 +615,10 @@ function App() {
                 <Eye className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Mehr Sichtbarkeit für Experten
+                Smart Matching
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Gesundheit dort, wo sie gebraucht wird.
+                Basierend auf Ziel, Zeit und Standort.
               </p>
             </div>
           </div>
@@ -614,7 +673,7 @@ function App() {
             <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-[#BADE4F]">
               <div className="flex items-start gap-4">
                 <div className="bg-[#BADE4F] rounded-full p-2 mt-1">
-                  <Zap className="w-5 h-5 text-white" />
+                  <Target className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
@@ -630,7 +689,7 @@ function App() {
             <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-[#BADE4F]">
               <div className="flex items-start gap-4">
                 <div className="bg-[#BADE4F] rounded-full p-2 mt-1">
-                  <Zap className="w-5 h-5 text-white" />
+                  <Target className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
@@ -670,13 +729,13 @@ function App() {
             <div className="bg-[#F0F0F0] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
-                  src="https://images.pexels.com/photos/3094215/pexels-photo-3094215.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop&crop=face"
+                  src="https://images.pexels.com/photos/3779947/pexels-photo-3779947.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop&crop=face"
                   alt="Katrin"
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
                   <h4 className="text-lg font-semibold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Katrin, 41
+                    Katrin
                   </h4>
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
@@ -693,13 +752,13 @@ function App() {
             <div className="bg-[#F0F0F0] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
-                  src="https://images.pexels.com/photos/3777943/pexels-photo-3777943.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop&crop=face"
+                  src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop&crop=face"
                   alt="Thomas"
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
                   <h4 className="text-lg font-semibold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Thomas, 56
+                    Thomas
                   </h4>
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
@@ -716,13 +775,13 @@ function App() {
             <div className="bg-[#F0F0F0] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
-                  src="https://images.pexels.com/photos/1006227/pexels-photo-1006227.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop&crop=face"
+                  src="https://images.pexels.com/photos/8558897/pexels-photo-8558897.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop&crop=face"
                   alt="Mona"
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
                   <h4 className="text-lg font-semibold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Mona, 35
+                    Mona
                   </h4>
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (

@@ -10,7 +10,7 @@ const services = [
   {
     id: 'massage',
     label: 'Massage',
-    image: 'https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+    image: 'https://images.pexels.com/photos/275768/pexels-photo-275768.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
     alt: 'Massage – Linderung bei Verspannungen'
   },
   {
@@ -22,7 +22,7 @@ const services = [
   {
     id: 'pt',
     label: 'Personal Training',
-    image: 'https://images.pexels.com/photos/866019/pexels-photo-866019.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+    image: 'https://images.pexels.com/photos/6455783/pexels-photo-6455783.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
     alt: 'Personal Training – Individuelles Fitnesstraining und Workouts'
   },
   {
