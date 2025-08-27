@@ -48,6 +48,17 @@ function App() {
     privacy: false
   });
 
+  // Debug logging for Vercel deployment
+  useEffect(() => {
+    console.log('App component mounted successfully');
+    console.log('Current page:', currentPage);
+    console.log('Environment check:', {
+      nodeEnv: import.meta.env.MODE,
+      hasSupabaseUrl: !!import.meta.env.VITE_SUPABASE_URL,
+      hasSupabaseKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY
+    });
+  }, []);
+
   // Scroll to top when page changes
   useEffect(() => {
     window.scrollTo(0, 0);
