@@ -28,7 +28,7 @@ import AGB from './components/AGB';
 import ExpertPage from './components/ExpertPage';
 import ContactPage from './components/ContactPage';
 import SupportPage from './components/SupportPage';
-import PressPage from './components/PressPage';
+// import PressPage from './components/PressPage';
 
 // Safe import of formServices with environment variable checking
 let formServices: any;
@@ -376,9 +376,9 @@ function App() {
     return <SupportPage onBack={() => setCurrentPage('home')} />;
   }
 
-  if (currentPage === 'press') {
-    return <PressPage onBack={() => setCurrentPage('home')} />;
-  }
+  // if (currentPage === 'press') {
+  //   return <PressPage onBack={() => setCurrentPage('home')} />;
+  // }
 
   return (
     <div className="min-h-screen bg-white">
@@ -1077,7 +1077,7 @@ function App() {
               <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                 <li><button onClick={() => setCurrentPage('contact')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Kontakt</button></li>
                 <li><button onClick={() => setCurrentPage('support')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Support</button></li>
-                <li><button onClick={() => setCurrentPage('press')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Presse</button></li>
+                {/* <li><button onClick={() => setCurrentPage('press')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Presse</button></li> */}
               </ul>
             </div>
           </div>
