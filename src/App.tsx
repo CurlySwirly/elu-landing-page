@@ -1105,4 +1105,4 @@ function App() {
   );
 }
 
-export default App;// Force deploy update
+export default App;// Force deploy update - Mobile header fix applied
