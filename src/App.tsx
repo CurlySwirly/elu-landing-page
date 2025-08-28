@@ -25,10 +25,10 @@ import Impressum from './components/Impressum';
 import FAQ from './components/FAQ';
 import Datenschutz from './components/Datenschutz';
 import AGB from './components/AGB';
-// import ExpertPage from './components/ExpertPage';
-// import ContactPage from './components/ContactPage';
-// import SupportPage from './components/SupportPage';
-// import PressPage from './components/PressPage';
+import ExpertPage from './components/ExpertPage';
+import ContactPage from './components/ContactPage';
+import SupportPage from './components/SupportPage';
+import PressPage from './components/PressPage';
 
 // Safe import of formServices with environment variable checking
 let formServices: any;
@@ -364,21 +364,21 @@ function App() {
     return <AGB onBack={() => setCurrentPage('home')} />;
   }
 
-  // if (currentPage === 'expert') {
-  //   return <ExpertPage onBack={() => setCurrentPage('home')} />;
-  // }
+  if (currentPage === 'expert') {
+    return <ExpertPage onBack={() => setCurrentPage('home')} />;
+  }
 
-  // if (currentPage === 'contact') {
-  //   return <ContactPage onBack={() => setCurrentPage('home')} />;
-  // }
+  if (currentPage === 'contact') {
+    return <ContactPage onBack={() => setCurrentPage('home')} />;
+  }
 
-  // if (currentPage === 'support') {
-  //   return <SupportPage onBack={() => setCurrentPage('home')} />;
-  // }
+  if (currentPage === 'support') {
+    return <SupportPage onBack={() => setCurrentPage('home')} />;
+  }
 
-  // if (currentPage === 'press') {
-  //   return <PressPage onBack={() => setCurrentPage('home')} />;
-  // }
+  if (currentPage === 'press') {
+    return <PressPage onBack={() => setCurrentPage('home')} />;
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -390,7 +390,7 @@ function App() {
             <div className="flex-shrink-0">
               <div className="flex items-center gap-3">
                 <img 
-                  src="/LOGO_DARKGRADIENT.png" 
+                  src="/favicon.png" 
                   alt="elu – elevate you" 
                   className="w-8 h-8 lg:w-10 lg:h-10"
                 />
@@ -1035,7 +1035,7 @@ function App() {
             <div className="lg:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <img 
-                  src="/LOGO_DARKGRADIENT.png" 
+                  src="/favicon.png" 
                   alt="elu – elevate you" 
                   className="w-10 h-10"
                 />

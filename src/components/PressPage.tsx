@@ -48,11 +48,11 @@ const PressPage: React.FC<PressPageProps> = ({ onBack }) => {
       <header className="bg-[#292B27] text-white py-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <img
-              src="/LOGO_DARKGRADIENT.png"
-              alt="elu – elevate you"
-              className="w-8 h-8"
-            />
+                <img 
+                  src="/favicon.png" 
+                  alt="elu – elevate you" 
+                  className="w-8 h-8"
+                />
             <h1 className="text-xl font-bold" style={{ fontFamily: 'League Spartan, sans-serif' }}>
               elu – elevate you
             </h1>
