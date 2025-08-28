@@ -166,7 +166,7 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
 
         {/* Subline */}
         <p className="text-lg md:text-xl text-[#292B27] mb-12 md:mb-16 max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          elu macht präventive Gesundheit leicht zugänglich – einfach, verlässlich und passend zu deinem Alltag.
+          Die elu App macht präventive Gesundheit leicht zugänglich – einfach, verlässlich und passend zu deinem Alltag.
         </p>
 
         {/* Services image strip */}
