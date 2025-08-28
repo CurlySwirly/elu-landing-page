@@ -395,14 +395,14 @@ function App() {
                   className="w-8 h-8 lg:w-10 lg:h-10"
                 />
                 <h1 className="text-xl lg:text-2xl text-white" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>
+                  <span className="font-bold">elu.</span> <span className="hidden lg:inline font-extralight italic">elevate you</span>
                 </h1>
               </div>
             </div>
             
-            {/* Beta Launch Coming Soon - Centered */}
-            <div className="absolute left-1/2 transform -translate-x-1/2">
-              <div className="hidden lg:flex flex-col items-center">
+            {/* Beta Launch Coming Soon - Centered on desktop, inline on mobile */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 hidden lg:block">
+              <div className="flex flex-col items-center">
                 <p className="text-sm text-white font-medium mb-1" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   Beta Launch
                 </p>
@@ -410,6 +410,16 @@ function App() {
                   Coming Soon
                 </div>
               </div>
+            </div>
+            
+            {/* Mobile Beta Tag - Inline with header text */}
+            <div className="lg:hidden flex items-center gap-2 ml-3">
+              <span className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Beta Launch
+              </span>
+              <span className="text-sm font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                Coming Soon
+              </span>
             </div>
             
             {/* CTA Button */}
@@ -424,17 +434,7 @@ function App() {
             </div>
           </div>
           
-          {/* Mobile Beta Launch - Visible only on mobile */}
-          <div className="lg:hidden pb-3 border-t border-gray-600 mt-3 pt-3">
-            <div className="flex items-center justify-center gap-2">
-              <span className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Beta Launch
-              </span>
-              <span className="text-sm font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Coming Soon
-              </span>
-            </div>
-          </div>
+          {/* Remove the separate mobile beta launch section since it's now inline */}
         </div>
       </header>
       {/* Hero Section */}
