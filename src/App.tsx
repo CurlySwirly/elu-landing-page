@@ -29,6 +29,7 @@ import ExpertPage from './components/ExpertPage';
 import ContactPage from './components/ContactPage';
 import SupportPage from './components/SupportPage';
 // import PressPage from './components/PressPage';
+import CookieConsent from './components/CookieConsent';
 
 // Safe import of formServices with environment variable checking
 let formServices: any;
@@ -324,6 +325,22 @@ function App() {
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
+  };
+
+  // Cookie consent handlers
+  const handleCookieAccept = () => {
+    console.log('Cookies accepted');
+    // Here you can add logic to enable analytics, marketing cookies, etc.
+  };
+
+  const handleCookieDecline = () => {
+    console.log('Cookies declined');
+    // Here you can add logic to disable non-essential cookies
+  };
+
+  const handleCookieCustomize = () => {
+    console.log('Cookie preferences opened');
+    // Here you can add logic to open detailed cookie settings
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -1101,6 +1118,13 @@ function App() {
           <ArrowRight className="w-5 h-5" />
         </button>
       </div>
+
+      {/* Cookie Consent */}
+      <CookieConsent 
+        onAccept={handleCookieAccept}
+        onDecline={handleCookieDecline}
+        onCustomize={handleCookieCustomize}
+      />
     </div>
   );
 }
