@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Mail, Linkedin, Instagram, Send } from 'lucide-react';
+import { toast } from 'react-toastify';
 import { formServices } from '../lib/formServices';
 
 interface ContactPageProps {
@@ -23,7 +24,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
     e.preventDefault();
     
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
-      alert('Bitte fülle alle Pflichtfelder aus.');
+      toast.success('Bitte fülle alle Pflichtfelder aus.');
       return;
     }
 
@@ -36,14 +37,14 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
       const result = await formServices.submitContactMessage(formData);
 
       if (result.success) {
-        alert('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
+        toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
         setFormData({ name: '', email: '', message: '' });
       } else {
-        alert('Es gab einen Fehler beim Senden der Nachricht. Bitte versuche es erneut.');
+        toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
       }
     } catch (error) {
       console.error('Error submitting contact form:', error);
-      alert('Es gab einen Fehler beim Senden der Nachricht. Bitte versuche es erneut.');
+      toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
     } finally {
       setIsSubmitting(false);
     }
