@@ -12,6 +12,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
     email: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -21,7 +22,17 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      alert('Bitte fülle alle Pflichtfelder aus.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    
     try {
+      // Simulate loading for 1.5 seconds
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       const result = await formServices.submitContactMessage(formData);
 
       if (result.success) {
@@ -33,6 +44,8 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
     } catch (error) {
       console.error('Error submitting contact form:', error);
       alert('Es gab einen Fehler beim Senden der Nachricht. Bitte versuche es erneut.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -67,14 +80,18 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
       </div>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-[#292B27] mb-6 tracking-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-            Kontakt
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-[#E2E8FB] text-[#292B27] rounded-full text-sm font-medium">
+            <Mail className="w-4 h-4 text-[#6D8EEC]" />
+            Wir sind für dich da
+          </div>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#292B27] mb-8 tracking-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+            <span className="text-[#6D8EEC]">Kontakt</span> & Support
           </h1>
-          <p className="text-lg md:text-xl text-[#292B27] opacity-80 max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-            Hast du Fragen oder möchtest mehr über elu erfahren? Wir freuen uns von dir zu hören.
+          <p className="text-lg md:text-xl text-[#292B27] opacity-80 max-w-3xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+            Hast du Fragen oder möchtest mehr über elu erfahren? Unser Team steht dir gerne zur Verfügung und freut sich von dir zu hören.
           </p>
         </div>
 
@@ -82,26 +99,30 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
           {/* Company Info & Social Links */}
           <div className="space-y-8">
             {/* Company Info */}
-            <div className="bg-[#F8F9FA] rounded-2xl p-8">
-              <h2 className="text-2xl font-bold text-[#292B27] mb-6" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Unternehmen
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+            <div className="bg-gradient-to-br from-[#F8F9FA] to-[#E2E8FB] rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-3 h-8 bg-gradient-to-b from-[#6D8EEC] to-[#BADE4F] rounded-full"></div>
+                <h2 className="text-2xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Unternehmen
+                </h2>
+              </div>
+              <div className="space-y-6">
+                <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <h3 className="text-lg font-bold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                     Elevate You FlexKapG (in Gründung)
                   </h3>
-                  <p className="text-[#292B27] opacity-80" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                  <p className="text-[#292B27] opacity-70 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                     Wien, Österreich
                   </p>
-                </div>
-                <div className="pt-4">
+                  <div className="w-full h-px bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] mb-4"></div>
                   <a 
                     href="mailto:info@elevateyou.app"
-                    className="inline-flex items-center gap-3 text-[#6D8EEC] hover:text-[#5a7ae8] transition-colors duration-200 font-medium"
+                    className="inline-flex items-center gap-3 text-[#6D8EEC] hover:text-[#5a7ae8] transition-all duration-200 font-medium hover:scale-105 transform"
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                   >
-                    <Mail className="w-5 h-5" />
+                    <div className="bg-[#E2E8FB] p-2 rounded-lg">
+                      <Mail className="w-5 h-5" />
+                    </div>
                     info@elevateyou.app
                   </a>
                 </div>
@@ -109,31 +130,55 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
             </div>
 
             {/* Social Links */}
-            <div className="bg-[#F8F9FA] rounded-2xl p-8">
-              <h2 className="text-2xl font-bold text-[#292B27] mb-6" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Social Media
-              </h2>
-              <div className="flex gap-4">
-                <a href="https://www.linkedin.com/company/108662379/" target="_blank" rel="noopener noreferrer" className="bg-[#BADE4F] hover:bg-[#A8D13F] p-3 rounded-full transition-colors duration-300">
-                  <Linkedin className="w-5 h-5 text-white" />
-                </a>
-                <a href="https://www.instagram.com/elevateyou.app/" target="_blank" rel="noopener noreferrer" className="bg-[#BADE4F] hover:bg-[#A8D13F] p-3 rounded-full transition-colors duration-300">
-                  <Instagram className="w-5 h-5 text-white" />
-                </a>
+            <div className="bg-gradient-to-br from-[#F8F9FA] to-[#E2E8FB] rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-3 h-8 bg-gradient-to-b from-[#BADE4F] to-[#6D8EEC] rounded-full"></div>
+                <h2 className="text-2xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Social Media
+                </h2>
+              </div>
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <p className="text-[#292B27] opacity-70 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                  Folge uns für Updates und Gesundheitstipps
+                </p>
+                <div className="flex gap-4">
+                  <a 
+                    href="https://www.linkedin.com/company/108662379/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] hover:from-[#5A7BE8] hover:to-[#4A6DE8] p-4 rounded-xl transition-all duration-300 transform hover:scale-110 shadow-lg hover:shadow-xl"
+                  >
+                    <Linkedin className="w-6 h-6 text-white" />
+                  </a>
+                  <a 
+                    href="https://www.instagram.com/elevateyou.app/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="bg-gradient-to-r from-[#BADE4F] to-[#A8D13F] hover:from-[#A8D13F] hover:to-[#98C12F] p-4 rounded-xl transition-all duration-300 transform hover:scale-110 shadow-lg hover:shadow-xl"
+                  >
+                    <Instagram className="w-6 h-6 text-white" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-2xl font-bold text-[#292B27] mb-6" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Nachricht senden
-            </h2>
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 md:p-10 hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-3 h-8 bg-gradient-to-b from-[#BADE4F] to-[#6D8EEC] rounded-full"></div>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                Nachricht senden
+              </h2>
+            </div>
+            <p className="text-[#292B27] opacity-70 mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              Teile deine Fragen oder Anregungen mit uns – wir antworten schnellstmöglich.
+            </p>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
               <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                <label htmlFor="name" className="block text-sm font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   Name *
                 </label>
                 <input
@@ -143,7 +188,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#6D8EEC] focus:outline-none transition-colors duration-200 text-[#292B27]"
+                  className="w-full px-4 py-4 bg-[#F8F9FA] border border-[#E2E8FB] rounded-xl focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300 text-[#292B27] text-lg"
                   placeholder="Dein vollständiger Name"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 />
@@ -151,7 +196,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
 
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                <label htmlFor="email" className="block text-sm font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   E-Mail *
                 </label>
                 <input
@@ -161,7 +206,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#6D8EEC] focus:outline-none transition-colors duration-200 text-[#292B27]"
+                  className="w-full px-4 py-4 bg-[#F8F9FA] border border-[#E2E8FB] rounded-xl focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300 text-[#292B27] text-lg"
                   placeholder="deine@email.de"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 />
@@ -169,7 +214,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
 
               {/* Message Field */}
               <div>
-                <label htmlFor="message" className="block text-sm font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                <label htmlFor="message" className="block text-sm font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   Nachricht *
                 </label>
                 <textarea
@@ -178,26 +223,43 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                   value={formData.message}
                   onChange={handleInputChange}
                   required
-                  rows={5}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#6D8EEC] focus:outline-none transition-colors duration-200 text-[#292B27] resize-none"
-                  placeholder="Deine Nachricht an uns..."
+                  rows={6}
+                  className="w-full px-4 py-4 bg-[#F8F9FA] border border-[#E2E8FB] rounded-xl focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300 text-[#292B27] text-lg resize-none"
+                  placeholder="Teile deine Fragen, Anregungen oder dein Feedback mit uns. Wir freuen uns auf deine Nachricht!"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 />
               </div>
 
               {/* Submit Button */}
-              <div className="pt-4">
+              <div className="pt-6">
                 <button
                   type="submit"
-                  className="w-full bg-[#6D8EEC] text-white py-4 rounded-full font-semibold text-lg hover:bg-[#5A7BE8] transition-colors duration-200 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl"
-                  style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  disabled={isSubmitting}
+                  className={`w-full py-5 rounded-xl text-lg font-bold transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform ${
+                    isSubmitting 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white hover:from-[#5A7BE8] hover:to-[#4A6DE8] hover:scale-105'
+                  }`}
+                  style={{ fontFamily: 'League Spartan, sans-serif' }}
                 >
-                  <Send className="w-5 h-5" />
-                  Absenden
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Wird gesendet...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Nachricht senden
+                    </>
+                  )}
                 </button>
-                <p className="text-sm text-[#292B27] opacity-60 mt-3 text-center" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  * Pflichtfelder
-                </p>
+                <div className="flex items-center justify-center gap-2 mt-4">
+                  <div className="w-2 h-2 bg-[#6D8EEC] rounded-full"></div>
+                  <p className="text-sm text-[#292B27] opacity-60 text-center" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    * Pflichtfelder – Wir antworten normalerweise innerhalb von 24 Stunden
+                  </p>
+                </div>
               </div>
             </form>
           </div>

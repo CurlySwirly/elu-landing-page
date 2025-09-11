@@ -1,0 +1,32 @@
+create table public.beta_signups (
+  id uuid default gen_random_uuid() primary key,
+  email text not null unique,
+  created_at timestamp with time zone default now(),
+  source text
+);
+
+create table public.contact_messages (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  email text not null,
+  message text not null,
+  created_at timestamp with time zone default now()
+);
+
+create table public.expert_applications (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  email text not null,
+  phone text not null,
+  expertise text[] not null,
+  experience_years integer not null,
+  message text not null,
+  created_at timestamp with time zone default now()
+);
+
+create table public.pricing_info_emails (
+  id uuid default gen_random_uuid() primary key,
+  email text not null,
+  plan_type text not null,
+  created_at timestamp with time zone default now()
+);
