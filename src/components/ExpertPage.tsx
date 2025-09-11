@@ -331,51 +331,80 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               elu bringt deine Expertise direkt zu den Menschen. Keine Selbstvermarktung mehr notwendig – wir übernehmen das.
             </p>
             
-            {/* Carousel */}
+            {/* Responsive Cards Layout */}
             <div className="relative mb-8">
-              {/* Left Arrow */}
-              <button
-                onClick={prevCard}
-                className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
-                aria-label="Vorheriger Vorteil"
-              >
-                <ChevronLeft className="text-[#6D8EEC] w-5 h-5 md:w-6 md:h-6" />
-              </button>
-
-              {/* Right Arrow */}
-              <button
-                onClick={nextCard}
-                className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
-                aria-label="Nächster Vorteil"
-              >
-                <ChevronRight className="text-[#6D8EEC] w-5 h-5 md:w-6 md:h-6" />
-              </button>
-
-              {/* Carousel Container */}
-              <div className="overflow-hidden px-8 md:px-16">
-                <div 
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentCard * 100}%)` }}
+              {/* Mobile: Carousel with arrows */}
+              <div className="block md:hidden">
+                {/* Left Arrow */}
+                <button
+                  onClick={prevCard}
+                  className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
+                  aria-label="Vorheriger Vorteil"
                 >
+                  <ChevronLeft className="text-[#6D8EEC] w-5 h-5" />
+                </button>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={nextCard}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
+                  aria-label="Nächster Vorteil"
+                >
+                  <ChevronRight className="text-[#6D8EEC] w-5 h-5" />
+                </button>
+
+                {/* Mobile Carousel Container */}
+                <div className="overflow-hidden px-12">
+                  <div 
+                    className="flex transition-transform duration-500 ease-in-out"
+                    style={{ transform: `translateX(-${currentCard * 100}%)` }}
+                  >
+                    {appBenefits.map((benefit, index) => {
+                      const IconComponent: React.ElementType = benefit.icon;
+                      return (
+                        <div
+                          key={index}
+                          className="w-full flex-shrink-0 px-2"
+                        >
+                          <div className="bg-white p-6 rounded-2xl shadow-lg border-2 border-[#6D8EEC] h-64 max-w-sm mx-auto">
+                            <div className="w-12 h-12 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-4 mx-auto">
+                              <IconComponent className="text-white w-6 h-6" />
+                            </div>
+                            <h3 className="text-lg font-bold text-[#292B27] mb-3 tracking-tight text-center">
+                              {benefit.title}
+                            </h3>
+                            <p className="text-[#292B27] opacity-75 leading-relaxed text-sm text-center">
+                              {benefit.description}
+                            </p>
+                            <div className="w-8 h-1 bg-[#BADE4F] rounded-full mt-3 mx-auto"></div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop: Grid layout showing multiple cards */}
+              <div className="hidden md:block">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
                   {appBenefits.map((benefit, index) => {
                     const IconComponent: React.ElementType = benefit.icon;
                     return (
                       <div
                         key={index}
-                        className="w-full flex-shrink-0 px-2 md:px-4"
+                        className="bg-white p-6 lg:p-8 rounded-2xl shadow-lg border-2 border-[#6D8EEC] h-64 lg:h-72 hover:shadow-xl transition-shadow duration-300"
                       >
-                        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#6D8EEC] h-48 md:h-64 max-w-sm mx-auto">
-                          <div className="w-12 h-12 md:w-16 md:h-16 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-4 md:mb-6 mx-auto">
-                            <IconComponent className="text-white w-6 h-6 md:w-8 md:h-8" />
-                          </div>
-                          <h3 className="text-lg md:text-xl font-bold text-[#292B27] mb-3 md:mb-4 tracking-tight text-center">
-                            {benefit.title}
-                          </h3>
-                          <p className="text-[#292B27] opacity-75 leading-relaxed text-sm md:text-base text-center">
-                            {benefit.description}
-                          </p>
-                          <div className="w-8 md:w-10 h-1 bg-[#BADE4F] rounded-full mt-3 md:mt-4 mx-auto"></div>
+                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-4 lg:mb-6 mx-auto">
+                          <IconComponent className="text-white w-6 h-6 lg:w-8 lg:h-8" />
                         </div>
+                        <h3 className="text-lg lg:text-xl font-bold text-[#292B27] mb-3 lg:mb-4 tracking-tight text-center">
+                          {benefit.title}
+                        </h3>
+                        <p className="text-[#292B27] opacity-75 leading-relaxed text-sm lg:text-base text-center">
+                          {benefit.description}
+                        </p>
+                        <div className="w-8 lg:w-10 h-1 bg-[#BADE4F] rounded-full mt-3 lg:mt-4 mx-auto"></div>
                       </div>
                     );
                   })}
@@ -383,8 +412,8 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
               </div>
             </div>
             
-            {/* Card indicators */}
-            <div className="flex justify-center gap-2 mb-8">
+            {/* Card indicators - only show on mobile */}
+            <div className="flex md:hidden justify-center gap-2 mb-8">
               {appBenefits.map((_, index) => (
                 <button
                   key={index}
