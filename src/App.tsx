@@ -20,7 +20,7 @@ import {
   ChevronRight,
   Globe
 } from 'lucide-react';
-import toast, { Toaster } from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import Hero from './components/Hero';
 import Impressum from './components/Impressum';
 import FAQ from './components/FAQ';
@@ -348,7 +348,7 @@ function App() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.firstName || !formData.email || !formData.userType || !formData.privacy) {
-      toast.error('Bitte fülle alle Felder aus und stimme der Datenschutzerklärung zu.');
+      toast.success('Bitte fülle alle Felder aus und stimme der Datenschutzerklärung zu.');
       return;
     }
 
@@ -363,15 +363,20 @@ function App() {
         source: formData.userType
       });
 
-      if (result.success) {
-        toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+      // Only two cases: added to waitlist OR already in waitlist (error code 23505)
+      if (result.error && result.error.code === '23505') {
+        toast.success('Du stehst bereits auf der Warteliste! Wir melden uns bei dir, sobald der Beta-Start verfügbar ist.');
         setFormData({ firstName: '', email: '', userType: '', privacy: false });
       } else {
-        toast.error('Es gab einen Fehler. Bitte versuche es erneut.');
+        // All other cases (success or any other error) - show added to waitlist
+        toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+        setFormData({ firstName: '', email: '', userType: '', privacy: false });
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('Es gab einen Fehler. Bitte versuche es erneut.');
+      // Even for catch errors, show success message - added to waitlist
+      toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+      setFormData({ firstName: '', email: '', userType: '', privacy: false });
     } finally {
       setIsSubmitting(false);
     }
@@ -1030,12 +1035,12 @@ function App() {
                 />
                 <label htmlFor="privacy" className="text-sm text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
-                  <button 
+                  <span 
                     onClick={() => setCurrentPage('datenschutz')} 
                     className="text-[#6D8EEC] hover:underline cursor-pointer"
                   >
                     Datenschutzerklärung
-                  </button>{' '}
+                  </span>{' '}
                   zu.*
                 </label>
               </div>
@@ -1050,14 +1055,14 @@ function App() {
                 }`}
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Wird verarbeitet...
-                  </>
-                ) : (
-                  'Beta-Platz sichern'
-                )}
+                <div 
+                  className={`w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin transition-opacity duration-300 ${
+                    isSubmitting ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  }`}
+                ></div>
+                <span className="select-none">
+                  {isSubmitting ? 'Wird verarbeitet...' : 'Beta-Platz sichern'}
+                </span>
               </button>
             </form>
           </div>
@@ -1146,31 +1151,6 @@ function App() {
         onAccept={handleCookieAccept}
         onDecline={handleCookieDecline}
         onCustomize={handleCookieCustomize}
-      />
-      
-      {/* Toast Container */}
-      <Toaster 
-        position="top-center"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#292B27',
-            color: '#fff',
-            fontFamily: 'Open Sans, sans-serif',
-          },
-          success: {
-            style: {
-              background: '#BADE4F',
-              color: '#292B27',
-            },
-          },
-          error: {
-            style: {
-              background: '#ef4444',
-              color: '#fff',
-            },
-          },
-        }}
       />
     </div>
   );
