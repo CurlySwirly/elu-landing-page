@@ -44,7 +44,8 @@ export const formServices = {
       return { success: true, data: result }
     } catch (error) {
       console.error('Error submitting beta signup:', error)
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+      // Preserve the original error object structure for error code checking
+      return { success: false, error }
     }
   },
 

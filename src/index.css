@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom utilities for carousel */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+@layer utilities {
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+}
+
+/* Custom toast styles */
+.Toastify__toast {
+  border-radius: 16px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  border: 1px solid rgba(41, 43, 39, 0.08);
+  box-shadow: 0 12px 40px rgba(109, 142, 236, 0.12), 0 4px 16px rgba(0, 0, 0, 0.04);
+  min-width: 400px;
+  max-width: 600px;
+  padding: 16px 20px;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.Toastify__toast--success {
+  background-color: #BADE4F !important;
+  color: #292B27 !important;
+}
+
+.Toastify__toast:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 48px rgba(109, 142, 236, 0.16), 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.Toastify__toast-container {
+  width: auto;
+}

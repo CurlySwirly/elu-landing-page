@@ -20,6 +20,7 @@ import {
   ChevronRight,
   Globe
 } from 'lucide-react';
+import { toast } from 'react-toastify';
 import Hero from './components/Hero';
 import Impressum from './components/Impressum';
 import FAQ from './components/FAQ';
@@ -97,6 +98,7 @@ function App() {
     userType: '',
     privacy: false
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Debug logging for Vercel deployment
   useEffect(() => {
@@ -349,25 +351,37 @@ function App() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.firstName || !formData.email || !formData.userType || !formData.privacy) {
-      alert('Bitte fülle alle Felder aus und stimme der Datenschutzerklärung zu.');
+      toast.success('Bitte fülle alle Felder aus und stimme der Datenschutzerklärung zu.');
       return;
     }
 
+    setIsSubmitting(true);
+    
     try {
+      // Simulate loading for 1.5 seconds as requested
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       const result = await formServices.submitBetaSignup({
         email: formData.email,
         source: formData.userType
       });
 
-      if (result.success) {
-        alert('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+      // Only two cases: added to waitlist OR already in waitlist (error code 23505)
+      if (result.error && result.error.code === '23505') {
+        toast.success('Du stehst bereits auf der Warteliste! Wir melden uns bei dir, sobald der Beta-Start verfügbar ist.');
         setFormData({ firstName: '', email: '', userType: '', privacy: false });
       } else {
-        alert('Es gab einen Fehler. Bitte versuche es erneut.');
+        // All other cases (success or any other error) - show added to waitlist
+        toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+        setFormData({ firstName: '', email: '', userType: '', privacy: false });
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Es gab einen Fehler. Bitte versuche es erneut.');
+      // Even for catch errors, show success message - added to waitlist
+      toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+      setFormData({ firstName: '', email: '', userType: '', privacy: false });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -393,7 +407,7 @@ function App() {
   }
 
   if (currentPage === 'support') {
-    return <SupportPage onBack={() => setCurrentPage('home')} />;
+    return <SupportPage onBack={() => setCurrentPage('home')} onNavigate={setCurrentPage} />;
   }
 
   if (currentPage === 'blog') {
@@ -473,7 +487,7 @@ function App() {
             <div className="flex-shrink-0">
               <button 
                 onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hidden lg:inline-flex bg-[#BADE4F] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#a8c943] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="hidden lg:inline-flex bg-[#292B27] text-[#BADE4F] px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#BADE4F] hover:text-[#292B27] border-2 border-[#BADE4F] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 Zur Warteliste
@@ -497,10 +511,11 @@ function App() {
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
               Dein direkter Zugang zu qualitätsgeprüften Gesundheitsprofis.
             </p>
-            <div className="mt-8 mb-8">
-              <p className="text-2xl font-bold text-[#6D8EEC] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+            <div className="mt-8 mb-12">
+              <h3 className="text-3xl md:text-4xl font-bold text-[#6D8EEC] mb-4 leading-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                 Gesundheit leicht gemacht.
-              </p>
+              </h3>
+              <div className="w-16 h-1 bg-[#BADE4F] mx-auto rounded-full"></div>
             </div>
           </div>
           
@@ -509,7 +524,7 @@ function App() {
               <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <User className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="bg-white p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                   Entdecken
                 </h3>
@@ -523,7 +538,7 @@ function App() {
               <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <Search className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="bg-white p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                   Verbinden
                 </h3>
@@ -537,7 +552,7 @@ function App() {
               <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <Calendar className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="bg-white p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                   Dranbleiben
                 </h3>
@@ -996,7 +1011,7 @@ function App() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6D8EEC] focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-[#F8F9FA] border border-[#E2E8FB] rounded-lg focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300"
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                     required
                   />
@@ -1012,7 +1027,7 @@ function App() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6D8EEC] focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-[#F8F9FA] border border-[#E2E8FB] rounded-lg focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300"
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                     required
                   />
@@ -1028,7 +1043,7 @@ function App() {
                   name="userType"
                   value={formData.userType}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6D8EEC] focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 bg-[#F8F9FA] border border-[#E2E8FB] rounded-lg focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                   required
                 >
@@ -1050,22 +1065,34 @@ function App() {
                 />
                 <label htmlFor="privacy" className="text-sm text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
-                  <button 
+                  <span 
                     onClick={() => setCurrentPage('datenschutz')} 
                     className="text-[#6D8EEC] hover:underline cursor-pointer"
                   >
                     Datenschutzerklärung
-                  </button>{' '}
+                  </span>{' '}
                   zu.*
                 </label>
               </div>
               
               <button
                 type="submit"
-                className="w-full bg-[#6D8EEC] text-white py-4 rounded-lg text-lg font-semibold hover:bg-[#5a7ae8] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                disabled={isSubmitting}
+                className={`w-full py-4 rounded-lg text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 ${
+                  isSubmitting 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-[#6D8EEC] text-white hover:bg-[#5a7ae8] transform hover:scale-105'
+                }`}
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Beta-Platz sichern
+                <div 
+                  className={`w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin transition-opacity duration-300 ${
+                    isSubmitting ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  }`}
+                ></div>
+                <span className="select-none">
+                  {isSubmitting ? 'Wird verarbeitet...' : 'Beta-Platz sichern'}
+                </span>
               </button>
             </form>
           </div>
@@ -1142,8 +1169,8 @@ function App() {
       <div className="fixed bottom-4 left-4 right-4 md:hidden z-50">
         <button 
           onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-          className="w-full bg-[#6D8EEC] text-white py-4 rounded-full text-lg font-semibold shadow-2xl hover:bg-[#5a7ae8] transition-all duration-300 flex items-center justify-center gap-2"
-          style={{ fontFamily: 'Open Sans, sans-serif' }}
+          className="w-full bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white py-4 rounded-full text-lg font-bold shadow-2xl hover:from-[#5A7BE8] hover:to-[#4A6DE8] transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-105"
+          style={{ fontFamily: 'League Spartan, sans-serif' }}
         >
           Jetzt Beta-Zugang sichern
           <ArrowRight className="w-5 h-5" />

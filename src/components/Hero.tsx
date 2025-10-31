@@ -61,7 +61,7 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isHovered, isDragging]);
+  }, [isHovered, isDragging, currentIndex]); // Added currentIndex to dependencies
 
   // Keyboard navigation
   useEffect(() => {
@@ -105,7 +105,7 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
   const handleDragEnd = () => {
     if (!isDragging) return;
     
-    const threshold = 100;
+    const threshold = 50; // Reduced threshold for better responsiveness
     if (dragOffset > threshold) {
       setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
     } else if (dragOffset < -threshold) {
@@ -169,11 +169,11 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
           Die elu App macht präventive Gesundheit leicht zugänglich – einfach, verlässlich und passend zu deinem Alltag.
         </p>
 
-        {/* Services image strip */}
+        {/* Services carousel */}
         <div className="mb-12 md:mb-16">
           <div 
             ref={stripRef}
-            className="relative overflow-hidden"
+            className="relative h-72 md:h-80 flex items-center justify-center overflow-hidden"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
               setIsHovered(false);
@@ -186,43 +186,112 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleDragEnd}
           >
-            <div 
-              className="flex gap-4 md:gap-6 transition-transform duration-500 ease-out"
-              style={{
-                transform: `translateX(calc(-${currentIndex * (100 / services.length)}% - ${currentIndex * 24}px + ${dragOffset}px))`
-              }}
-            >
-              {/* Services */}
-              {services.map((service, index) => {
-                return (
-                  <div
-                    key={`${service.id}-${index}`}
-                    className="flex-shrink-0 w-64 h-48 md:w-80 md:h-60 relative group cursor-grab active:cursor-grabbing"
-                  >
-                    <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            {/* Services with circular positioning */}
+            {services.map((service, index) => {
+              // Calculate position relative to current index
+              let position = index - currentIndex;
+              
+              // Handle wrapping for infinite effect
+              if (position > 2) {
+                position -= services.length;
+              } else if (position < -2) {
+                position += services.length;
+              }
+              
+              // Only show cards within visible range
+              const isVisible = Math.abs(position) <= 2;
+              
+              const translateX = position * 280;
+              let scale = 0.6;
+              let zIndex = 1;
+              let opacity = 0;
+              let rotateY = 0;
+              
+              if (Math.abs(position) <= 2) {
+                if (position === 0) {
+                  // Active (center)
+                  scale = 1;
+                  zIndex = 20;
+                  opacity = 1;
+                  rotateY = 0;
+                } else if (Math.abs(position) === 1) {
+                  // Adjacent cards
+                  scale = 0.85;
+                  zIndex = 15;
+                  opacity = 0.7;
+                  rotateY = position < 0 ? 15 : -15;
+                } else if (Math.abs(position) === 2) {
+                  // Side cards
+                  scale = 0.7;
+                  zIndex = 10;
+                  opacity = 0.4;
+                  rotateY = position < 0 ? 25 : -25;
+                }
+              }
+              
+              return (
+                <div
+                  key={service.id}
+                  className={`absolute transition-all duration-700 ease-out cursor-grab active:cursor-grabbing transform-style-preserve-3d ${
+                    isVisible ? 'block' : 'hidden'
+                  }`}
+                  style={{
+                    transform: `translateX(${translateX + (dragOffset * 0.5)}px) scale(${scale}) rotateY(${rotateY}deg)`,
+                    zIndex,
+                    opacity
+                  }}
+                  onClick={() => {
+                    if (position !== 0 && !isDragging) {
+                      // Clear existing interval to reset auto-scroll
+                      if (intervalRef.current) {
+                        clearInterval(intervalRef.current);
+                      }
+                      setCurrentIndex(index);
+                    }
+                  }}
+                >
+                  <div className="w-64 h-48 md:w-80 md:h-60 relative group">
+                    <div className={`relative w-full h-full rounded-3xl overflow-hidden transition-all duration-700 ${
+                      position === 0
+                        ? 'shadow-2xl ring-4 ring-[#6D8EEC] ring-opacity-30' 
+                        : 'shadow-lg hover:shadow-xl'
+                    }`}>
                       <img
                         src={service.image}
                         alt={service.alt}
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />
+                      <div className={`absolute inset-0 transition-all duration-700 ${
+                        position === 0 ? 'bg-gradient-to-t from-black/20 to-transparent' : 'bg-black/20'
+                      }`} />
                       <div className="absolute bottom-4 left-4">
-                        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#E2E8FB] text-[#292B27] rounded-full text-sm font-medium">
-                          <div className="w-1 h-4 bg-[#BADE4F] rounded-full"></div>
+                        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-700 ${
+                          position === 0
+                            ? 'bg-white text-[#292B27] shadow-lg' 
+                            : 'bg-white/90 text-[#292B27]'
+                        }`}>
+                          <div className={`w-1 h-4 rounded-full transition-all duration-700 ${
+                            position === 0 ? 'bg-[#6D8EEC]' : 'bg-[#BADE4F]'
+                          }`}></div>
                           {service.label}
                         </div>
                       </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Navigation controls */}
           <div className="flex items-center justify-center gap-4 mt-6">
             <button
               onClick={() => {
+                // Clear existing interval to reset auto-scroll
+                if (intervalRef.current) {
+                  clearInterval(intervalRef.current);
+                }
                 const newIndex = currentIndex === 0 ? services.length - 1 : currentIndex - 1;
                 setCurrentIndex(newIndex);
               }}
@@ -237,7 +306,13 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
               {services.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setCurrentIndex(index)}
+                  onClick={() => {
+                    // Clear existing interval to reset auto-scroll
+                    if (intervalRef.current) {
+                      clearInterval(intervalRef.current);
+                    }
+                    setCurrentIndex(index);
+                  }}
                   className={`w-2 h-2 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 ${
                     index === currentIndex ? 'bg-[#6D8EEC] w-6' : 'bg-[#F0F0F0] hover:bg-[#E2E8FB]'
                   }`}
@@ -248,6 +323,10 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
 
             <button
               onClick={() => {
+                // Clear existing interval to reset auto-scroll
+                if (intervalRef.current) {
+                  clearInterval(intervalRef.current);
+                }
                 const newIndex = currentIndex === services.length - 1 ? 0 : currentIndex + 1;
                 setCurrentIndex(newIndex);
               }}
@@ -263,7 +342,8 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
         <div className="text-center">
           <button 
             onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#6D8EEC] text-white font-semibold rounded-full hover:bg-[#5A7BE8] transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 shadow-lg hover:shadow-xl"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white font-bold rounded-full hover:from-[#5A7BE8] hover:to-[#4A6DE8] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 shadow-xl hover:shadow-2xl border border-white/20"
+            style={{ fontFamily: 'League Spartan, sans-serif' }}
           >
             Beta-Zugang sichern
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
