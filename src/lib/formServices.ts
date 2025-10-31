@@ -25,6 +25,11 @@ export interface PricingInfoEmailData {
   plan_type: string
 }
 
+export interface NewsletterSubscriptionData {
+  email: string
+  source?: string
+}
+
 export const formServices = {
   // Submit beta signup
   async submitBetaSignup(data: BetaSignupData) {
@@ -95,6 +100,27 @@ export const formServices = {
       return { success: true, data: result }
     } catch (error) {
       console.error('Error submitting pricing info email:', error)
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  },
+
+  // Submit newsletter subscription
+  async submitNewsletterSubscription(data: NewsletterSubscriptionData) {
+    try {
+      const { data: result, error } = await supabase
+        .from('newsletter_subscriptions')
+        .insert([data])
+        .select()
+        .single()
+
+      if (error) throw error
+      return { success: true, data: result }
+    } catch (error) {
+      console.error('Error submitting newsletter subscription:', error)
+      // Handle duplicate email error gracefully
+      if (error instanceof Error && error.message.includes('duplicate')) {
+        return { success: false, error: 'Diese E-Mail-Adresse ist bereits angemeldet.' }
+      }
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
     }
   }

@@ -92,6 +92,88 @@ export interface Database {
           plan_type?: string
         }
       }
+      blog_posts: {
+        Row: {
+          id: string
+          title: string
+          slug: string
+          excerpt: string
+          content: string
+          category: string
+          featured_image_url: string
+          image_alt_text: string
+          meta_title: string
+          meta_description: string
+          author_name: string
+          published: boolean
+          published_at: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          title: string
+          slug: string
+          excerpt: string
+          content: string
+          category: string
+          featured_image_url: string
+          image_alt_text: string
+          meta_title: string
+          meta_description: string
+          author_name?: string
+          published?: boolean
+          published_at?: string
+        }
+        Update: {
+          title?: string
+          slug?: string
+          excerpt?: string
+          content?: string
+          category?: string
+          featured_image_url?: string
+          image_alt_text?: string
+          meta_title?: string
+          meta_description?: string
+          author_name?: string
+          published?: boolean
+          published_at?: string
+        }
+      }
+      newsletter_subscriptions: {
+        Row: {
+          id: string
+          email: string
+          source: string
+          created_at: string
+        }
+        Insert: {
+          email: string
+          source?: string
+        }
+        Update: {
+          email?: string
+          source?: string
+        }
+      }
     }
   }
+}
+
+// Blog Post type for easier use
+export type BlogPost = {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  category: string
+  featured_image_url: string
+  image_alt_text: string
+  meta_title: string
+  meta_description: string
+  author_name: string
+  published: boolean
+  published_at: string
+  created_at: string
+  updated_at: string
 }

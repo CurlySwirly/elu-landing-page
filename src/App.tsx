@@ -29,6 +29,8 @@ import ExpertPage from './components/ExpertPage';
 import ContactPage from './components/ContactPage';
 import SupportPage from './components/SupportPage';
 // import PressPage from './components/PressPage';
+import BlogPage from './components/BlogPage';
+import BlogPostPage from './components/BlogPostPage';
 import CookieConsent from './components/CookieConsent';
 
 // Safe import of formServices with environment variable checking
@@ -82,6 +84,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentExpert, setCurrentExpert] = useState(0);
+  const [blogPostSlug, setBlogPostSlug] = useState('');
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -391,6 +394,33 @@ function App() {
 
   if (currentPage === 'support') {
     return <SupportPage onBack={() => setCurrentPage('home')} />;
+  }
+
+  if (currentPage === 'blog') {
+    return (
+      <BlogPage 
+        onBack={() => setCurrentPage('home')} 
+        onPostSelect={(slug) => {
+          setBlogPostSlug(slug);
+          setCurrentPage('blogpost');
+        }}
+        onNavigate={(page) => setCurrentPage(page)}
+      />
+    );
+  }
+
+  if (currentPage === 'blogpost' && blogPostSlug) {
+    return (
+      <BlogPostPage 
+        slug={blogPostSlug}
+        onBack={() => setCurrentPage('blog')}
+        onRelatedPostClick={(slug) => {
+          setBlogPostSlug(slug);
+          window.scrollTo(0, 0);
+        }}
+        onNavigate={(page) => setCurrentPage(page)}
+      />
+    );
   }
 
   // if (currentPage === 'press') {
@@ -1094,6 +1124,7 @@ function App() {
               <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                 <li><button onClick={() => setCurrentPage('contact')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Kontakt</button></li>
                 <li><button onClick={() => setCurrentPage('support')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Support</button></li>
+                <li><button onClick={() => setCurrentPage('blog')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Blog</button></li>
                 {/* <li><button onClick={() => setCurrentPage('press')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Presse</button></li> */}
               </ul>
             </div>
