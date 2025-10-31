@@ -8,4 +8,10 @@ supabase
 *.md
 !README.md
 testSupabase.ts
-
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
