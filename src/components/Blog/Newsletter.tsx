@@ -16,23 +16,47 @@ export default function Newsletter() {
     setError(null);
 
     try {
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setError('Bitte gib eine gültige E-Mail-Adresse ein.');
+        setLoading(false);
+        return;
+      }
+
+      if (import.meta.env.DEV) {
+        console.log('Newsletter form submitting:', { email: email.trim().toLowerCase(), source: 'blog_page' });
+      }
+
       const result = await formServices.submitNewsletterSubscription({
-        email,
+        email: email.trim().toLowerCase(),
         source: 'blog_page'
       });
 
       if (result.success) {
         setSubmitted(true);
         setEmail('');
+        setError(null);
         setTimeout(() => {
           setSubmitted(false);
-        }, 3000);
+        }, 5000);
       } else {
-        setError(result.error || 'Ein Fehler ist aufgetreten.');
+        const errorMsg = typeof result.error === 'string' ? result.error : 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.';
+        if (import.meta.env.DEV) {
+          console.error('Newsletter subscription failed:', errorMsg);
+        }
+        setError(errorMsg);
       }
-    } catch (err) {
-      console.error('Newsletter subscription error:', err);
-      setError('Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+    } catch (err: unknown) {
+      if (import.meta.env.DEV) {
+        console.error('Newsletter subscription error:', err);
+      }
+      const errorMessage = err instanceof Error 
+        ? err.message 
+        : typeof err === 'object' && err !== null && 'message' in err
+          ? String(err.message)
+          : 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneut.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -51,11 +75,11 @@ export default function Newsletter() {
         </div>
 
         <h2 className="font-['League_Spartan'] font-bold text-white text-[28px] md:text-[38px] mb-4 tracking-tight">
-          Bleiben Sie inspiriert
+          Bleib inspiriert
         </h2>
 
         <p className="font-['Open_Sans'] text-white/90 text-base md:text-lg mb-10 leading-[1.7] max-w-2xl mx-auto">
-          Erhalten Sie monatlich fundiertes Wissen, praktische Tipps und Inspiration von unseren Expert:innen – direkt in Ihr Postfach.
+          Erhalte monatlich fundiertes Wissen, praktische Tipps und Inspiration von unseren Expert:innen – direkt in dein Postfach.
         </p>
 
         {submitted ? (
@@ -63,14 +87,14 @@ export default function Newsletter() {
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
-            Vielen Dank für Ihre Anmeldung!
+            Vielen Dank für deine Anmeldung!
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
             <div className="flex-1">
               <input
                 type="email"
-                placeholder="ihre@email.de"
+                placeholder="deine@email.de"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);

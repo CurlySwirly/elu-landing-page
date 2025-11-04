@@ -26,7 +26,7 @@ export default function RelatedPosts({ posts, onPostClick }: RelatedPostsProps) 
             <span className="font-['Open_Sans'] font-semibold text-xs text-[#6D8EEC] uppercase tracking-wide">Ähnliche Artikel</span>
           </div>
           <h2 className="font-['League_Spartan'] font-bold text-[#292B27] text-[28px] md:text-[36px] tracking-tight">
-            Das könnte Sie auch interessieren
+            Das könnte dich auch interessieren
           </h2>
         </div>
 

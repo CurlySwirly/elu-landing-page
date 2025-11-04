@@ -5,7 +5,9 @@ import { supabase } from './supabase';
 
 export const testSupabaseConnection = async () => {
   try {
-    console.log('Testing Supabase connection...');
+    if (import.meta.env.DEV) {
+      console.log('Testing Supabase connection...');
+    }
     
     // Test basic connection
     const { data, error } = await supabase
@@ -14,15 +16,21 @@ export const testSupabaseConnection = async () => {
       .limit(1);
     
     if (error) {
-      console.error('❌ Supabase connection failed:', error);
+      if (import.meta.env.DEV) {
+        console.error('❌ Supabase connection failed:', error);
+      }
       return false;
     }
     
-    console.log('✅ Supabase connection successful!');
-    console.log('Response:', data);
+    if (import.meta.env.DEV) {
+      console.log('✅ Supabase connection successful!');
+      console.log('Response:', data);
+    }
     return true;
   } catch (error) {
-    console.error('❌ Error testing Supabase:', error);
+    if (import.meta.env.DEV) {
+      console.error('❌ Error testing Supabase:', error);
+    }
     return false;
   }
 };

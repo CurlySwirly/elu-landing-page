@@ -49,7 +49,7 @@ const Impressum: React.FC<ImpressumProps> = ({ onBack }) => {
                 Unternehmensname
               </h2>
               <p className="text-lg">
-                Elevate You FlexKapG (in Gründung)
+                Elevate You GmbH (in Gründung)
               </p>
             </section>
 
@@ -123,7 +123,7 @@ const Impressum: React.FC<ImpressumProps> = ({ onBack }) => {
                 Rechtsform
               </h2>
               <p className="text-lg">
-                Flexible Kapitalgesellschaft (FlexKapG)
+                Gesellschaft mit beschränkter Haftung (GmbH)
               </p>
             </section>
 

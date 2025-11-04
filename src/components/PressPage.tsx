@@ -114,6 +114,7 @@ const PressPage: React.FC<PressPageProps> = ({ onBack }) => {
                 href="#"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#326779] text-white rounded-lg hover:bg-[#2a5566] focus:outline-none focus:ring-2 focus:ring-[#326779] focus:ring-offset-2 transition-colors duration-200 font-medium"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
+                aria-label="Download Logo & Brand Assets"
               >
                 <Download className="w-4 h-4" />
                 Logo & Brand Assets
@@ -122,6 +123,7 @@ const PressPage: React.FC<PressPageProps> = ({ onBack }) => {
                 href="#"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#326779] text-white rounded-lg hover:bg-[#2a5566] focus:outline-none focus:ring-2 focus:ring-[#326779] focus:ring-offset-2 transition-colors duration-200 font-medium"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
+                aria-label="Download Founder Fotos"
               >
                 <Download className="w-4 h-4" />
                 Founder Fotos
@@ -130,6 +132,7 @@ const PressPage: React.FC<PressPageProps> = ({ onBack }) => {
                 href="#"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#326779] text-white rounded-lg hover:bg-[#2a5566] focus:outline-none focus:ring-2 focus:ring-[#326779] focus:ring-offset-2 transition-colors duration-200 font-medium"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
+                aria-label="Download Pitch Deck PDF"
               >
                 <Download className="w-4 h-4" />
                 Pitch Deck (PDF)
@@ -147,7 +150,7 @@ const PressPage: React.FC<PressPageProps> = ({ onBack }) => {
             <div className="mb-8">
               <div className="bg-[#F8F9FA] rounded-lg p-4 mb-6">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  Elevate You FlexKapG (in Gründung), Wien
+                  Elevate You GmbH (in Gründung), Wien
                 </h3>
                 <p className="text-[#292B27] opacity-80 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   Digitale Plattform zur Vermittlung von qualitätsgesicherten Gesundheits- und Präventionsangeboten

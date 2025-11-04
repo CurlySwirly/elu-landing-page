@@ -45,7 +45,9 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onBack, onRelatedPost
       setPost(data);
       fetchRelatedPosts(data.category, data.id);
     } catch (error) {
-      console.error('Error fetching blog post:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching blog post:', error);
+      }
       setError(true);
     } finally {
       setLoading(false);
@@ -66,7 +68,9 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onBack, onRelatedPost
       if (error) throw error;
       setRelatedPosts(data || []);
     } catch (error) {
-      console.error('Error fetching related posts:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching related posts:', error);
+      }
     }
   };
 

@@ -161,12 +161,17 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
 
         {/* Main headline */}
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#292B27] mb-6 md:mb-8 leading-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-          <span className="text-[#BADE4F]">Gesund bleiben</span> liegt in deiner Hand.
+          <span className="text-[#BADE4F]">Gesund bleiben</span> beginnt hier.
         </h1>
 
         {/* Subline */}
-        <p className="text-lg md:text-xl text-[#292B27] mb-12 md:mb-16 max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Die elu App macht präventive Gesundheit leicht zugänglich – einfach, verlässlich und passend zu deinem Alltag.
+        <p className="text-lg md:text-xl text-[#292B27] mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+          Finde geprüfte Expert:innen für Körper, Geist und Wohlbefinden – vereint auf einer Plattform.
+        </p>
+        
+        {/* Additional subline */}
+        <p className="text-base md:text-lg text-[#292B27] mb-12 md:mb-16 max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+          Ob Physiotherapie, Massage, Personal Training oder Ernährungsberatung – bei elu findest du professionelle Unterstützung, die zu dir und deinem Lebensstil passt. Einfach, sicher und ganzheitlich.
         </p>
 
         {/* Services carousel */}

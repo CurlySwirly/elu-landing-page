@@ -53,7 +53,7 @@ const Datenschutz: React.FC<DatenschutzProps> = ({ onBack }) => {
                 1. Verantwortlich für die Datenverarbeitung
               </h2>
               <div className="space-y-2">
-                <p>Elevate You FlexKapG (in Gründung)</p>
+                <p>Elevate You GmbH (in Gründung)</p>
                 <p>Wien, Österreich</p>
                 <p>E-Mail: <a href="mailto:info@elevateyou.app" className="text-[#6D8EEC] hover:underline">info@elevateyou.app</a></p>
               </div>

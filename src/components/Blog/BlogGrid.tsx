@@ -33,7 +33,7 @@ export default function BlogGrid({ posts, onPostClick }: BlogGridProps) {
       <section className="bg-[#F8F4F4] py-16">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="font-['Open_Sans'] text-[#292B27] text-lg">
-            Keine Artikel gefunden. Versuchen Sie eine andere Suche oder Kategorie.
+            Keine Artikel gefunden. Versuche eine andere Suche oder Kategorie.
           </p>
         </div>
       </section>

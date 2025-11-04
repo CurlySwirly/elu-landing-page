@@ -13,7 +13,7 @@ export default function RecommendedTopics() {
             <span className="font-['Open_Sans'] font-semibold text-xs text-[#6D8EEC] uppercase tracking-wide">Beliebte Themen</span>
           </div>
           <h2 className="font-['League_Spartan'] font-bold text-[#292B27] text-[28px] md:text-[36px] tracking-tight">
-            Entdecken Sie weitere Inhalte
+            Entdecke weitere Inhalte
           </h2>
         </div>
 

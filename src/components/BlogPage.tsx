@@ -39,10 +39,12 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack, onPostSelect, onNavigate })
         .order('published_at', { ascending: false });
 
       if (error) {
-        console.error('Supabase error:', error);
+        if (import.meta.env.DEV) {
+          console.error('Supabase error:', error);
+        }
         // Check if it's a table not found error
         if (error.message?.includes('relation') || error.message?.includes('does not exist')) {
-          setError('Die Blog-Tabelle existiert noch nicht. Bitte führen Sie die Supabase-Migration aus.');
+          setError('Die Blog-Tabelle existiert noch nicht. Bitte führe die Supabase-Migration aus.');
         } else {
           setError(`Fehler beim Laden der Artikel: ${error.message}`);
         }
@@ -54,9 +56,16 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack, onPostSelect, onNavigate })
       if (data && data.length === 0) {
         setError('Es sind noch keine Artikel verfügbar. Artikel werden angezeigt, sobald sie veröffentlicht sind.');
       }
-    } catch (error: any) {
-      console.error('Error fetching blog posts:', error);
-      setError(`Unerwarteter Fehler: ${error?.message || 'Unbekannter Fehler'}`);
+    } catch (error: unknown) {
+      if (import.meta.env.DEV) {
+        console.error('Error fetching blog posts:', error);
+      }
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : typeof error === 'object' && error !== null && 'message' in error
+          ? String(error.message)
+          : 'Unbekannter Fehler';
+      setError(`Unerwarteter Fehler: ${errorMessage}`);
       setPosts([]);
     } finally {
       setLoading(false);
@@ -150,7 +159,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack, onPostSelect, onNavigate })
                       <strong>Migration ausführen:</strong>
                     </p>
                     <p className="font-['Open_Sans'] text-sm text-[#292B27]">
-                      Führen Sie die Migration aus der Datei <code className="bg-white px-2 py-1 rounded">supabase/migrations/20251031104505_create_blog_posts_table.sql</code> in Ihrer Supabase-Datenbank aus.
+                      Führe die Migration aus der Datei <code className="bg-white px-2 py-1 rounded">supabase/migrations/20251031104505_create_blog_posts_table.sql</code> in deiner Supabase-Datenbank aus.
                     </p>
                   </div>
                 )}

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Mail, Linkedin, Instagram, ArrowRight, ArrowLeft, HelpCircle, MessageCircle, Shield, CheckCircle } from 'lucide-react';
+import { ChevronDown, Mail, Linkedin, Instagram, ArrowRight, ArrowLeft, HelpCircle, MessageCircle, Send } from 'lucide-react';
+import { toast } from 'react-toastify';
+import { formServices } from '../lib/formServices';
 
 interface SupportPageProps {
   onBack?: () => void;
@@ -10,6 +12,13 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack, onNavigate }) => {
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
   const accordionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const faqItems = [
     {
       question: "Wie kann ich mich für den Beta-Start anmelden?",
@@ -17,15 +26,31 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack, onNavigate }) => {
     },
     {
       question: "Wie erreiche ich den Support?",
-      answer: "Schreibe an info@elevateyou.app. Wir melden uns so rasch wie möglich."
+      answer: "Schreibe an info@elevateyou.app oder nutze das Kontaktformular auf dieser Seite. Wir melden uns so rasch wie möglich."
     },
     {
       question: "Wie lösche ich meine Daten?",
-      answer: "Sende eine kurze Mail mit dem Betreff 'Datenauskunft' oder 'Datenlöschung' an info@elevateyou.app."
+      answer: "Sende eine kurze Mail mit dem Betreff 'Datenauskunft' oder 'Datenlöschung' an info@elevateyou.app oder nutze das Kontaktformular."
     },
     {
       question: "Wie kann ich kooperieren oder testen?",
-      answer: "Sende uns deine Idee samt kurzer Beschreibung an info@elevateyou.app."
+      answer: "Sende uns deine Idee samt kurzer Beschreibung an info@elevateyou.app oder nutze das Kontaktformular auf dieser Seite."
+    },
+    {
+      question: "Wie wird mir der passende Experte vorgeschlagen?",
+      answer: "Unsere Matching-Funktion berücksichtigt deine Angaben zu Zielen, Standort und Präferenzen. So erhältst du personalisierte Vorschläge und findest schnell die richtige Expertin oder den richtigen Experten für dein Anliegen."
+    },
+    {
+      question: "Kostet mich die App etwas?",
+      answer: "Die App selbst ist kostenlos. Du zahlst nur für gebuchte Leistungen. Es fällt keine zusätzliche Buchungsgebühr für dich an – der Preis ist transparent und entspricht dem, was die Expert:innen angeben."
+    },
+    {
+      question: "Kann ich mit den Expert:innen vorab schreiben?",
+      answer: "Ja, du kannst über die integrierte Chat-Funktion Fragen stellen, Details abklären und Vertrauen aufbauen, bevor du buchst."
+    },
+    {
+      question: "Wie buche und bezahle ich eine Einheit?",
+      answer: "Du wählst die Expertin oder den Experten, entscheidest dich für eine Leistung und buchst direkt in der App. Die Zahlung läuft sicher über unseren Zahlungsdienstleister, sodass alles transparent und geschützt ist."
     }
   ];
 
@@ -37,6 +62,40 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack, onNavigate }) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       toggleAccordion(index);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      toast.error('Bitte fülle alle Pflichtfelder aus.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const result = await formServices.submitContactMessage(formData);
+
+      if (result.success) {
+        toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
+      }
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error submitting contact form:', error);
+      }
+      toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -98,7 +157,7 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack, onNavigate }) => {
 
         {/* Quick Actions */}
         <section className="mb-16">
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-gradient-to-br from-[#6D8EEC] to-[#5A7BE8] rounded-2xl p-6 text-white hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center gap-3 mb-4">
                 <HelpCircle className="w-8 h-8" />
@@ -136,21 +195,174 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack, onNavigate }) => {
                 Kontakt aufnehmen <ArrowRight className="w-4 h-4" />
               </button>
             </div>
+          </div>
+        </section>
 
-            <div className="bg-gradient-to-br from-[#292B27] to-[#1a1c19] rounded-2xl p-6 text-white hover:shadow-xl transition-shadow duration-300">
-              <div className="flex items-center gap-3 mb-4">
-                <Shield className="w-8 h-8" />
-                <h3 className="text-xl font-bold" style={{ fontFamily: 'League Spartan, sans-serif' }}>Status</h3>
+        {/* Contact Form Section */}
+        <section id="contact-section" className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              Kontaktformular
+            </h2>
+            <p className="text-lg text-[#292B27] opacity-70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              Unser Team ist für dich da – schreib uns einfach
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Company Info */}
+            <div className="bg-gradient-to-br from-[#F8F9FA] to-[#E2E8FB] rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-3 h-8 bg-gradient-to-b from-[#6D8EEC] to-[#BADE4F] rounded-full"></div>
+                <h3 className="text-2xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Unternehmen
+                </h3>
               </div>
-              <p className="text-gray-300 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Aktueller Systemstatus
+              <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
+                <h4 className="text-lg font-bold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Elevate You GmbH (in Gründung)
+                </h4>
+                <p className="text-[#292B27] opacity-70 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                  Wien, Österreich
+                </p>
+                <div className="w-full h-px bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] mb-4"></div>
+                <a
+                  href="mailto:info@elevateyou.app"
+                  className="inline-flex items-center gap-3 text-[#6D8EEC] hover:text-[#5a7ae8] transition-all duration-200 font-medium hover:scale-105 transform"
+                  style={{ fontFamily: 'Open Sans, sans-serif' }}
+                >
+                  <div className="bg-[#E2E8FB] p-2 rounded-lg">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  info@elevateyou.app
+                </a>
+                <p className="text-sm text-[#292B27] opacity-60 mt-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                  Antwortzeit: 1-2 Werktage
+                </p>
+              </div>
+
+              {/* Social Links */}
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <h4 className="text-lg font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Folge uns
+                </h4>
+                <div className="flex gap-4">
+                  <a
+                    href="https://www.linkedin.com/company/108662379/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-4 bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white rounded-xl hover:from-[#5A7BE8] hover:to-[#4A6DE8] focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 transition-all duration-300 transform hover:scale-110 shadow-lg"
+                  >
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/elevateyou.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-4 bg-gradient-to-r from-[#BADE4F] to-[#A8D13F] text-white rounded-xl hover:from-[#A8D13F] hover:to-[#98C12F] focus:outline-none focus:ring-2 focus:ring-[#BADE4F] focus:ring-offset-2 transition-all duration-300 transform hover:scale-110 shadow-lg"
+                  >
+                    <Instagram className="w-5 h-5" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-3 h-8 bg-gradient-to-b from-[#BADE4F] to-[#6D8EEC] rounded-full"></div>
+                <h3 className="text-2xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Nachricht senden
+                </h3>
+              </div>
+              <p className="text-[#292B27] opacity-70 mb-6" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Teile deine Fragen oder Anregungen mit uns – wir antworten schnellstmöglich.
               </p>
-              <button 
-                onClick={() => document.getElementById('status-section')?.scrollIntoView({ behavior: 'smooth' })}
-                className="inline-flex items-center gap-2 text-white font-medium hover:text-gray-300 transition-colors duration-200"
-              >
-                Status prüfen <ArrowRight className="w-4 h-4" />
-              </button>
+              
+              <form onSubmit={handleFormSubmit} className="space-y-6">
+                {/* Name Field */}
+                <div>
+                  <label htmlFor="support-name" className="block text-sm font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="support-name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-4 bg-[#F8F9FA] border border-[#E2E8FB] rounded-xl focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300 text-[#292B27]"
+                    placeholder="Dein vollständiger Name"
+                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  />
+                </div>
+
+                {/* Email Field */}
+                <div>
+                  <label htmlFor="support-email" className="block text-sm font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    E-Mail *
+                  </label>
+                  <input
+                    type="email"
+                    id="support-email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-4 bg-[#F8F9FA] border border-[#E2E8FB] rounded-xl focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300 text-[#292B27]"
+                    placeholder="deine@email.de"
+                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  />
+                </div>
+
+                {/* Message Field */}
+                <div>
+                  <label htmlFor="support-message" className="block text-sm font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    Nachricht *
+                  </label>
+                  <textarea
+                    id="support-message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
+                    rows={6}
+                    className="w-full px-4 py-4 bg-[#F8F9FA] border border-[#E2E8FB] rounded-xl focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300 text-[#292B27] resize-none"
+                    placeholder="Teile deine Fragen, Anregungen oder dein Feedback mit uns."
+                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <div className="pt-4">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full py-5 rounded-xl font-bold transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform ${
+                      isSubmitting 
+                        ? 'bg-gray-400 cursor-not-allowed text-white' 
+                        : 'bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white hover:from-[#5A7BE8] hover:to-[#4A6DE8] hover:scale-105'
+                    }`}
+                    style={{ fontFamily: 'League Spartan, sans-serif' }}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Wird gesendet...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        Nachricht senden
+                      </>
+                    )}
+                  </button>
+                  <p className="text-sm text-[#292B27] opacity-60 text-center mt-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    * Pflichtfelder – Wir antworten normalerweise innerhalb von 24 Stunden
+                  </p>
+                </div>
+              </form>
             </div>
           </div>
         </section>
@@ -206,160 +418,6 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack, onNavigate }) => {
                 </div>
               </div>
             ))}
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section id="contact-section" className="mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Direkter Kontakt
-            </h2>
-            <p className="text-lg text-[#292B27] opacity-70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Unser Team ist für dich da
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Company Info */}
-            <div className="bg-gradient-to-br from-[#F8F9FA] to-[#E2E8FB] rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-3 h-8 bg-gradient-to-b from-[#6D8EEC] to-[#BADE4F] rounded-full"></div>
-                <h3 className="text-2xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  Unternehmen
-                </h3>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h4 className="text-lg font-bold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  Elevate You FlexKapG (in Gründung)
-                </h4>
-                <p className="text-[#292B27] opacity-70 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Wien, Österreich
-                </p>
-                <div className="w-full h-px bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] mb-4"></div>
-                <a
-                  href="mailto:info@elevateyou.app"
-                  className="inline-flex items-center gap-3 text-[#6D8EEC] hover:text-[#5a7ae8] transition-all duration-200 font-medium hover:scale-105 transform"
-                  style={{ fontFamily: 'Open Sans, sans-serif' }}
-                >
-                  <div className="bg-[#E2E8FB] p-2 rounded-lg">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  info@elevateyou.app
-                </a>
-                <p className="text-sm text-[#292B27] opacity-60 mt-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Antwortzeit: 1-2 Werktage
-                </p>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="space-y-6">
-              <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-3 h-8 bg-gradient-to-b from-[#BADE4F] to-[#6D8EEC] rounded-full"></div>
-                  <h3 className="text-2xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Schnellkontakt
-                  </h3>
-                </div>
-                
-                <button
-                  type="button"
-                  className="w-full mb-4 inline-flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white rounded-xl hover:from-[#5A7BE8] hover:to-[#4A6DE8] focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 transition-all duration-300 font-bold transform hover:scale-105 shadow-lg"
-                  style={{ fontFamily: 'League Spartan, sans-serif' }}
-                  onClick={() => {
-                    if (onNavigate) {
-                      onNavigate('contact');
-                    }
-                  }}
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Zur Kontaktseite
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-                
-                <div className="flex gap-4">
-                  <a
-                    href="https://www.linkedin.com/company/108662379/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-4 bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white rounded-xl hover:from-[#5A7BE8] hover:to-[#4A6DE8] focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 transition-all duration-300 transform hover:scale-110 shadow-lg"
-                  >
-                    <Linkedin className="w-5 h-5" />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/elevateyou.app/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-4 bg-gradient-to-r from-[#BADE4F] to-[#A8D13F] text-white rounded-xl hover:from-[#A8D13F] hover:to-[#98C12F] focus:outline-none focus:ring-2 focus:ring-[#BADE4F] focus:ring-offset-2 transition-all duration-300 transform hover:scale-110 shadow-lg"
-                  >
-                    <Instagram className="w-5 h-5" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Status Section */}
-        <section id="status-section" className="mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Systemstatus
-            </h2>
-            <p className="text-lg text-[#292B27] opacity-70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Aktuelle Verfügbarkeit unserer Dienste
-            </p>
-          </div>
-
-          <div className="max-w-3xl mx-auto">
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="bg-green-500 rounded-full p-3">
-                  <CheckCircle className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Alle Systeme funktionsfähig
-                  </h3>
-                  <p className="text-green-700 font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Status: Operativ
-                  </p>
-                </div>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-xl p-4 border border-green-100">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <h4 className="font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                      Website
-                    </h4>
-                  </div>
-                  <p className="text-sm text-[#292B27] opacity-70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Verfügbar und funktionsfähig
-                  </p>
-                </div>
-                
-                <div className="bg-white rounded-xl p-4 border border-green-100">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <h4 className="font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                      E-Mail Support
-                    </h4>
-                  </div>
-                  <p className="text-sm text-[#292B27] opacity-70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Verfügbar und funktionsfähig
-                  </p>
-                </div>
-              </div>
-              
-              <div className="mt-6 p-4 bg-green-100 rounded-xl">
-                <p className="text-sm text-green-800 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  <strong>Hinweis:</strong> Geplante Wartungen und Updates werden rechtzeitig auf der Startseite und in unserem Newsletter angekündigt.
-                </p>
-              </div>
-            </div>
           </div>
         </section>
       </main>

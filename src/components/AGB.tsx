@@ -83,7 +83,7 @@ const AGB: React.FC<AGBProps> = ({ onBack }) => {
                 1. Geltungsbereich
               </h2>
               <p className="text-lg leading-relaxed">
-                Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Besucher:innen und Nutzer:innen der Website elevateyou.app sowie für alle Leistungen, die durch die Elevate You FlexKapG (in Gründung) erbracht werden. Mit der Nutzung der Website bzw. der Registrierung auf unserer Plattform akzeptieren Sie diese AGB in der jeweils gültigen Fassung.
+                Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Besucher:innen und Nutzer:innen der Website elevateyou.app sowie für alle Leistungen, die durch die Elevate You GmbH (in Gründung) erbracht werden. Mit der Nutzung der Website bzw. der Registrierung auf unserer Plattform akzeptieren Sie diese AGB in der jeweils gültigen Fassung.
               </p>
             </section>
 

@@ -17,7 +17,7 @@ export default function Hero() {
         </h1>
 
         <p className="font-['Open_Sans'] text-[#292B27]/70 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-[1.7]">
-          Entdecken Sie fundiertes Wissen, praktische Tipps und Inspiration von Expert:innen für ein gesundes, ausgeglichenes Leben.
+          Entdecke fundiertes Wissen, praktische Tipps und Inspiration von Expert:innen für ein gesundes, ausgeglichenes Leben.
         </p>
 
         <button className="group bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] text-white font-['Open_Sans'] font-semibold px-8 py-4 rounded-full hover:shadow-[0_8px_30px_rgb(109,142,236,0.3)] hover:scale-[1.02] transition-all duration-300 relative overflow-hidden">

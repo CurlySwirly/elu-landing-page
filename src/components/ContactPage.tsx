@@ -43,7 +43,9 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
         toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
       }
     } catch (error) {
-      console.error('Error submitting contact form:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error submitting contact form:', error);
+      }
       toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
     } finally {
       setIsSubmitting(false);
@@ -110,7 +112,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
               <div className="space-y-6">
                 <div className="bg-white rounded-xl p-6 shadow-sm">
                   <h3 className="text-lg font-bold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Elevate You FlexKapG (in Gründung)
+                    Elevate You GmbH (in Gründung)
                   </h3>
                   <p className="text-[#292B27] opacity-70 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                     Wien, Österreich

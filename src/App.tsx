@@ -18,7 +18,10 @@ import {
   Linkedin,
   ChevronLeft,
   ChevronRight,
-  Globe
+  Globe,
+  HeartPulse,
+  Dumbbell,
+  Apple
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import Hero from './components/Hero';
@@ -33,50 +36,68 @@ import SupportPage from './components/SupportPage';
 import BlogPage from './components/BlogPage';
 import BlogPostPage from './components/BlogPostPage';
 import CookieConsent from './components/CookieConsent';
+import type { FormServices, BetaSignupData, ContactMessageData, ExpertApplicationData, PricingInfoEmailData, NewsletterSubscriptionData, FormResponse } from './lib/formServices';
 
 // Safe import of formServices with environment variable checking
-let formServices: any;
+let formServices: FormServices | null = null;
 
 // Check if Supabase environment variables are available
 const hasSupabaseConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+// Initialize formServices immediately with fallback, then upgrade if available
+formServices = createFallbackFormServices();
+
 if (hasSupabaseConfig) {
-  try {
-    // Dynamic import of formServices
-    import('./lib/formServices').then(({ formServices: importedFormServices }) => {
-      formServices = importedFormServices;
+  // Dynamic import of formServices - upgrade from fallback if successful
+  import('./lib/formServices').then(({ formServices: importedFormServices }) => {
+    formServices = importedFormServices;
+    if (import.meta.env.DEV) {
       console.log('✅ Supabase form services loaded successfully');
-    }).catch((error) => {
+    }
+  }).catch((error) => {
+    if (import.meta.env.DEV) {
       console.warn('Failed to load form services:', error);
-      formServices = createFallbackFormServices();
-    });
-  } catch (error) {
-    console.warn('Error loading form services:', error);
-    formServices = createFallbackFormServices();
-  }
+    }
+    // Keep fallback services
+  });
 } else {
-  console.warn('⚠️ Supabase environment variables not found. Using fallback form services.');
-  formServices = createFallbackFormServices();
+  if (import.meta.env.DEV) {
+    console.warn('⚠️ Supabase environment variables not found. Using fallback form services.');
+  }
 }
 
 // Fallback form services for when Supabase is not available
-function createFallbackFormServices() {
+function createFallbackFormServices(): FormServices {
   return {
-    submitBetaSignup: async (data: any) => {
-      console.log('Form submission (fallback):', data);
+    submitBetaSignup: async (data: BetaSignupData): Promise<FormResponse> => {
+      if (import.meta.env.DEV) {
+        console.log('Form submission (fallback):', data);
+      }
       return { success: true, data, message: 'Form submitted (fallback mode)' };
     },
-    submitContactMessage: async (data: any) => {
-      console.log('Contact form (fallback):', data);
+    submitContactMessage: async (data: ContactMessageData): Promise<FormResponse> => {
+      if (import.meta.env.DEV) {
+        console.log('Contact form (fallback):', data);
+      }
       return { success: true, data, message: 'Message sent (fallback mode)' };
     },
-    submitExpertApplication: async (data: any) => {
-      console.log('Expert application (fallback):', data);
+    submitExpertApplication: async (data: ExpertApplicationData): Promise<FormResponse> => {
+      if (import.meta.env.DEV) {
+        console.log('Expert application (fallback):', data);
+      }
       return { success: true, data, message: 'Application submitted (fallback mode)' };
     },
-    submitPricingInfoEmail: async (data: any) => {
-      console.log('Pricing info (fallback):', data);
+    submitPricingInfoEmail: async (data: PricingInfoEmailData): Promise<FormResponse> => {
+      if (import.meta.env.DEV) {
+        console.log('Pricing info (fallback):', data);
+      }
       return { success: true, data, message: 'Email saved (fallback mode)' };
+    },
+    submitNewsletterSubscription: async (data: NewsletterSubscriptionData): Promise<FormResponse> => {
+      if (import.meta.env.DEV) {
+        console.log('Newsletter subscription (fallback):', data);
+      }
+      return { success: false, error: 'Newsletter-Anmeldung ist derzeit nicht verfügbar. Bitte versuche es später erneut.' };
     }
   };
 }
@@ -100,18 +121,20 @@ function App() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Debug logging for Vercel deployment
+  // Debug logging for development only
   useEffect(() => {
-    console.log('App component mounted successfully');
-    console.log('Current page:', currentPage);
-    console.log('Environment check:', {
-      nodeEnv: import.meta.env.MODE,
-      hasSupabaseUrl: !!import.meta.env.VITE_SUPABASE_URL,
-      hasSupabaseKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
-      supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
-      supabaseKeyLength: import.meta.env.VITE_SUPABASE_ANON_KEY?.length || 0
-    });
-    console.log('Form services status:', formServices ? 'Loaded' : 'Not loaded');
+    if (import.meta.env.DEV) {
+      console.log('App component mounted successfully');
+      console.log('Current page:', currentPage);
+      console.log('Environment check:', {
+        nodeEnv: import.meta.env.MODE,
+        hasSupabaseUrl: !!import.meta.env.VITE_SUPABASE_URL,
+        hasSupabaseKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
+        supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
+        supabaseKeyLength: import.meta.env.VITE_SUPABASE_ANON_KEY?.length || 0
+      });
+      console.log('Form services status:', formServices ? 'Loaded' : 'Not loaded');
+    }
   }, []);
 
   // Scroll to top when page changes
@@ -334,17 +357,23 @@ function App() {
 
   // Cookie consent handlers
   const handleCookieAccept = () => {
-    console.log('Cookies accepted');
+    if (import.meta.env.DEV) {
+      console.log('Cookies accepted');
+    }
     // Here you can add logic to enable analytics, marketing cookies, etc.
   };
 
   const handleCookieDecline = () => {
-    console.log('Cookies declined');
+    if (import.meta.env.DEV) {
+      console.log('Cookies declined');
+    }
     // Here you can add logic to disable non-essential cookies
   };
 
   const handleCookieCustomize = () => {
-    console.log('Cookie preferences opened');
+    if (import.meta.env.DEV) {
+      console.log('Cookie preferences opened');
+    }
     // Here you can add logic to open detailed cookie settings
   };
 
@@ -367,7 +396,7 @@ function App() {
       });
 
       // Only two cases: added to waitlist OR already in waitlist (error code 23505)
-      if (result.error && result.error.code === '23505') {
+      if (result.error && typeof result.error === 'object' && 'code' in result.error && result.error.code === '23505') {
         toast.success('Du stehst bereits auf der Warteliste! Wir melden uns bei dir, sobald der Beta-Start verfügbar ist.');
         setFormData({ firstName: '', email: '', userType: '', privacy: false });
       } else {
@@ -376,7 +405,9 @@ function App() {
         setFormData({ firstName: '', email: '', userType: '', privacy: false });
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error submitting form:', error);
+      }
       // Even for catch errors, show success message - added to waitlist
       toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
       setFormData({ firstName: '', email: '', userType: '', privacy: false });
@@ -506,44 +537,38 @@ function App() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              So funktioniert elu.
+              So einfach funktioniert elu.
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Dein direkter Zugang zu qualitätsgeprüften Gesundheitsprofis.
+              Gesundheit beginnt mit der richtigen Verbindung.
             </p>
-            <div className="mt-8 mb-12">
-              <h3 className="text-3xl md:text-4xl font-bold text-[#6D8EEC] mb-4 leading-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Gesundheit leicht gemacht.
-              </h3>
-              <div className="w-16 h-1 bg-[#BADE4F] mx-auto rounded-full"></div>
-            </div>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-            <div className="text-center group">
-              <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
-                <User className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm">
-                <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  Entdecken
-                </h3>
-                <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Finde geprüfte Experten, die zu deinen Bedürfnissen passen.
-                </p>
-              </div>
-            </div>
-            
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12 mb-12">
             <div className="text-center group">
               <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <Search className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  Verbinden
+                  1. Entdecken
                 </h3>
                 <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Buche unkompliziert und flexibel deine Einheiten.
+                  Finde geprüfte Expert:innen in den Bereichen Physiotherapie, Massage, Personal Training oder Ernährungsberatung.
+                </p>
+              </div>
+            </div>
+            
+            <div className="text-center group">
+              <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
+                <User className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
+              </div>
+              <div className="bg-white p-6 rounded-2xl shadow-sm">
+                <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  2. Verbinden
+                </h3>
+                <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                  Wähle, wer zu dir passt – nach Standort, Spezialisierung oder persönlichem Schwerpunkt.
                 </p>
               </div>
             </div>
@@ -554,13 +579,24 @@ function App() {
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  Dranbleiben
+                  3. Durchstarten
                 </h3>
                 <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Erhalte Unterstützung, die zu dir passt.
+                  Buche Termine direkt über elu und arbeite mit Profis, die dich auf deinem Weg zu mehr Gesundheit und Lebensqualität begleiten.
                 </p>
               </div>
             </div>
+          </div>
+          
+          <div className="text-center">
+            <button 
+              onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#5a7ae8] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              Jetzt passende Expert:innen entdecken
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </section>
@@ -683,29 +719,36 @@ function App() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Gesundheit für alle. 
+              Warum elu?
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              elu öffnet dir den Zugang zu präventiver Gesundheit – einfach, direkt und verlässlich. Wir bringen dich mit qualifizierten Expertinnen und Experten zusammen, die dich dort unterstützen, wo du es brauchst.
+            <p className="text-2xl font-bold text-[#6D8EEC] mb-8" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              Weil Gesundheit Vertrauen verdient.
             </p>
-            <div className="mb-12">
-              <p className="text-2xl font-bold text-[#6D8EEC]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Gesund sein ist kein Luxus – es ist die Basis.
-              </p>
-            </div>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              Bei elu findest du nur geprüfte Expert:innen – von erfahrenen Physiotherapeut:innen über Massageprofis bis hin zu Personal Trainer:innen und Ernährungsberater:innen.
+            </p>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              Jede:r von ihnen wurde sorgfältig ausgewählt, um dir höchste Qualität und Sicherheit zu bieten.
+            </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+              <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center">
+                <CheckCircle className="w-8 h-8 text-[#6D8EEC]" />
+              </div>
+              <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                All-in-One-Plattform für Körper, Geist und Ernährung
+              </h3>
+            </div>
+            
             <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center">
                 <Award className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Geprüfte Qualität
+                Geprüfte Expert:innen mit nachweisbarer Qualifikation
               </h3>
-              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Alle Experten werden sorgfältig ausgewählt.
-              </p>
             </div>
             
             <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
@@ -713,11 +756,8 @@ function App() {
                 <Shield className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Sichere Buchung
+                Ganzheitlicher Ansatz für nachhaltige Gesundheit
               </h3>
-              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Klare Preise, transparente Abläufe.
-              </p>
             </div>
             
             <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
@@ -725,24 +765,23 @@ function App() {
                 <MapPin className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Alles an einem Ort
+                Einfache Buchung & Kommunikation – digital und sicher
               </h3>
-              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Training, Ernährung, Physiotherapie und mehr – einfach zugänglich.
-              </p>
             </div>
-            
-            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
-              <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center">
-                <Eye className="w-8 h-8 text-[#6D8EEC]" />
-              </div>
-              <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Smart Matching
-              </h3>
-              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Basierend auf Ziel, Zeit und Standort.
-              </p>
-            </div>
+          </div>
+          
+          <div className="text-center">
+            <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              elu bringt dich mit Menschen zusammen, die dich verstehen und unterstützen – für ein Leben voller Energie, Balance und Wohlbefinden.
+            </p>
+            <button 
+              onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#5a7ae8] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              Mehr über elu erfahren
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </section>
@@ -920,15 +959,79 @@ function App() {
         </div>
       </section>
 
+      {/* Target Audience Section */}
+      <section className="py-16 lg:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-8" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              Für alle, die Gesundheit ganzheitlich denken.
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              elu richtet sich an Menschen, die aktiv etwas für ihr Wohlbefinden tun möchten – egal, ob du Schmerzen lindern, Stress reduzieren oder einfach fitter werden willst.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300 group">
+              <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
+                <HeartPulse className="w-8 h-8 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
+              </div>
+              <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                Bei Beschwerden
+              </h3>
+              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Durch erfahrene Physiotherapeut:innen und Massageexpert:innen
+              </p>
+            </div>
+            
+            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300 group">
+              <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
+                <Dumbbell className="w-8 h-8 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
+              </div>
+              <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                Für mehr Energie
+              </h3>
+              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Mit Personal Training und individuellen Bewegungsprogrammen
+              </p>
+            </div>
+            
+            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300 group">
+              <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
+                <Apple className="w-8 h-8 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
+              </div>
+              <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                Zur Prävention
+              </h3>
+              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Dank professioneller Ernährungsberatung und nachhaltiger Routinen
+              </p>
+            </div>
+          </div>
+          
+          <div className="text-center">
+            <p className="text-lg text-gray-700 max-w-3xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              elu unterstützt dich, gesunde Entscheidungen leichter in deinen Alltag zu integrieren – damit du langfristig in Balance bleibst.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Experts Section */}
       <section className="py-16 lg:py-24 bg-gradient-to-br from-[#F0F0F0] to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Gesundheitsexperte? Werde Teil von elu!
+              Für Expert:innen, die Gesundheit mitgestalten.
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              elu verbindet dich direkt mit Menschen, die aktiv etwas für ihre Gesundheit tun möchten. Du profitierst von einer Plattform, die Vertrauen schafft und dir den Zugang zu neuen Kundinnen und Kunden erleichtert.
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              elu bringt qualifizierte Gesundheitsprofis mit Menschen zusammen, die aktiv an ihrem Wohlbefinden arbeiten möchten.
+            </p>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              Wenn du in den Bereichen Physiotherapie, Massage, Personal Training oder Ernährungsberatung tätig bist, erhältst du über elu eine Bühne, auf der Qualität und Vertrauen im Mittelpunkt stehen.
+            </p>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              Werde Teil einer Plattform, die Prävention neu denkt und Expert:innen sichtbar macht, die wirklich etwas bewirken wollen.
             </p>
           </div>
           
@@ -991,10 +1094,13 @@ function App() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Jetzt Beta-Platz sichern.
+              Mach Gesundheit zu deiner Priorität.
             </h2>
-            <p className="text-lg text-blue-100 max-w-2xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Werde Teil der elu-Community und gestalte die Zukunft der Gesundheitsvorsorge mit.
+            <p className="text-xl text-white mb-6 max-w-2xl mx-auto" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              Werde Teil der elu-Community und entdecke, wie einfach ganzheitliche Gesundheit sein kann.
+            </p>
+            <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              Melde dich jetzt für den Beta-Zugang an und erhalte als Erste:r Zugang zur Plattform. Finde geprüfte Expert:innen, entdecke neue Wege zu mehr Wohlbefinden – und starte deine persönliche Gesundheitsreise mit elu.
             </p>
           </div>
           
@@ -1091,10 +1197,13 @@ function App() {
                   }`}
                 ></div>
                 <span className="select-none">
-                  {isSubmitting ? 'Wird verarbeitet...' : 'Beta-Platz sichern'}
+                  {isSubmitting ? 'Wird verarbeitet...' : 'Kostenlos vormerken'}
                 </span>
               </button>
             </form>
+            <p className="mt-6 text-sm text-gray-500 text-center" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              (Kein Abo, keine Verpflichtung – nur dein erster Schritt zu mehr Gesundheit.)
+            </p>
           </div>
         </div>
       </section>
@@ -1172,7 +1281,7 @@ function App() {
           className="w-full bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white py-4 rounded-full text-lg font-bold shadow-2xl hover:from-[#5A7BE8] hover:to-[#4A6DE8] transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-105"
           style={{ fontFamily: 'League Spartan, sans-serif' }}
         >
-          Jetzt Beta-Zugang sichern
+          Kostenlos vormerken
           <ArrowRight className="w-5 h-5" />
         </button>
       </div>

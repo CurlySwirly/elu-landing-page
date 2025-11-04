@@ -89,7 +89,9 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
         alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
       }
     } catch (error) {
-      console.error('Error submitting expert application:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error submitting expert application:', error);
+      }
       alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
     }
   };
@@ -123,60 +125,58 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
 
   const handleStandardEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Standard email form submitted:', standardEmail);
     
     try {
-      console.log('Calling formServices.submitPricingInfoEmail...');
       const result = await formServices.submitPricingInfoEmail({
         email: standardEmail,
         plan_type: 'standard'
       });
 
-      console.log('Result:', result);
-
       if (result.success) {
-        console.log('Success! Setting submitted state...');
         setStandardEmailSubmitted(true);
         setTimeout(() => {
           setStandardEmailSubmitted(false);
           setStandardEmail('');
         }, 3000);
       } else {
-        console.error('Form submission failed:', result.error);
+        if (import.meta.env.DEV) {
+          console.error('Form submission failed:', result.error);
+        }
         alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
       }
     } catch (error) {
-      console.error('Error submitting standard plan email:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error submitting standard plan email:', error);
+      }
       alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
     }
   };
 
   const handleProEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Pro email form submitted:', proEmail);
     
     try {
-      console.log('Calling formServices.submitPricingInfoEmail...');
       const result = await formServices.submitPricingInfoEmail({
         email: proEmail,
         plan_type: 'pro'
       });
 
-      console.log('Result:', result);
-
       if (result.success) {
-        console.log('Success! Setting submitted state...');
         setProEmailSubmitted(true);
         setTimeout(() => {
           setProEmailSubmitted(false);
           setProEmail('');
         }, 3000);
       } else {
-        console.error('Form submission failed:', result.error);
+        if (import.meta.env.DEV) {
+          console.error('Form submission failed:', result.error);
+        }
         alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
       }
     } catch (error) {
-      console.error('Error submitting pro plan email:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error submitting pro plan email:', error);
+      }
       alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
     }
   };
