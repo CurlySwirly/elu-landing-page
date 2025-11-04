@@ -28,6 +28,13 @@ export default function Newsletter() {
         console.log('Newsletter form submitting:', { email: email.trim().toLowerCase(), source: 'blog_page' });
       }
 
+      // Check if formServices is available
+      if (!formServices || !formServices.submitNewsletterSubscription) {
+        setError('Newsletter-Service ist nicht verfügbar. Bitte kontaktiere uns.');
+        setLoading(false);
+        return;
+      }
+
       const result = await formServices.submitNewsletterSubscription({
         email: email.trim().toLowerCase(),
         source: 'blog_page'
@@ -41,10 +48,11 @@ export default function Newsletter() {
           setSubmitted(false);
         }, 5000);
       } else {
-        const errorMsg = typeof result.error === 'string' ? result.error : 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.';
-        if (import.meta.env.DEV) {
-          console.error('Newsletter subscription failed:', errorMsg);
-        }
+        const errorMsg = typeof result.error === 'string' 
+          ? result.error 
+          : typeof result.error === 'object' && result.error !== null && 'message' in result.error
+            ? String(result.error.message)
+            : 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.';
         setError(errorMsg);
       }
     } catch (err: unknown) {

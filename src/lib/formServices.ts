@@ -147,11 +147,22 @@ export const formServices = {
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
       const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
       
-      if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder')) {
+      if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || supabaseAnonKey.includes('placeholder')) {
         if (import.meta.env.DEV) {
-          console.error('Supabase not configured for newsletter subscription')
+          console.error('Supabase not configured for newsletter subscription', {
+            hasUrl: !!supabaseUrl,
+            hasKey: !!supabaseAnonKey,
+            urlIsPlaceholder: supabaseUrl?.includes('placeholder'),
+            keyIsPlaceholder: supabaseAnonKey?.includes('placeholder')
+          })
         }
         return { success: false, error: 'Newsletter-Anmeldung ist derzeit nicht verfügbar. Bitte versuche es später erneut.' }
+      }
+
+      // Check if supabase client is properly initialized (check the actual URL)
+      const supabaseClientUrl = (supabase as any)?.supabaseUrl || supabaseUrl
+      if (!supabase || supabaseClientUrl?.includes('placeholder')) {
+        return { success: false, error: 'Newsletter-Service ist nicht konfiguriert. Bitte kontaktiere uns.' }
       }
       
       const { data: result, error } = await supabase
@@ -161,22 +172,31 @@ export const formServices = {
         .single()
 
       if (error) {
+        // Log full error details in development
         if (import.meta.env.DEV) {
-          console.error('Supabase error:', error)
+          console.error('Supabase error:', {
+            code: error.code,
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            fullError: error
+          })
         }
         // Handle duplicate email error (PostgreSQL unique constraint violation)
         if (error.code === '23505' || error.message?.includes('duplicate') || error.message?.includes('unique')) {
           return { success: false, error: 'Diese E-Mail-Adresse ist bereits angemeldet.' }
         }
         // Handle RLS policy errors
-        if (error.code === '42501' || error.message?.includes('policy')) {
-          return { success: false, error: 'Berechtigung verweigert. Bitte kontaktiere uns.' }
+        if (error.code === '42501' || error.message?.includes('policy') || error.message?.includes('permission denied')) {
+          return { success: false, error: 'Berechtigung verweigert. Bitte kontaktiere uns über das Kontaktformular.' }
         }
         // Handle table not found errors
-        if (error.message?.includes('relation') || error.message?.includes('does not exist')) {
+        if (error.message?.includes('relation') || error.message?.includes('does not exist') || error.code === '42P01') {
           return { success: false, error: 'Newsletter-Tabelle existiert noch nicht. Bitte kontaktiere uns.' }
         }
-        throw error
+        // Return user-friendly error message instead of throwing
+        const errorMessage = error.message || 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.'
+        return { success: false, error: errorMessage }
       }
       
       return { success: true, data: result }
