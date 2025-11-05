@@ -73,13 +73,13 @@ export const formServices = {
         .select()
         .single()
 
-      if (error) throw error
+      if (error) {
+        throw error;
+      }
+
       return { success: true, data: result }
     } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error submitting beta signup:', error)
-      }
-      return { success: false, error: getErrorMessage(error) }
+      return { success: false, error }
     }
   },
 

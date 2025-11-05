@@ -36,71 +36,7 @@ import SupportPage from './components/SupportPage';
 import BlogPage from './components/BlogPage';
 import BlogPostPage from './components/BlogPostPage';
 import CookieConsent from './components/CookieConsent';
-import type { FormServices, BetaSignupData, ContactMessageData, ExpertApplicationData, PricingInfoEmailData, NewsletterSubscriptionData, FormResponse } from './lib/formServices';
-
-// Safe import of formServices with environment variable checking
-let formServices: FormServices | null = null;
-
-// Check if Supabase environment variables are available
-const hasSupabaseConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-// Initialize formServices immediately with fallback, then upgrade if available
-formServices = createFallbackFormServices();
-
-if (hasSupabaseConfig) {
-  // Dynamic import of formServices - upgrade from fallback if successful
-  import('./lib/formServices').then(({ formServices: importedFormServices }) => {
-    formServices = importedFormServices;
-    if (import.meta.env.DEV) {
-      console.log('✅ Supabase form services loaded successfully');
-    }
-  }).catch((error) => {
-    if (import.meta.env.DEV) {
-      console.warn('Failed to load form services:', error);
-    }
-    // Keep fallback services
-  });
-} else {
-  if (import.meta.env.DEV) {
-    console.warn('⚠️ Supabase environment variables not found. Using fallback form services.');
-  }
-}
-
-// Fallback form services for when Supabase is not available
-function createFallbackFormServices(): FormServices {
-  return {
-    submitBetaSignup: async (data: BetaSignupData): Promise<FormResponse> => {
-      if (import.meta.env.DEV) {
-        console.log('Form submission (fallback):', data);
-      }
-      return { success: true, data, message: 'Form submitted (fallback mode)' };
-    },
-    submitContactMessage: async (data: ContactMessageData): Promise<FormResponse> => {
-      if (import.meta.env.DEV) {
-        console.log('Contact form (fallback):', data);
-      }
-      return { success: true, data, message: 'Message sent (fallback mode)' };
-    },
-    submitExpertApplication: async (data: ExpertApplicationData): Promise<FormResponse> => {
-      if (import.meta.env.DEV) {
-        console.log('Expert application (fallback):', data);
-      }
-      return { success: true, data, message: 'Application submitted (fallback mode)' };
-    },
-    submitPricingInfoEmail: async (data: PricingInfoEmailData): Promise<FormResponse> => {
-      if (import.meta.env.DEV) {
-        console.log('Pricing info (fallback):', data);
-      }
-      return { success: true, data, message: 'Email saved (fallback mode)' };
-    },
-    submitNewsletterSubscription: async (data: NewsletterSubscriptionData): Promise<FormResponse> => {
-      if (import.meta.env.DEV) {
-        console.log('Newsletter subscription (fallback):', data);
-      }
-      return { success: false, error: 'Newsletter-Anmeldung ist derzeit nicht verfügbar. Bitte versuche es später erneut.' };
-    }
-  };
-}
+import { formServices } from './lib/formServices';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -121,21 +57,6 @@ function App() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Debug logging for development only
-  useEffect(() => {
-    if (import.meta.env.DEV) {
-      console.log('App component mounted successfully');
-      console.log('Current page:', currentPage);
-      console.log('Environment check:', {
-        nodeEnv: import.meta.env.MODE,
-        hasSupabaseUrl: !!import.meta.env.VITE_SUPABASE_URL,
-        hasSupabaseKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
-        supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
-        supabaseKeyLength: import.meta.env.VITE_SUPABASE_ANON_KEY?.length || 0
-      });
-      console.log('Form services status:', formServices ? 'Loaded' : 'Not loaded');
-    }
-  }, []);
 
   // Scroll to top when page changes
   useEffect(() => {
@@ -357,59 +278,60 @@ function App() {
 
   // Cookie consent handlers
   const handleCookieAccept = () => {
-    if (import.meta.env.DEV) {
-      console.log('Cookies accepted');
-    }
     // Here you can add logic to enable analytics, marketing cookies, etc.
   };
 
   const handleCookieDecline = () => {
-    if (import.meta.env.DEV) {
-      console.log('Cookies declined');
-    }
     // Here you can add logic to disable non-essential cookies
   };
 
   const handleCookieCustomize = () => {
-    if (import.meta.env.DEV) {
-      console.log('Cookie preferences opened');
-    }
     // Here you can add logic to open detailed cookie settings
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!formData.firstName || !formData.email || !formData.userType || !formData.privacy) {
-      toast.success('Bitte fülle alle Felder aus und stimme der Datenschutzerklärung zu.');
+      toast.error('Bitte fülle alle Felder aus und stimme der Datenschutzerklärung zu.');
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      // Simulate loading for 1.5 seconds as requested
+      // Simulate loading for 1.5 seconds
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const result = await formServices.submitBetaSignup({
+
+      const submissionData = {
         email: formData.email,
         source: formData.userType
-      });
+      };
 
-      // Only two cases: added to waitlist OR already in waitlist (error code 23505)
+      const result = await formServices.submitBetaSignup(submissionData);
+
+      // Check if it's a duplicate email error
       if (result.error && typeof result.error === 'object' && 'code' in result.error && result.error.code === '23505') {
-        toast.success('Du stehst bereits auf der Warteliste! Wir melden uns bei dir, sobald der Beta-Start verfügbar ist.');
-        setFormData({ firstName: '', email: '', userType: '', privacy: false });
-      } else {
-        // All other cases (success or any other error) - show added to waitlist
+        toast.info('Du stehst bereits auf der Warteliste! Wir melden uns bei dir, sobald der Beta-Start verfügbar ist.');
+      } else if (result.success) {
+        // Success - added to waitlist
         toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
-        setFormData({ firstName: '', email: '', userType: '', privacy: false });
+      } else {
+        // Any other error - still show success to user
+        console.error('Form submission error:', result.error);
+        toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
       }
+
+      // Clear form
+      setFormData({ firstName: '', email: '', userType: '', privacy: false });
+
     } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error submitting form:', error);
-      }
-      // Even for catch errors, show success message - added to waitlist
+      console.error('Form submission exception:', error);
+
+      // Always show success message even on error
       toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+
+      // Clear form
       setFormData({ firstName: '', email: '', userType: '', privacy: false });
     } finally {
       setIsSubmitting(false);
