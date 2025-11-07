@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { 
-  Users, 
   Eye, 
   FileText, 
   Shield, 
-  Star, 
   CreditCard, 
   Calendar, 
   MessageCircle, 
-  TrendingUp,
   Check,
   ChevronDown,
   ChevronUp,

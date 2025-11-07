@@ -236,37 +236,29 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack, onPostSelect, onNavigate })
               </ul>
             </div>
             
-            <div>
-              <h4 className="text-lg font-semibold mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Kontakt
-              </h4>
-              <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                <li>
-                  <button 
-                    onClick={() => onNavigate ? onNavigate('contact') : onBack?.()} 
-                    className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer"
-                  >
-                    Kontakt
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => onNavigate ? onNavigate('support') : onBack?.()} 
-                    className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer"
-                  >
-                    Support
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => onNavigate ? onNavigate('blog') : onBack?.()} 
-                    className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer"
-                  >
-                    Blog
-                  </button>
-                </li>
-              </ul>
-            </div>
+          <div>
+            <h4 className="text-lg font-semibold mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              Kontakt
+            </h4>
+            <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              <li>
+                <button 
+                  onClick={() => onNavigate ? onNavigate('support') : onBack?.()} 
+                  className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer"
+                >
+                  Kontakt &amp; Support
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onNavigate ? onNavigate('blog') : onBack?.()} 
+                  className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer"
+                >
+                  Blog
+                </button>
+              </li>
+            </ul>
+          </div>
           </div>
           
           <div className="border-t border-gray-600 mt-12 pt-8 text-center">

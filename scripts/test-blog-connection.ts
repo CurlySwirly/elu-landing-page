@@ -7,7 +7,7 @@ import { resolve } from 'path';
 
 // Load environment variables
 const envFile = resolve(process.cwd(), '.env');
-let envVars: Record<string, string> = {};
+const envVars: Record<string, string> = {};
 
 try {
   const envContent = readFileSync(envFile, 'utf-8');
@@ -21,6 +21,9 @@ try {
   });
 } catch (error) {
   console.error('Could not read .env file');
+  if (error instanceof Error) {
+    console.error(error.message);
+  }
 }
 
 const supabaseUrl = envVars.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
@@ -44,7 +47,7 @@ async function testConnection() {
   // Test 1: Check if blog_posts table exists
   console.log('1. Checking if blog_posts table exists...');
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('blog_posts')
       .select('count')
       .limit(1);
@@ -60,8 +63,12 @@ async function testConnection() {
       }
     }
     console.log('✅ blog_posts table exists');
-  } catch (error: any) {
-    console.error('❌ Error checking table:', error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('❌ Error checking table:', error.message);
+    } else {
+      console.error('❌ Unknown error checking table');
+    }
     return;
   }
 
@@ -102,8 +109,12 @@ async function testConnection() {
         console.log(`   - ${post.title} (${post.slug})`);
       });
     }
-  } catch (error: any) {
-    console.error('❌ Error:', error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('❌ Error:', error.message);
+    } else {
+      console.error('❌ Unknown error during post fetch');
+    }
     return;
   }
 

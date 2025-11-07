@@ -143,28 +143,6 @@ export const formServices = {
   // Submit newsletter subscription
   async submitNewsletterSubscription(data: NewsletterSubscriptionData): Promise<FormResponse> {
     try {
-      // Check if Supabase is properly configured
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-      
-      if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || supabaseAnonKey.includes('placeholder')) {
-        if (import.meta.env.DEV) {
-          console.error('Supabase not configured for newsletter subscription', {
-            hasUrl: !!supabaseUrl,
-            hasKey: !!supabaseAnonKey,
-            urlIsPlaceholder: supabaseUrl?.includes('placeholder'),
-            keyIsPlaceholder: supabaseAnonKey?.includes('placeholder')
-          })
-        }
-        return { success: false, error: 'Newsletter-Anmeldung ist derzeit nicht verfügbar. Bitte versuche es später erneut.' }
-      }
-
-      // Check if supabase client is properly initialized (check the actual URL)
-      const supabaseClientUrl = (supabase as any)?.supabaseUrl || supabaseUrl
-      if (!supabase || supabaseClientUrl?.includes('placeholder')) {
-        return { success: false, error: 'Newsletter-Service ist nicht konfiguriert. Bitte kontaktiere uns.' }
-      }
-      
       const { data: result, error } = await supabase
         .from('newsletter_subscriptions')
         .insert([data])

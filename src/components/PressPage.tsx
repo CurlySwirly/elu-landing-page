@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronDown, Home, ArrowRight, Download, Mail, Phone, User, Briefcase, Code } from 'lucide-react';
+import { ChevronDown, Home, ArrowRight, Download, Mail, Phone, User, Code } from 'lucide-react';
 
 interface PressPageProps {
   onBack?: () => void;

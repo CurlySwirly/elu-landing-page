@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
 
 interface HeroProps {
-  heroBg?: string;
   showDoodles?: boolean;
 }
 
@@ -39,7 +38,7 @@ const services = [
   }
 ];
 
-const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
+const Hero: React.FC<HeroProps> = ({ showDoodles = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -118,7 +117,7 @@ const Hero: React.FC<HeroProps> = ({ heroBg, showDoodles = false }) => {
 
   return (
     <section 
-      className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-24 pb-16 md:pt-32 md:pb-24"
+      className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-12 pb-16 md:pt-16 md:pb-24"
       style={{
         background: 'linear-gradient(135deg, rgba(186, 222, 79, 0.2) 0%, rgba(240, 240, 240, 0.3) 25%, rgba(240, 240, 240, 0.3) 75%, rgba(109, 142, 236, 0.2) 100%)'
       }}

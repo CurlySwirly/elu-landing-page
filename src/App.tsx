@@ -10,15 +10,9 @@ import {
   Search,
   Calendar,
   Award,
-  Lock,
   MapPin,
-  Eye,
-  Instagram,
-  Facebook,
-  Linkedin,
   ChevronLeft,
   ChevronRight,
-  Globe,
   HeartPulse,
   Dumbbell,
   Apple
@@ -30,25 +24,20 @@ import FAQ from './components/FAQ';
 import Datenschutz from './components/Datenschutz';
 import AGB from './components/AGB';
 import ExpertPage from './components/ExpertPage';
-import ContactPage from './components/ContactPage';
 import SupportPage from './components/SupportPage';
 // import PressPage from './components/PressPage';
 import BlogPage from './components/BlogPage';
 import BlogPostPage from './components/BlogPostPage';
 import CookieConsent from './components/CookieConsent';
 import { formServices } from './lib/formServices';
+import UeberUnsPage from './components/UeberUnsPage';
+import SiteHeader from './components/layout/SiteHeader';
+import SiteFooter from './components/layout/SiteFooter';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentExpert, setCurrentExpert] = useState(0);
   const [blogPostSlug, setBlogPostSlug] = useState('');
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
   const [formData, setFormData] = useState({
     firstName: '',
     email: '',
@@ -243,29 +232,6 @@ function App() {
     setCurrentExpert((prev) => (prev - 1 + experts.length) % experts.length);
   };
 
-  // Countdown timer effect
-  useEffect(() => {
-    // Set target date to 30 days from now
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 30);
-    
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = targetDate.getTime() - now;
-      
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000)
-        });
-      }
-    }, 1000);
-    
-    return () => clearInterval(timer);
-  }, []);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     if (type === 'checkbox') {
@@ -355,12 +321,12 @@ function App() {
     return <ExpertPage onBack={() => setCurrentPage('home')} />;
   }
 
-  if (currentPage === 'contact') {
-    return <ContactPage onBack={() => setCurrentPage('home')} />;
+  if (currentPage === 'support') {
+    return <SupportPage onNavigate={setCurrentPage} />;
   }
 
-  if (currentPage === 'support') {
-    return <SupportPage onBack={() => setCurrentPage('home')} onNavigate={setCurrentPage} />;
+  if (currentPage === 'ueber-uns') {
+    return <UeberUnsPage onNavigate={setCurrentPage} />;
   }
 
   if (currentPage === 'blog') {
@@ -396,63 +362,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Sticky Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#292B27] backdrop-blur-md border-b border-gray-700 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <div className="flex items-center gap-3">
-                <img 
-                  src="/favicon.png" 
-                  alt="elu – elevate you" 
-                  className="w-8 h-8 lg:w-10 lg:h-10"
-                />
-                <h1 className="text-xl lg:text-2xl text-white" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  <span className="font-bold">elu.</span> <span className="hidden lg:inline font-extralight italic">elevate you</span>
-                </h1>
-              </div>
-            </div>
-            
-            {/* Beta Launch Coming Soon - Centered on desktop, inline on mobile */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 hidden lg:block">
-              <div className="flex flex-col items-center">
-                <p className="text-sm text-white font-medium mb-1" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Beta Launch
-                </p>
-                <div className="text-2xl font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  Coming Soon
-                </div>
-              </div>
-            </div>
-            
-            {/* Mobile Beta Tag - Inline with header text */}
-            <div className="lg:hidden flex items-center gap-2 ml-3">
-              <span className="text-xs text-white font-medium" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Beta Launch
-              </span>
-              <span className="text-sm font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Coming Soon
-              </span>
-            </div>
-            
-            {/* CTA Button */}
-            <div className="flex-shrink-0">
-              <button 
-                onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hidden lg:inline-flex bg-[#292B27] text-[#BADE4F] px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#BADE4F] hover:text-[#292B27] border-2 border-[#BADE4F] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                style={{ fontFamily: 'Open Sans, sans-serif' }}
-              >
-                Zur Warteliste
-              </button>
-            </div>
-          </div>
-          
-          {/* Remove the separate mobile beta launch section since it's now inline */}
-        </div>
-      </header>
-      {/* Hero Section */}
-      <Hero showDoodles={false} />
+      <SiteHeader onNavigate={setCurrentPage} />
+      <main className="pt-0">
+        <Hero showDoodles={false} />
 
       {/* How it Works Section */}
       <section className="py-16 lg:py-24 bg-white">
@@ -1132,69 +1044,9 @@ function App() {
 
       {/* FAQ Section */}
       <FAQ />
+      </main>
 
-      {/* Footer */}
-      <footer className="bg-[#292B27] text-white py-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <img 
-                  src="/favicon.png" 
-                  alt="elu – elevate you" 
-                  className="w-10 h-10"
-                />
-                <h3 className="text-2xl font-bold text-[#6D8EEC]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>
-                </h3>
-              </div>
-              <p className="text-gray-300 leading-relaxed mb-6" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Gesundheit ohne Umwege. Finde geprüfte Experten für alle Bereiche der Vorsorge und Prävention.
-              </p>
-              <div className="flex gap-4">
-                <a href="https://www.instagram.com/elevateyou.app/" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=61579333094922" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="https://www.linkedin.com/company/108662379/" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
-                  <Linkedin className="w-5 h-5" />
-                </a>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Rechtliches
-              </h4>
-              <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                <li><button onClick={() => setCurrentPage('impressum')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Impressum</button></li>
-                <li><button onClick={() => setCurrentPage('datenschutz')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Datenschutz</button></li>
-                <li><button onClick={() => setCurrentPage('agb')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">AGB</button></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Kontakt
-              </h4>
-              <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                <li><button onClick={() => setCurrentPage('contact')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Kontakt</button></li>
-                <li><button onClick={() => setCurrentPage('support')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Support</button></li>
-                <li><button onClick={() => setCurrentPage('blog')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Blog</button></li>
-                {/* <li><button onClick={() => setCurrentPage('press')} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Presse</button></li> */}
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-600 mt-12 pt-8 text-center">
-            <p className="text-gray-400" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              © 2025 <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>. Alle Rechte vorbehalten.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter onNavigate={setCurrentPage} />
 
       {/* Mobile Sticky CTA */}
       <div className="fixed bottom-4 left-4 right-4 md:hidden z-50">

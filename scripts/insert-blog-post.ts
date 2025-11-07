@@ -8,7 +8,7 @@ import { resolve } from 'path';
 
 // Load environment variables from .env file (simple approach)
 const envFile = resolve(process.cwd(), '.env');
-let envVars: Record<string, string> = {};
+const envVars: Record<string, string> = {};
 
 try {
   const envContent = readFileSync(envFile, 'utf-8');
@@ -22,6 +22,9 @@ try {
   });
 } catch (error) {
   console.error('Could not read .env file, using process.env');
+  if (error instanceof Error) {
+    console.error(error.message);
+  }
 }
 
 const supabaseUrl = envVars.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
