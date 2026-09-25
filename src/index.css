@@ -81,6 +81,13 @@
 
   body {
     background-color: #F4F6FB;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: normal;
   }
 }
 

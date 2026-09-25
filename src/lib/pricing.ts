@@ -3,6 +3,7 @@ const introEndsAt = '2026-12-31';
 export const EXPERT_PRICING = {
   introEndsAt,
   introEndsLabel: '31. Dezember 2026',
+  introEndsLabelEn: '31 December 2026',
   introEndsShort: introEndsAt.split('-').reverse().join('.'),
   introSlots: 50,
   starter: {
