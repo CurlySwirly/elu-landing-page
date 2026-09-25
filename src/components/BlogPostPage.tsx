@@ -95,7 +95,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onBack, onRelatedPost
     return (
       <div className="min-h-screen bg-light">
         <SiteHeader />
-        <div className="max-w-5xl mx-auto px-6 py-24 pt-32 text-center">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16 pt-28 md:py-24 md:pt-32 text-center">
           <h1 className="font-['League_Spartan'] font-bold text-[#292B27] text-[32px] md:text-[46px] mb-6">
             Artikel nicht gefunden
           </h1>
