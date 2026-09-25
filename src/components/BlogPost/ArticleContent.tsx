@@ -38,7 +38,7 @@ export default function ArticleContent({ content, onPostClick }: ArticleContentP
 
   return (
     <article className="bg-light py-12">
-      <div className="max-w-3xl mx-auto px-6 rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] py-12 md:py-16">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] py-8 sm:py-12 md:py-16">
         <div
           ref={contentRef}
           className="article-content max-w-none

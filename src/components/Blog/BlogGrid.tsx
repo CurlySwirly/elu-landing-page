@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { BlogPost } from '../../lib/supabase';
 import BlogCard from './BlogCard';
+import { useLocale } from '../../i18n';
 
 type BlogGridProps = {
   posts: BlogPost[];
@@ -11,6 +12,7 @@ type BlogGridProps = {
 const POSTS_PER_PAGE = 6;
 
 export default function BlogGrid({ posts, onPostClick }: BlogGridProps) {
+  const { t } = useLocale();
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
@@ -30,10 +32,10 @@ export default function BlogGrid({ posts, onPostClick }: BlogGridProps) {
 
   if (posts.length === 0) {
     return (
-      <section className="bg-light py-16">
-        <div className="max-w-7xl mx-auto px-6 text-center">
+      <section className="bg-light py-10 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <p className="font-['Open_Sans'] text-[#292B27] text-lg">
-            Keine Artikel gefunden. Versuche eine andere Suche oder Kategorie.
+            {t('blog.empty')}
           </p>
         </div>
       </section>
@@ -41,8 +43,8 @@ export default function BlogGrid({ posts, onPostClick }: BlogGridProps) {
   }
 
   return (
-    <section className="bg-light py-20">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="bg-light py-10 md:py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {currentPosts.map((post) => (
             <BlogCard key={post.id} post={post} onPostClick={onPostClick} />
@@ -50,14 +52,14 @@ export default function BlogGrid({ posts, onPostClick }: BlogGridProps) {
         </div>
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-6">
             <button
               onClick={handlePrevPage}
               disabled={currentPage === 1}
-              className="flex items-center gap-2 bg-white border-2 border-[#E2E8FB] text-[#292B27] font-['Open_Sans'] font-semibold px-6 py-3 rounded-full hover:border-[#6D8EEC] hover:text-[#6D8EEC] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-[#E2E8FB] disabled:hover:text-[#292B27]"
+              className="flex items-center gap-1 sm:gap-2 bg-white border-2 border-[#E2E8FB] text-[#292B27] font-['Open_Sans'] font-semibold px-3 py-2 sm:px-6 sm:py-3 text-sm rounded-full hover:border-[#6D8EEC] hover:text-[#6D8EEC] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-[#E2E8FB] disabled:hover:text-[#292B27]"
             >
               <ChevronLeft className="w-5 h-5" />
-              Zurück
+              {t('blog.prev')}
             </button>
 
             <div className="flex items-center gap-2">
@@ -82,9 +84,9 @@ export default function BlogGrid({ posts, onPostClick }: BlogGridProps) {
             <button
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
-              className="flex items-center gap-2 bg-white border-2 border-[#E2E8FB] text-[#292B27] font-['Open_Sans'] font-semibold px-6 py-3 rounded-full hover:border-[#6D8EEC] hover:text-[#6D8EEC] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-[#E2E8FB] disabled:hover:text-[#292B27]"
+              className="flex items-center gap-1 sm:gap-2 bg-white border-2 border-[#E2E8FB] text-[#292B27] font-['Open_Sans'] font-semibold px-3 py-2 sm:px-6 sm:py-3 text-sm rounded-full hover:border-[#6D8EEC] hover:text-[#6D8EEC] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-[#E2E8FB] disabled:hover:text-[#292B27]"
             >
-              Weiter
+              {t('blog.next')}
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
