@@ -1,49 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Plus, Minus } from 'lucide-react';
+import { useLocale } from '../i18n';
 
 interface FAQItem {
   question: string;
   answer: string;
 }
-
-const faqData: FAQItem[] = [
-  {
-    question: "Wie wird mir die passende Expertin oder der passende Experte vorgeschlagen?",
-    answer: "Unsere Matching-Funktion berücksichtigt deine Angaben zu Zielen, Standort und Präferenzen. So erhältst du personalisierte Vorschläge und findest schnell die richtige Expertin oder den richtigen Experten für dein Anliegen."
-  },
-  {
-    question: "Was kostet mich elu?",
-    answer: "Die Registrierung ist kostenlos. Du zahlst den Preis, den die Expert:innen für ihre Leistung festlegen, plus eine kleine Servicegebühr für die Buchung über elu. Alle Kosten siehst du transparent, bevor du buchst."
-  },
-  {
-    question: "Kann ich mit den Expert:innen vorab schreiben?",
-    answer: "Ja. Über den Ende-zu-Ende-verschlüsselten Chat kannst du Fragen stellen und Details abklären, bevor du buchst."
-  },
-  {
-    question: "Wie buche und bezahle ich einen Termin?",
-    answer: "Du wählst eine Expertin oder einen Experten, entscheidest dich für eine Leistung – vor Ort oder online – und buchst direkt in der App. Die Zahlung läuft sicher über unseren Zahlungsdienstleister Stripe."
-  },
-  {
-    question: "Was passiert, wenn ein Termin abgesagt wird?",
-    answer: "Sagst du bis 24 Stunden vor dem Termin ab, erhältst du den Preis der Leistung vollständig zurück. Die Servicegebühr wird in diesem Fall nicht erstattet. Bei späteren Absagen ist keine Rückerstattung möglich. Sagen Expert:innen ab, wirst du sofort informiert und erhältst den gesamten Betrag inklusive Servicegebühr zurück – oder buchst kostenlos um."
-  },
-  {
-    question: "Kann ich Bewertungen anderer Klient:innen sehen?",
-    answer: "Ja. Nach jedem Termin können Klient:innen eine Bewertung abgeben. So kannst du die Qualität besser einschätzen."
-  },
-  {
-    question: "Wie werden die Expert:innen geprüft?",
-    answer: "TODO: Antwort von Linda – Prüfprozess beschreiben (welche Nachweise, wer prüft)."
-  },
-  {
-    question: "Wann startet elu?",
-    answer: "TODO: Antwort von Linda – Startdatum/Region."
-  },
-  {
-    question: "Ist elu nur für Fitness?",
-    answer: "Nein. Bei elu findest du Physiotherapie, Personal Training, Massage, Ernährungsberatung, Yoga und Coaching."
-  }
-];
 
 const AccordionItem: React.FC<{ item: FAQItem; index: number; isOpen: boolean; onToggle: () => void }> = ({ 
   item, 
@@ -69,7 +31,7 @@ const AccordionItem: React.FC<{ item: FAQItem; index: number; isOpen: boolean; o
         aria-expanded={isOpen}
         aria-controls={`faq-content-${index}`}
       >
-        <h3 className="text-lg font-semibold text-[#292B27] pr-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+        <h3 className="text-base sm:text-lg font-semibold text-[#292B27] pr-3 sm:pr-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
           {item.question}
         </h3>
         <div className="flex-shrink-0">
@@ -101,7 +63,9 @@ const AccordionItem: React.FC<{ item: FAQItem; index: number; isOpen: boolean; o
 };
 
 const FAQ: React.FC = () => {
+  const { t, messages } = useLocale();
   const [openItems, setOpenItems] = useState<number[]>([]);
+  const faqData = messages.faq.items;
 
   const toggleItem = (index: number) => {
     setOpenItems(prev => 
@@ -112,15 +76,14 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-light">
+    <section className="py-12 md:py-16 lg:py-20 bg-light">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#292B27] mb-6" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-            FAQ – Häufig gestellte Fragen
+        <div className="text-center mb-8 md:mb-12 lg:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#292B27] mb-4 md:mb-6" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+            {t('faq.title')}
           </h2>
-          <p className="text-lg md:text-xl text-[#292B27] max-w-3xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-            Hier findest du Antworten auf die wichtigsten Fragen rund um deine Nutzung von elu. So weißt du genau, was dich erwartet, bevor du deine erste Buchung machst.
+          <p className="text-sm sm:text-base md:text-xl text-[#292B27] max-w-3xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+            {t('faq.sub')}
           </p>
         </div>
 
@@ -128,8 +91,8 @@ const FAQ: React.FC = () => {
         <div className="space-y-4">
           {faqData.map((item, index) => (
             <AccordionItem
-              key={index}
-              item={item}
+              key={item.q}
+              item={{ question: item.q, answer: item.a }}
               index={index}
               isOpen={openItems.includes(index)}
               onToggle={() => toggleItem(index)}
