@@ -112,7 +112,7 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-[#F0F0F0]">
+    <section className="py-20 bg-light">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">

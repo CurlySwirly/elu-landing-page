@@ -27,7 +27,7 @@ export default function ArticleHeader({
   };
 
   return (
-    <header className="bg-gradient-to-b from-white to-[#F8F4F4] pt-6 pb-16">
+    <header className="bg-light pt-6 pb-16">
       <div className="max-w-4xl mx-auto px-6">
         <div className="mb-8">
           <span className="inline-block px-5 py-2 rounded-full text-xs font-['Open_Sans'] font-semibold tracking-wide uppercase text-[#6D8EEC] bg-[#6D8EEC]/10">

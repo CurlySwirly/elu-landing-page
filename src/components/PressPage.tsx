@@ -40,7 +40,7 @@ const PressPage: React.FC<PressPageProps> = ({ onBack }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-light">
       {/* SEO Title - would be set via React Helmet in production */}
       {/* <title>Presse | Elevate You</title> */}
       

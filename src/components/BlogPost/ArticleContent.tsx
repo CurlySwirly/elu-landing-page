@@ -37,8 +37,8 @@ export default function ArticleContent({ content, onPostClick }: ArticleContentP
   }, [onPostClick]);
 
   return (
-    <article className="bg-white py-20">
-      <div className="max-w-3xl mx-auto px-6">
+    <article className="bg-light py-12">
+      <div className="max-w-3xl mx-auto px-6 rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] py-12 md:py-16">
         <div
           ref={contentRef}
           className="article-content max-w-none
@@ -54,7 +54,7 @@ export default function ArticleContent({ content, onPostClick }: ArticleContentP
             [&_ol]:font-['Open_Sans'] [&_ol]:text-[#292B27]/80 [&_ol]:my-8 [&_ol]:space-y-3 [&_ol]:list-decimal [&_ol]:pl-6
             [&_li]:text-[17px] [&_li]:md:text-[18px] [&_li]:leading-[1.7] [&_li]:mb-2
             [&_li_marker]:text-[#6D8EEC]
-            [&_blockquote]:border-l-[6px] [&_blockquote]:border-[#6D8EEC] [&_blockquote]:bg-[#F8F4F4] [&_blockquote]:rounded-r-2xl [&_blockquote]:pl-8 [&_blockquote]:pr-6 [&_blockquote]:py-6 [&_blockquote]:my-10 [&_blockquote]:italic [&_blockquote]:text-[#292B27] [&_blockquote]:text-lg [&_blockquote]:font-medium"
+            [&_blockquote]:border-l-[6px] [&_blockquote]:border-[#6D8EEC] [&_blockquote]:bg-light [&_blockquote]:rounded-r-2xl [&_blockquote]:pl-8 [&_blockquote]:pr-6 [&_blockquote]:py-6 [&_blockquote]:my-10 [&_blockquote]:italic [&_blockquote]:text-[#292B27] [&_blockquote]:text-lg [&_blockquote]:font-medium"
           dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>

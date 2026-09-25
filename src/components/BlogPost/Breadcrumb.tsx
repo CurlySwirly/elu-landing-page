@@ -14,7 +14,7 @@ export default function Breadcrumb({ category, title }: BreadcrumbProps) {
   };
 
   return (
-    <nav className="bg-[#F8F4F4] py-4" aria-label="Breadcrumb">
+    <nav className="bg-light py-4" aria-label="Breadcrumb">
       <div className="max-w-5xl mx-auto px-6">
         <ol className="flex items-center gap-2 text-sm font-['Open_Sans']">
           <li>

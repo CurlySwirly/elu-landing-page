@@ -74,6 +74,54 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #F4F6FB;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] text-white font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_4px_16px_rgba(109,142,236,0.25)];
+  }
+
+  .card-lift {
+    @apply transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_-16px_rgba(109,142,236,0.28)];
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal.is-visible,
+  .card-lift,
+  .btn-primary {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* Custom utilities for carousel */
 .perspective-1000 {
   perspective: 1000px;
@@ -93,8 +141,8 @@
   font-size: 14px;
   border: 1px solid rgba(41, 43, 39, 0.08);
   box-shadow: 0 12px 40px rgba(109, 142, 236, 0.12), 0 4px 16px rgba(0, 0, 0, 0.04);
-  min-width: 400px;
-  max-width: 600px;
+  min-width: min(400px, calc(100vw - 32px));
+  max-width: min(600px, calc(100vw - 32px));
   padding: 16px 20px;
   backdrop-filter: blur(8px);
   cursor: pointer;

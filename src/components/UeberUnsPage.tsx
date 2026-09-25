@@ -11,6 +11,27 @@ const focusRing =
 
 const SHOW_ELU_FOR_WORK = false;
 
+const founders = [
+  {
+    name: 'Linda Breuer',
+    role: 'Mitgründerin & Geschäftsführerin · Produkt, Marke & Community',
+    image: '/images/founder-linda.png',
+    bio: 'Über zehn Jahre als Health- und Performance-Coach, davor Leistungsbasketball: Linda kennt die Gesundheitsbranche von beiden Seiten. Sie weiß, wie schwer es ist, die passende Unterstützung zu finden, und wie viel Zeit Selbstständige mit Terminen, Rechnungen und Marketing verlieren. Bei elu gestaltet sie Produkt, Marke und Community. Ihr Ziel: Prävention soll so selbstverständlich werden wie der Arztbesuch.',
+  },
+  {
+    name: 'Dominik Dorr',
+    role: 'Mitgründer & Geschäftsführer · Technologie & Plattform',
+    image: '/images/founder-dominik.png',
+    bio: 'Hinter jeder Buchung auf elu steckt Dominiks Arbeit. Der Software-Engineer baut die technische Basis der Plattform, vom Backend über die Zahlungsabwicklung bis zur Datensicherheit. Sein Anspruch: Alles muss im Hintergrund zuverlässig laufen, damit sich Klient:innen und Expert:innen ganz aufeinander konzentrieren können. Ausgleich findet er beim Laufen.',
+  },
+  {
+    name: 'Arnold Stelzer',
+    role: 'Mitgründer & Geschäftsführer · App & User Experience',
+    image: '/images/founder-arnold.png',
+    bio: 'Arnold denkt Software vom Menschen aus. Als Software-Engineer entwickelt er die elu-App und sorgt dafür, dass sich Suchen, Chatten und Buchen intuitiv anfühlen, auch für alle, die sonst wenig mit Technik am Hut haben. Vom Klettern bringt er Geduld und Präzision mit: Gute Lösungen entstehen Schritt für Schritt.',
+  },
+];
+
 const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
   useEffect(() => {
     const previousTitle = document.title;
@@ -100,77 +121,119 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F8F4F4] text-[#292B27]">
+    <div className="min-h-screen bg-light text-[#292B27]">
       <SiteHeader />
 
-      <main className="pt-28 lg:pt-36 pb-20">
-        <nav
-          aria-label="Breadcrumb"
-          className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 mb-8"
-        >
-          <ol
-            className="flex items-center gap-2 text-sm text-[#292B27]/80"
-            style={{ fontFamily: 'Open Sans, sans-serif' }}
-          >
-            <li>
-              <a
-                href="/"
-                className={`${focusRing} hover:underline hover:text-[#1f211d] transition-colors`}
-              >
-                Home
-              </a>
-            </li>
-            <li aria-hidden="true">›</li>
-            <li className="font-semibold">Über uns</li>
-          </ol>
-        </nav>
+      <main className="pt-28 lg:pt-32 pb-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav aria-label="Breadcrumb" className="mb-6">
+            <ol
+              className="flex items-center gap-2 text-sm text-[#292B27]/70"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              <li>
+                <a href="/" className={`${focusRing} rounded-sm hover:underline`}>
+                  Home
+                </a>
+              </li>
+              <li aria-hidden="true">›</li>
+              <li className="font-semibold text-[#292B27]">Über uns</li>
+            </ol>
+          </nav>
 
-        {/* Hero */}
-        <section className="mb-20">
-          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-8 md:p-12 lg:p-16">
+          <section className="mb-12 lg:mb-16">
+            <div className="rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-6 md:p-10">
+              <p
+                className="inline-flex items-center rounded-full bg-[#E2E8FB] px-4 py-1.5 mb-5 text-sm font-medium text-[#6D8EEC]"
+                style={{ fontFamily: 'Open Sans, sans-serif' }}
+              >
+                Elevate You GmbH · Wien
+              </p>
               <h1
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-[#292B27]"
+                className="text-[32px] md:text-[44px] lg:text-[48px] font-bold leading-[1.1] tracking-tight text-[#292B27] mb-4"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
                 elu – Elevating Health &amp; Wellbeing
               </h1>
               <p
-                className="text-lg md:text-xl leading-relaxed text-[#292B27]/90 max-w-3xl mb-10"
+                className="text-base md:text-lg leading-relaxed text-[#292B27]/75 max-w-2xl mb-6"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 elu ist die Marke der Elevate You GmbH in Wien. Unsere Mission: präventive Gesundheit zugänglich,
                 alltagstauglich und menschlich machen.
               </p>
-              <div
-                className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm font-semibold text-[#292B27]"
-                style={{ fontFamily: 'Open Sans, sans-serif' }}
-              >
+              <div className="flex flex-wrap gap-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                 {['EU-Hosting', 'DSGVO-konform', 'Sichere Zahlung'].map((item) => (
-                  <div
+                  <span
                     key={item}
-                    className="rounded-2xl bg-[#E2E8FB] px-4 py-3 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+                    className="inline-flex items-center rounded-full bg-[#E2E8FB] px-4 py-1.5 text-sm font-medium text-[#6D8EEC]"
                   >
                     {item}
-                  </div>
+                  </span>
                 ))}
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Unsere Lösungen */}
-        <section className="mb-20">
-          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-10">
+          <section className="mb-12 lg:mb-16">
+            <div className="mb-8">
               <h2
-                className="text-3xl font-bold mb-4"
+                className="text-2xl md:text-3xl font-bold mb-2"
+                style={{ fontFamily: 'League Spartan, sans-serif' }}
+              >
+                Das Gründungsteam
+              </h2>
+              <p
+                className="text-base text-[#292B27]/70 max-w-2xl"
+                style={{ fontFamily: 'Open Sans, sans-serif' }}
+              >
+                Drei Geschäftsführer:innen, ein Ziel: Prävention alltagstauglich machen.
+              </p>
+            </div>
+            <div className="grid gap-5 md:grid-cols-3">
+              {founders.map((founder) => (
+                <article
+                  key={founder.name}
+                  className="card-lift rounded-3xl bg-white p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex flex-col"
+                >
+                  <img
+                    src={founder.image}
+                    alt={founder.name}
+                    className="w-24 h-24 mb-5"
+                  />
+                  <h3
+                    className="text-xl font-bold text-[#292B27] mb-2"
+                    style={{ fontFamily: 'League Spartan, sans-serif' }}
+                  >
+                    {founder.name}
+                  </h3>
+                  <p
+                    className="text-sm font-medium text-[#6D8EEC] mb-4 leading-snug"
+                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  >
+                    {founder.role}
+                  </p>
+                  <p
+                    className="text-sm leading-relaxed text-[#292B27]/75"
+                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  >
+                    {founder.bio}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-12 lg:mb-16">
+            <div className="mb-6">
+              <h2
+                className="text-2xl md:text-3xl font-bold mb-2"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
                 Unsere Lösungen
               </h2>
               <p
-                className="text-lg text-[#292B27]/80 max-w-2xl"
+                className="text-base text-[#292B27]/70 max-w-2xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 {SHOW_ELU_FOR_WORK
@@ -179,19 +242,17 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
               </p>
             </div>
 
-            <div className={`grid gap-8 ${SHOW_ELU_FOR_WORK ? 'md:grid-cols-2' : ''}`}>
-              <article className="rounded-3xl bg-white p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-                <header className="mb-6">
-                  <h3
-                    className="text-2xl font-semibold"
-                    style={{ fontFamily: 'League Spartan, sans-serif' }}
-                  >
-                    <span className="font-bold">elu.</span>{' '}
-                    <span className="italic font-extralight">elevate you</span>
-                  </h3>
-                </header>
+            <div className={`grid gap-5 ${SHOW_ELU_FOR_WORK ? 'md:grid-cols-2' : ''}`}>
+              <article className="rounded-3xl bg-white p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                <h3
+                  className="text-xl font-semibold mb-4"
+                  style={{ fontFamily: 'League Spartan, sans-serif' }}
+                >
+                  <span className="font-bold">elu.</span>{' '}
+                  <span className="italic font-extralight">elevate you</span>
+                </h3>
                 <ul
-                  className="space-y-3 text-[#292B27]/90"
+                  className="space-y-2.5 text-sm md:text-base text-[#292B27]/80"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 >
                   <li>Plattform für präventive Gesundheitsdienstleistungen (Physiotherapie, Personal Training, Massage, Ernährung, Yoga, Coaching)</li>
@@ -199,10 +260,10 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
                   <li>Qualitätsgesichert durch kuratierte Expert:innen-Profile</li>
                   <li>Digitaler Assistent für Expert:innen inklusive Termin- und Klient:innenverwaltung</li>
                 </ul>
-                <div className="mt-8">
+                <div className="mt-6">
                   <a
                     href="https://elevateyou.app"
-                    className={`inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] px-6 py-3 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:scale-[1.02] hover:shadow-[0_4px_16px_rgba(109,142,236,0.25)] ${focusRing}`}
+                    className={`btn-primary px-6 py-3 text-sm ${focusRing}`}
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                   >
                     Zu elu elevate you
@@ -211,18 +272,16 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
               </article>
 
               {SHOW_ELU_FOR_WORK && (
-              <article className="rounded-3xl bg-white p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-                <header className="mb-6">
-                  <h3
-                    className="text-2xl font-semibold"
-                    style={{ fontFamily: 'League Spartan, sans-serif' }}
-                  >
-                    <span className="font-bold">elu.</span>{' '}
-                    <span className="italic font-extralight">for work</span>
-                  </h3>
-                </header>
+              <article className="rounded-3xl bg-white p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                <h3
+                  className="text-xl font-semibold mb-4"
+                  style={{ fontFamily: 'League Spartan, sans-serif' }}
+                >
+                  <span className="font-bold">elu.</span>{' '}
+                  <span className="italic font-extralight">for work</span>
+                </h3>
                 <ul
-                  className="space-y-3 text-[#292B27]/90"
+                  className="space-y-2.5 text-sm md:text-base text-[#292B27]/80"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 >
                   <li>Tägliche Check-ins für Mitarbeitende – niederschwellig und anonym</li>
@@ -230,10 +289,10 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
                   <li>Konkrete Empfehlungen für präventive Maßnahmen im Unternehmen</li>
                   <li>Ideal für KMU bis rund 100 Mitarbeitende</li>
                 </ul>
-                <div className="mt-8">
+                <div className="mt-6">
                   <a
                     href="https://eluforwork.com"
-                    className={`inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] px-6 py-3 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:scale-[1.02] hover:shadow-[0_4px_16px_rgba(109,142,236,0.25)] ${focusRing}`}
+                    className={`btn-primary px-6 py-3 text-sm ${focusRing}`}
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                   >
                     Zu elu for work
@@ -242,27 +301,24 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
               </article>
               )}
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Warum elu */}
-        <section className="mb-20">
-          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl bg-[#E2E8FB] p-8 md:p-12 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+          <section className="mb-12 lg:mb-16">
+            <div className="rounded-3xl bg-white p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
               <h2
-                className="text-3xl font-bold mb-4"
+                className="text-2xl md:text-3xl font-bold mb-3"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
                 Warum elu?
               </h2>
               <p
-                className="text-lg text-[#292B27]/85 mb-8 max-w-3xl"
+                className="text-base text-[#292B27]/75 mb-6 max-w-3xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 Wir verbinden präventive Gesundheitsangebote mit echter Menschlichkeit. Unser Ansatz schafft Vertrauen, Transparenz und nachhaltige Wirkung – für Klient:innen und Expert:innen.
               </p>
               <ul
-                className="grid gap-4 sm:grid-cols-3 text-[#292B27]"
+                className="grid gap-3 sm:grid-cols-3"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 {[
@@ -272,34 +328,31 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
                 ].map((pillar) => (
                   <li
                     key={pillar}
-                    className="rounded-2xl bg-white/80 px-6 py-5 shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
+                    className="rounded-2xl bg-light px-5 py-4 text-sm font-semibold text-[#292B27]"
                   >
-                    <span className="font-semibold">{pillar}</span>
+                    {pillar}
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* So funktioniert's */}
-        <section className="mb-20">
-          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-8">
+          <section className="mb-12 lg:mb-16">
+            <div className="mb-6">
               <h2
-                className="text-3xl font-bold mb-4"
+                className="text-2xl md:text-3xl font-bold mb-2"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
                 So funktioniert&apos;s
               </h2>
               <p
-                className="text-lg text-[#292B27]/80 max-w-2xl"
+                className="text-base text-[#292B27]/70 max-w-2xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 Drei Schritte, die Menschen mit der passenden Expertise verbinden – digital begleitet, persönlich umgesetzt.
               </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-3">
               {[
                 {
                   title: '1) Ziele klären',
@@ -322,13 +375,13 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
                   className="rounded-3xl bg-white p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
                 >
                   <h3
-                    className="text-xl font-semibold mb-3"
+                    className="text-lg font-bold mb-2"
                     style={{ fontFamily: 'League Spartan, sans-serif' }}
                   >
                     {step.title}
                   </h3>
                   <p
-                    className="text-[#292B27]/80"
+                    className="text-sm leading-relaxed text-[#292B27]/75"
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                   >
                     {step.description}
@@ -336,50 +389,37 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
                 </article>
               ))}
             </div>
-            <div className="mt-6">
-              <a
-                href="#marke"
-                className={`inline-flex items-center text-sm font-semibold text-[#292B27] hover:text-[#1f211d] hover:underline transition-colors ${focusRing}`}
-                style={{ fontFamily: 'Open Sans, sans-serif' }}
-              >
-                Mehr über unsere Markenlogik
-              </a>
-            </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Marke & Unternehmen */}
-        <section id="marke" className="pt-12">
-          <div className="w-full h-[2px] bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] mb-8" aria-hidden="true" />
-          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl bg-white p-8 md:p-12 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+          <section id="marke">
+            <div className="rounded-3xl bg-white p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
               <h2
-                className="text-3xl font-bold mb-4"
+                className="text-2xl md:text-3xl font-bold mb-3"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
                 Marke &amp; Trägerunternehmen
               </h2>
               <p
-                className="text-lg text-[#292B27]/85 mb-6"
+                className="text-base text-[#292B27]/75 mb-3"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 elu ist eine Marke der Elevate You GmbH.
               </p>
               <p
-                className="text-[#292B27]/85 mb-6"
+                className="text-sm text-[#292B27]/70"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 Elevate You GmbH, Petrusgasse 16/1, 1030 Wien · FN 688469f ·{' '}
                 <a
                   href="mailto:info@elevateyou.app"
-                  className={`font-semibold text-[#292B27] hover:text-[#1f211d] hover:underline transition-colors ${focusRing}`}
+                  className={`font-semibold text-[#6D8EEC] hover:underline ${focusRing} rounded-sm`}
                 >
                   info@elevateyou.app
                 </a>
               </p>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
 
       <SiteFooter />

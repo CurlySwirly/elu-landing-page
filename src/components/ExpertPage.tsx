@@ -18,6 +18,7 @@ import {
 import { formServices } from '../lib/formServices';
 import { GENERIC_FORM_ERROR } from '../lib/formErrors';
 import { EXPERT_PRICING } from '../lib/pricing';
+import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
 
 interface ExpertPageProps {
@@ -138,7 +139,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
     {
       icon: FileText,
       title: "Weniger Papierkram",
-      description: "Rechnungen und Übersichten werden automatisch erstellt. [TODO: mit Dominik/Arnold bestätigen, was zum Start automatisiert ist]"
+      description: "Rechnungen und Übersichten werden automatisch erstellt."
     },
     {
       icon: MessageCircle,
@@ -172,6 +173,64 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
     });
   };
 
+  const pricingPlans = [
+    {
+      id: 'starter',
+      name: 'Starter',
+      orderClass: 'order-3 md:order-1',
+      highlighted: false,
+      badge: null as string | null,
+      regular: null as string | null,
+      price: EXPERT_PRICING.starter.price,
+      period: EXPERT_PRICING.starter.period,
+      priceNote: `+ ${EXPERT_PRICING.starter.feePercent} pro Buchung`,
+      description: 'Ideal zum Ausprobieren',
+      features: [
+        `Die ersten ${EXPERT_PRICING.starter.freeBookings} Buchungen ohne Gebühr`,
+        'Professionelles Profil',
+        'Buchung, Zahlung & Chat',
+        'Keine Fixkosten, keine Bindung',
+      ],
+      footer: null as string | null,
+    },
+    {
+      id: 'monthly',
+      name: 'Monatsabo',
+      orderClass: 'order-1 md:order-2',
+      highlighted: true,
+      badge: 'Beliebt',
+      regular: EXPERT_PRICING.monthly.regular,
+      price: EXPERT_PRICING.monthly.intro,
+      period: EXPERT_PRICING.monthly.period,
+      priceNote: null,
+      description: `Lohnt sich ab ca. ${EXPERT_PRICING.monthly.worthwhileFrom} Umsatz im Monat`,
+      features: [
+        '0 % Plattformgebühr',
+        'Alles aus Starter',
+        'Monatlich kündbar',
+      ],
+      footer: `Aktionspreis gilt bis ${EXPERT_PRICING.introEndsShort}, danach ${EXPERT_PRICING.monthly.regular} / ${EXPERT_PRICING.monthly.period}.`,
+    },
+    {
+      id: 'yearly',
+      name: 'Jahresabo',
+      orderClass: 'order-2 md:order-3',
+      highlighted: false,
+      badge: null,
+      regular: EXPERT_PRICING.yearly.regular,
+      price: EXPERT_PRICING.yearly.intro,
+      period: EXPERT_PRICING.yearly.period,
+      priceNote: `entspricht ${EXPERT_PRICING.yearly.monthlyEquivalent} / Monat`,
+      description: 'Für alle, die regelmäßig über elu arbeiten',
+      features: [
+        '0 % Plattformgebühr',
+        'Alles aus Starter',
+        'Preis für 12 Monate gesichert',
+      ],
+      footer: `Bei Abschluss bis ${EXPERT_PRICING.introEndsShort}. Danach ${EXPERT_PRICING.yearly.regular} / ${EXPERT_PRICING.yearly.period}.`,
+    },
+  ];
+
   const faqData = [
     {
       question: "Wie funktioniert die Abrechnung?",
@@ -198,238 +257,269 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-[#292B27] text-white py-6">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <img 
-              src="/favicon.png" 
-              alt="elu – elevate you" 
-              className="w-8 h-8"
-            />
-            <h1 className="text-xl" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>
-            </h1>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-light">
+      <SiteHeader />
 
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-32 overflow-hidden">
-        {/* Back Button - positioned within hero section */}
-        <div className="absolute top-8 left-0 right-0 z-20">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <a 
-              href="/"
-              className="inline-flex items-center gap-2 text-[#6D8EEC] hover:text-[#5a7ae8] transition-colors duration-200 font-medium bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:bg-white transition-all duration-200"
-              style={{ fontFamily: 'Open Sans, sans-serif' }}
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Zurück
-            </a>
-          </div>
-        </div>
-        {/* Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#BADE4F]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 via-[#F0F0F0]/10 to-[#6D8EEC]/10"></div>
-        <div className="relative z-10">
+      <main className="pt-28 lg:pt-32 pb-16">
+      <section className="bg-light">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-[#292B27] leading-tight tracking-tight mb-6">
-              Mehr Klient:innen. Weniger Verwaltung.
-            </h1>
-            <p className="text-lg lg:text-xl text-[#292B27] opacity-80 leading-relaxed mb-16">
-              Werde von Menschen gefunden, die gezielt nach deiner Expertise suchen – online oder vor Ort. Buchung, Zahlung und Rechnung laufen über elu.
-            </p>
-            
-            {/* Responsive Cards Layout */}
-            <div className="relative mb-8">
-              {/* Mobile: Carousel with arrows */}
-              <div className="block md:hidden">
-                {/* Left Arrow */}
-                <button
-                  onClick={prevCard}
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
-                  aria-label="Vorheriger Vorteil"
-                >
-                  <ChevronLeft className="text-[#6D8EEC] w-5 h-5" />
-                </button>
+          <a
+            href="/"
+            className="inline-flex items-center gap-2 text-[#6D8EEC] hover:text-[#5a7ae8] mb-8 font-medium"
+            style={{ fontFamily: 'Open Sans, sans-serif' }}
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Zurück
+          </a>
 
-                {/* Right Arrow */}
-                <button
-                  onClick={nextCard}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg border-2 border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
-                  aria-label="Nächster Vorteil"
-                >
-                  <ChevronRight className="text-[#6D8EEC] w-5 h-5" />
-                </button>
-
-                {/* Mobile Carousel Container */}
-                <div className="overflow-hidden px-12">
-                  <div 
-                    className="flex transition-transform duration-500 ease-in-out"
-                    style={{ transform: `translateX(-${currentCard * 100}%)` }}
-                  >
-                    {appBenefits.map((benefit, index) => {
-                      const IconComponent: React.ElementType = benefit.icon;
-                      return (
-                        <div
-                          key={index}
-                          className="w-full flex-shrink-0 px-2"
-                        >
-                          <div className="bg-white p-6 rounded-2xl shadow-lg border-2 border-[#6D8EEC] h-64 max-w-sm mx-auto">
-                            <div className="w-12 h-12 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-4 mx-auto">
-                              <IconComponent className="text-white w-6 h-6" />
-                            </div>
-                            <h3 className="text-lg font-bold text-[#292B27] mb-3 tracking-tight text-center">
-                              {benefit.title}
-                            </h3>
-                            <p className="text-[#292B27] opacity-75 leading-relaxed text-sm text-center">
-                              {benefit.description}
-                            </p>
-                            <div className="w-8 h-1 bg-[#BADE4F] rounded-full mt-3 mx-auto"></div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              {/* Desktop: Grid layout showing multiple cards */}
-              <div className="hidden md:block">
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-                  {appBenefits.map((benefit, index) => {
-                    const IconComponent: React.ElementType = benefit.icon;
-                    return (
-                      <div
-                        key={index}
-                        className="bg-white p-6 lg:p-8 rounded-2xl shadow-lg border-2 border-[#6D8EEC] h-64 lg:h-72 hover:shadow-xl transition-shadow duration-300"
-                      >
-                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-[#6D8EEC] rounded-xl flex items-center justify-center mb-4 lg:mb-6 mx-auto">
-                          <IconComponent className="text-white w-6 h-6 lg:w-8 lg:h-8" />
-                        </div>
-                        <h3 className="text-lg lg:text-xl font-bold text-[#292B27] mb-3 lg:mb-4 tracking-tight text-center">
-                          {benefit.title}
-                        </h3>
-                        <p className="text-[#292B27] opacity-75 leading-relaxed text-sm lg:text-base text-center">
-                          {benefit.description}
-                        </p>
-                        <div className="w-8 lg:w-10 h-1 bg-[#BADE4F] rounded-full mt-3 lg:mt-4 mx-auto"></div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-10 md:mb-14">
+            <div>
+              <p
+                className="inline-flex items-center rounded-full bg-[#E2E8FB] px-5 py-2 mb-6 text-sm font-medium text-[#6D8EEC]"
+                style={{ fontFamily: 'Open Sans, sans-serif' }}
+              >
+                Für Expert:innen
+              </p>
+              <h1
+                className="text-[32px] md:text-[40px] lg:text-[48px] font-bold text-[#292B27] leading-[1.15] tracking-tight mb-4"
+                style={{ fontFamily: 'League Spartan, sans-serif' }}
+              >
+                Mehr Klient:innen.
+                <br />
+                <span className="whitespace-nowrap">Weniger Verwaltung.</span>
+              </h1>
+              <p
+                className="text-base md:text-lg text-[#292B27]/75 leading-relaxed mb-8 max-w-xl"
+                style={{ fontFamily: 'Open Sans, sans-serif' }}
+              >
+                Werde von Menschen gefunden, die gezielt nach deiner Expertise suchen – online oder vor Ort. Buchung, Zahlung und Rechnung laufen über elu.
+              </p>
+              <button
+                type="button"
+                onClick={scrollToBereitLoszulegen}
+                className="btn-primary gap-2 px-7 py-3.5 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#BADE4F]"
+                style={{ fontFamily: 'Open Sans, sans-serif' }}
+              >
+                Jetzt Platz sichern
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
-            
-            {/* Card indicators - only show on mobile */}
-            <div className="flex md:hidden justify-center gap-2 mb-8">
-              {appBenefits.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentCard(index)}
-                  className={`w-3 h-3 rounded-full transition-colors duration-200 ${
-                    index === currentCard ? 'bg-[#6D8EEC]' : 'bg-gray-300'
-                  }`}
-                  aria-label={`Zeige Vorteil ${index + 1}`}
-                />
-              ))}
+
+            <div className="relative overflow-hidden rounded-[2rem] shadow-[0_24px_60px_-24px_rgba(41,43,39,0.25)]">
+              <img
+                src="/images/hero-pt.jpg"
+                alt="Personal Trainer:in begleitet eine Klientin beim Training"
+                className="w-full aspect-[4/3] max-h-[280px] sm:max-h-none object-cover object-center transition-transform duration-700 ease-out hover:scale-[1.03]"
+              />
             </div>
           </div>
-        </div>
+
+          <div className="md:hidden">
+            <div className="bg-white p-6 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+              {(() => {
+                const benefit = appBenefits[currentCard];
+                const IconComponent: React.ElementType = benefit.icon;
+                return (
+                  <>
+                    <div className="w-12 h-12 bg-[#E2E8FB] rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                      <IconComponent className="text-[#6D8EEC] w-6 h-6" />
+                    </div>
+                    <h3
+                      className="text-lg font-bold text-[#292B27] mb-2 text-center"
+                      style={{ fontFamily: 'League Spartan, sans-serif' }}
+                    >
+                      {benefit.title}
+                    </h3>
+                    <p
+                      className="text-[#292B27]/70 leading-relaxed text-sm text-center"
+                      style={{ fontFamily: 'Open Sans, sans-serif' }}
+                    >
+                      {benefit.description}
+                    </p>
+                  </>
+                );
+              })()}
+            </div>
+            <div className="flex items-center justify-center gap-4 mt-5">
+              <button
+                onClick={prevCard}
+                className="w-10 h-10 bg-white rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex items-center justify-center"
+                aria-label="Vorheriger Vorteil"
+              >
+                <ChevronLeft className="text-[#6D8EEC] w-5 h-5" />
+              </button>
+              <div className="flex gap-1.5">
+                {appBenefits.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentCard(index)}
+                    className={`h-2 rounded-full transition-all duration-200 ${
+                      index === currentCard ? 'bg-[#6D8EEC] w-5' : 'bg-[#E2E8FB] w-2'
+                    }`}
+                    aria-label={`Zeige Vorteil ${index + 1}`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={nextCard}
+                className="w-10 h-10 bg-white rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex items-center justify-center"
+                aria-label="Nächster Vorteil"
+              >
+                <ChevronRight className="text-[#6D8EEC] w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+            {appBenefits.map((benefit) => {
+              const IconComponent: React.ElementType = benefit.icon;
+              return (
+                <div
+                  key={benefit.title}
+                  className="bg-white p-6 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex flex-col"
+                >
+                  <div className="w-12 h-12 bg-[#E2E8FB] rounded-2xl flex items-center justify-center mb-4">
+                    <IconComponent className="text-[#6D8EEC] w-6 h-6" />
+                  </div>
+                  <h3
+                    className="text-lg font-bold text-[#292B27] mb-2"
+                    style={{ fontFamily: 'League Spartan, sans-serif' }}
+                  >
+                    {benefit.title}
+                  </h3>
+                  <p
+                    className="text-sm text-[#292B27]/70 leading-relaxed"
+                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  >
+                    {benefit.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      {/* Preise & Modelle */}
-      <section className="bg-[#F0F0F0] py-20 lg:py-24">
+      <section className="bg-light pt-16 md:pt-20 pb-12 md:pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#292B27] text-center mb-16 tracking-tight">
-            Unsere Preismodelle
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#BADE4F] relative flex flex-col">
-              <div className="text-center mb-8 pt-4">
-                <h3 className="text-2xl font-bold text-[#292B27] mb-4 tracking-tight">
-                  Starter
-                </h3>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold text-[#6D8EEC]">{EXPERT_PRICING.starter.feePercent}</span>
-                </div>
-                <p className="text-sm text-[#292B27] opacity-75">
-                  Plattformgebühr pro Buchung · die ersten {EXPERT_PRICING.starter.freeBookings} Buchungen gratis
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative flex flex-col">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#BADE4F] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold">
-                  Aktion · nur {EXPERT_PRICING.introSlots} Plätze
-                </span>
-              </div>
-              <div className="text-center mb-8 pt-4">
-                <h3 className="text-2xl font-bold text-[#292B27] mb-4 tracking-tight">
-                  Monatsabo
-                </h3>
-                <div className="mb-4">
-                  <del aria-label={`regulärer Preis ${EXPERT_PRICING.monthly.regular}`} className="block text-lg text-[#292B27] opacity-50">
-                    {EXPERT_PRICING.monthly.regular}
-                  </del>
-                  <span className="text-4xl font-bold text-[#6D8EEC]">{EXPERT_PRICING.monthly.intro}</span>
-                  <span className="text-[#292B27] opacity-60"> / {EXPERT_PRICING.monthly.period}</span>
-                </div>
-                <p className="text-sm text-[#292B27] opacity-75 mb-2">
-                  0 % Plattformgebühr
-                </p>
-                <p className="text-sm text-[#292B27] opacity-75">
-                  Einführungspreis für die ersten {EXPERT_PRICING.introSlots} Expert:innen · gilt bis {EXPERT_PRICING.introEndsLabel} · danach {EXPERT_PRICING.monthly.regular} / {EXPERT_PRICING.monthly.period}
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative flex flex-col">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#BADE4F] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold">
-                  Aktion · nur {EXPERT_PRICING.introSlots} Plätze
-                </span>
-              </div>
-              <div className="text-center mb-8 pt-4">
-                <h3 className="text-2xl font-bold text-[#292B27] mb-4 tracking-tight">
-                  Jahresabo
-                </h3>
-                <div className="mb-4">
-                  <del aria-label={`regulärer Preis ${EXPERT_PRICING.yearly.regular}`} className="block text-lg text-[#292B27] opacity-50">
-                    {EXPERT_PRICING.yearly.regular}
-                  </del>
-                  <span className="text-4xl font-bold text-[#6D8EEC]">{EXPERT_PRICING.yearly.intro}</span>
-                  <span className="text-[#292B27] opacity-60"> / {EXPERT_PRICING.yearly.period}</span>
-                </div>
-                <p className="text-sm text-[#292B27] opacity-75 mb-2">
-                  0 % Plattformgebühr · {EXPERT_PRICING.yearly.savingsVsMonthlyRegular} günstiger als 12 × Monatsabo zum regulären Preis
-                </p>
-                <p className="text-sm text-[#292B27] opacity-75">
-                  Einführungspreis für die ersten {EXPERT_PRICING.introSlots} Expert:innen · bei Abschluss bis {EXPERT_PRICING.introEndsLabel} · danach {EXPERT_PRICING.yearly.regular} / {EXPERT_PRICING.yearly.period}
-                </p>
-              </div>
-            </div>
+          <div className="text-center max-w-2xl mx-auto mb-8 md:mb-10">
+            <h2
+              className="text-2xl md:text-3xl lg:text-[36px] font-bold text-[#292B27] tracking-tight mb-4"
+              style={{ fontFamily: 'League Spartan, sans-serif' }}
+            >
+              Wähle, wie du mit elu arbeitest
+            </h2>
+            <p
+              className="text-base text-[#292B27]/75 leading-relaxed"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              Du startest ohne Fixkosten. Buchst du regelmäßig, sparst du mit einem Abo die Plattformgebühr. Wechseln geht jederzeit.
+            </p>
           </div>
-          
+
+          <p
+            className="max-w-3xl mx-auto mb-10 md:mb-12 rounded-2xl bg-[#E2E8FB] px-5 py-3.5 text-center text-sm leading-relaxed text-[#292B27]"
+            style={{ fontFamily: 'Open Sans, sans-serif' }}
+          >
+            Einführungsaktion: Die ersten {EXPERT_PRICING.introSlots} Expert:innen sichern sich den Abo-Preis ab {EXPERT_PRICING.monthly.intro}/{EXPERT_PRICING.monthly.period} – nur bis {EXPERT_PRICING.introEndsLabel}.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-5xl mx-auto pt-4">
+            {pricingPlans.map((plan) => (
+              <div
+                key={plan.id}
+                className={`relative flex h-full flex-col bg-white p-6 md:p-8 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] border-2 ${
+                  plan.highlighted ? 'border-[#BADE4F]' : 'border-gray-100'
+                } ${plan.orderClass}`}
+              >
+                {plan.badge && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="inline-block whitespace-nowrap bg-[#BADE4F] text-[#292B27] px-3 py-1.5 rounded-full text-xs font-semibold">
+                      {plan.badge}
+                    </span>
+                  </div>
+                )}
+
+                <div className="text-center mb-6 pt-2">
+                  <h3
+                    className="text-2xl font-bold text-[#292B27] mb-3 tracking-tight"
+                    style={{ fontFamily: 'League Spartan, sans-serif' }}
+                  >
+                    {plan.name}
+                  </h3>
+                  <div className="mb-3">
+                    {plan.regular && (
+                      <del
+                        aria-label={`regulärer Preis ${plan.regular}`}
+                        className="block text-base text-[#292B27]/45 mb-0.5"
+                      >
+                        {plan.regular}
+                      </del>
+                    )}
+                    <div>
+                      <span
+                        className="text-4xl font-bold text-[#6D8EEC]"
+                        style={{ fontFamily: 'League Spartan, sans-serif' }}
+                      >
+                        {plan.price}
+                      </span>
+                      <span className="text-[#292B27]/60"> / {plan.period}</span>
+                    </div>
+                    {plan.priceNote && (
+                      <p
+                        className="mt-1 text-sm text-[#292B27]/60"
+                        style={{ fontFamily: 'Open Sans, sans-serif' }}
+                      >
+                        {plan.priceNote}
+                      </p>
+                    )}
+                  </div>
+                  <p
+                    className="text-sm text-[#292B27]/75"
+                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  >
+                    {plan.description}
+                  </p>
+                </div>
+
+                <ul className="space-y-2.5 flex-1 text-left" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2.5">
+                      <Check className="w-4 h-4 text-[#BADE4F] shrink-0 mt-0.5" aria-hidden="true" />
+                      <span className="text-sm text-[#292B27]/80 leading-snug">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {plan.footer && (
+                  <p
+                    className="mt-auto pt-6 text-xs text-[#292B27]/50 leading-relaxed text-center"
+                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  >
+                    {plan.footer}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+
           <div className="text-center mt-8">
             <button
               onClick={scrollToBereitLoszulegen}
               className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#5A7BE8] transition-colors duration-200"
             >
-              Beta-Zugang sichern
+              Jetzt Platz sichern
             </button>
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="bg-white py-20 lg:py-24">
+      <section className="bg-light py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#292B27] text-center mb-16 tracking-tight">
+          <h2
+            className="text-2xl md:text-3xl lg:text-[36px] font-bold text-[#292B27] text-center mb-8 md:mb-10 tracking-tight"
+            style={{ fontFamily: 'League Spartan, sans-serif' }}
+          >
             Häufige Fragen
           </h2>
           <div className="space-y-4">
@@ -463,10 +553,12 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
         </div>
       </section>
 
-      {/* Finaler CTA */}
-      <section id="bereit-loszulegen" className="bg-[#E2E8FB] py-16 md:py-20 lg:py-24">
+      <section id="bereit-loszulegen" className="bg-light py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#292B27] mb-6 md:mb-8 tracking-tight">
+          <h2
+            className="text-2xl md:text-3xl lg:text-[36px] font-bold text-[#292B27] mb-4 md:mb-6 tracking-tight"
+            style={{ fontFamily: 'League Spartan, sans-serif' }}
+          >
             Bereit loszulegen?
           </h2>
           <p className="text-base md:text-lg text-[#292B27] opacity-80 mb-8 md:mb-12 max-w-2xl mx-auto">
@@ -600,6 +692,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
           </div>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
     </div>

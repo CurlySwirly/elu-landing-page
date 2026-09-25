@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import Hero from './components/Hero';
+import CategoryGrid from './components/CategoryGrid';
+import Reveal from './components/Reveal';
 import Impressum from './components/Impressum';
 import FAQ from './components/FAQ';
 import Datenschutz from './components/Datenschutz';
@@ -369,13 +371,14 @@ function App() {
   // }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-light">
       <SiteHeader />
       <main className="pt-16 lg:pt-20">
-        <Hero showDoodles={false} />
+        <Hero />
+        <CategoryGrid />
 
       {/* How it Works Section */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section id="how-it-works" className="py-16 lg:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
@@ -387,7 +390,7 @@ function App() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 lg:gap-12 mb-12">
-            <div className="text-center group">
+            <Reveal className="text-center group">
               <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <Search className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
@@ -399,9 +402,9 @@ function App() {
                   Filtere nach Bereich, Standort und Format.
                 </p>
               </div>
-            </div>
+            </Reveal>
             
-            <div className="text-center group">
+            <Reveal className="text-center group" delay={80}>
               <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <User className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
@@ -413,9 +416,9 @@ function App() {
                   Profile, Bewertungen und Chat helfen dir bei der Wahl.
                 </p>
               </div>
-            </div>
+            </Reveal>
             
-            <div className="text-center group">
+            <Reveal className="text-center group" delay={160}>
               <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <Calendar className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
@@ -427,13 +430,13 @@ function App() {
                   direkt in der App, sicher bezahlt.
                 </p>
               </div>
-            </div>
+            </Reveal>
           </div>
           
           <div className="text-center">
             <button 
               onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#5a7ae8] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+              className="btn-primary gap-2 px-8 py-4 text-lg"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
               Beta-Platz sichern
@@ -444,7 +447,7 @@ function App() {
       </section>
 
       {/* Experts Carousel */}
-      <section className="py-16 lg:py-24 bg-[#F0F0F0]">
+      <section className="py-16 lg:py-24 bg-light">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
@@ -628,7 +631,7 @@ function App() {
             </p>
             <button 
               onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#5a7ae8] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+              className="btn-primary gap-2 px-8 py-4 text-lg"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
               Mehr über elu erfahren
@@ -639,7 +642,7 @@ function App() {
       </section>
 
       {/* Beta Launch Benefits */}
-      <section className="py-16 lg:py-24 bg-gradient-to-br from-[#F0F0F0] to-white">
+      <section className="py-16 lg:py-24 bg-gradient-to-br from-light to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
@@ -719,7 +722,7 @@ function App() {
           <div className="text-center">
             <button 
               onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-[#BADE4F] text-[#292B27] px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#a8c943] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+              className="btn-primary gap-2 px-8 py-4 text-lg"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
               Beta-Platz sichern
@@ -739,7 +742,7 @@ function App() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-[#F0F0F0] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-light p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
                   src="/images/testimonial-katrin.jpg"
@@ -762,7 +765,7 @@ function App() {
               </p>
             </div>
             
-            <div className="bg-[#F0F0F0] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-light p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
                   src="/images/testimonial-thomas.jpg"
@@ -785,7 +788,7 @@ function App() {
               </p>
             </div>
             
-            <div className="bg-[#F0F0F0] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-light p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
                   src="/images/testimonial-mona.jpg"
@@ -870,7 +873,7 @@ function App() {
       </section>
 
       {/* Experts Section */}
-      <section className="py-16 lg:py-24 bg-gradient-to-br from-[#F0F0F0] to-white">
+      <section className="py-16 lg:py-24 bg-gradient-to-br from-light to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
@@ -931,7 +934,7 @@ function App() {
           <div className="text-center">
             <a 
               href="/experts"
-              className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#5a7ae8] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+              className="btn-primary gap-2 px-8 py-4 text-lg"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
               Mehr für Expert:innen
@@ -1036,10 +1039,10 @@ function App() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-4 rounded-lg text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 ${
-                  isSubmitting 
-                    ? 'bg-gray-400 cursor-not-allowed' 
-                    : 'bg-[#6D8EEC] text-white hover:bg-[#5a7ae8] transform hover:scale-105'
+                className={`w-full py-4 text-lg gap-2 ${
+                  isSubmitting
+                    ? 'inline-flex items-center justify-center rounded-full bg-gray-400 text-white font-semibold cursor-not-allowed'
+                    : 'btn-primary'
                 }`}
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
@@ -1065,20 +1068,8 @@ function App() {
       </main>
 
       <SiteFooter />
-
-      {/* Mobile Sticky CTA */}
-      <div className="fixed bottom-4 left-4 right-4 md:hidden z-50">
-        <button 
-          onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-          className="w-full bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white py-4 rounded-full text-lg font-bold shadow-2xl hover:from-[#5A7BE8] hover:to-[#4A6DE8] transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-105"
-          style={{ fontFamily: 'League Spartan, sans-serif' }}
-        >
-          Kostenlos vormerken
-          <ArrowRight className="w-5 h-5" />
-        </button>
-      </div>
     </div>
   );
 }
 
-export default App;// Force deploy update - Mobile header fix applied
+export default App;

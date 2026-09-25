@@ -1,368 +1,63 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
 
-interface HeroProps {
-  showDoodles?: boolean;
-}
-
-const services = [
-  {
-    id: 'physio',
-    label: 'Physiotherapie',
-    image: '/images/hero-physio.jpg',
-    alt: 'Physiotherapie – Therapeutische Behandlung und Taping'
-  },
-  {
-    id: 'pt',
-    label: 'Personal Training',
-    image: '/images/hero-pt.jpg',
-    alt: 'Personal Training – Individuelles Fitnesstraining und Workouts'
-  },
-  {
-    id: 'massage',
-    label: 'Massage',
-    image: '/images/hero-massage.jpg',
-    alt: 'Massage – Linderung bei Verspannungen'
-  },
-  {
-    id: 'ernaehrung',
-    label: 'Ernährung',
-    image: '/images/hero-ernaehrung.jpg',
-    alt: 'Ernährung – Gesunde Ernährungsberatung'
-  },
-  {
-    id: 'yoga',
-    label: 'Yoga',
-    image: '/images/hero-yoga.jpg',
-    alt: 'Yoga – Beweglichkeit, Atmung und mentale Stärke'
-  },
-  {
-    id: 'coaching',
-    label: 'Coaching',
-    image: '/images/hero-coaching.jpg',
-    alt: 'Coaching – Beratung und mentale Stärke'
-  }
-];
-
-const Hero: React.FC<HeroProps> = ({ showDoodles = false }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
-  const stripRef = useRef<HTMLDivElement>(null);
-  const intervalRef = useRef<ReturnType<typeof setInterval>>();
-
-  // Auto-rotate functionality
-  useEffect(() => {
-    if (!isHovered && !isDragging) {
-      intervalRef.current = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % services.length);
-      }, 4500);
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isHovered, isDragging, currentIndex]); // Added currentIndex to dependencies
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        setCurrentIndex((prev) => (prev + 1) % services.length);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  // Touch/drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setDragStart(e.clientX);
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setDragStart(e.touches[0].clientX);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    const diff = e.clientX - dragStart;
-    setDragOffset(diff);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    const diff = e.touches[0].clientX - dragStart;
-    setDragOffset(diff);
-  };
-
-  const handleDragEnd = () => {
-    if (!isDragging) return;
-    
-    const threshold = 50; // Reduced threshold for better responsiveness
-    if (dragOffset > threshold) {
-      setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
-    } else if (dragOffset < -threshold) {
-      setCurrentIndex((prev) => (prev + 1) % services.length);
-    }
-    
-    setIsDragging(false);
-    setDragOffset(0);
+const Hero: React.FC = () => {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section 
-      className="relative min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center px-4 pt-10 pb-16 md:pt-14 md:pb-24"
-      style={{
-        background: 'linear-gradient(135deg, rgba(186, 222, 79, 0.2) 0%, rgba(240, 240, 240, 0.3) 25%, rgba(240, 240, 240, 0.3) 75%, rgba(109, 142, 236, 0.2) 100%)'
-      }}
-    >
-      {/* Hand-drawn arrows (optional) */}
-      {showDoodles && (
-        <>
-          <svg 
-            className="absolute top-1/3 left-8 w-16 h-12 text-[#292B27] opacity-30 hidden lg:block transform -rotate-12"
-            viewBox="0 0 64 48"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
+    <section className="relative bg-light px-4 pt-10 pb-12 md:pt-16 md:pb-16 lg:pt-20 lg:pb-8">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+        <div>
+          <p
+            className="inline-flex items-center rounded-full bg-[#E2E8FB] px-5 py-2 mb-6 text-sm font-medium text-[#6D8EEC]"
+            style={{ fontFamily: 'Open Sans, sans-serif' }}
           >
-            <path d="M8 24c8-8 16-4 24 0s16 8 24 0" />
-            <path d="M48 16l8 8-8 8" />
-          </svg>
-          
-          <svg 
-            className="absolute top-2/3 right-8 w-16 h-12 text-[#292B27] opacity-30 hidden lg:block transform rotate-12"
-            viewBox="0 0 64 48"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          >
-            <path d="M56 24c-8 8-16 4-24 0s-16-8-24 0" />
-            <path d="M16 32l-8-8 8-8" />
-          </svg>
-        </>
-      )}
+            Gesundheit, die zu dir passt
+          </p>
 
-      <div className="relative z-10 w-full max-w-4xl mx-auto text-center">
-        {/* Top pill badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 md:mb-12 bg-[#E2E8FB] text-[#292B27] rounded-full text-sm font-medium relative z-10">
-          <AlertTriangle className="w-4 h-4 text-[#6D8EEC] shrink-0" />
-          <span>Gesundheit, die zu dir passt</span>
-        </div>
-
-        {/* Main headline */}
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#292B27] mb-6 md:mb-8 leading-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-          <span className="text-[#BADE4F]">Finde geprüfte</span> Gesundheitsexpert:innen
-        </h1>
-
-        {/* Subline */}
-        <p className="text-lg md:text-xl text-[#292B27] mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Persönliche Vorschläge, verschlüsselter Chat und sichere Buchung – vor Ort oder online. Alles an einem Ort.
-        </p>
-        
-        {/* Additional subline */}
-        <p className="text-base md:text-lg text-[#292B27] mb-12 md:mb-16 max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          elu verbindet dich mit qualifizierten Fachpersonen aus Bewegung, Ernährung und Prävention – Physiotherapie, Personal Training, Massage, Ernährung, Yoga, Coaching, Rückengesundheit, Stressmanagement, Prävention und Langlebigkeit.
-        </p>
-
-        {/* Services carousel */}
-        <div className="mb-12 md:mb-16">
-          <div 
-            ref={stripRef}
-            className="relative h-72 md:h-80 flex items-center justify-center overflow-hidden"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => {
-              setIsHovered(false);
-              handleDragEnd();
-            }}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleDragEnd}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleDragEnd}
-          >
-            {/* Services with circular positioning */}
-            {services.map((service, index) => {
-              // Calculate position relative to current index
-              let position = index - currentIndex;
-              
-              // Handle wrapping for infinite effect
-              if (position > 2) {
-                position -= services.length;
-              } else if (position < -2) {
-                position += services.length;
-              }
-              
-              // Only show cards within visible range
-              const isVisible = Math.abs(position) <= 2;
-              
-              const translateX = position * 280;
-              let scale = 0.6;
-              let zIndex = 1;
-              let opacity = 0;
-              let rotateY = 0;
-              
-              if (Math.abs(position) <= 2) {
-                if (position === 0) {
-                  // Active (center)
-                  scale = 1;
-                  zIndex = 20;
-                  opacity = 1;
-                  rotateY = 0;
-                } else if (Math.abs(position) === 1) {
-                  // Adjacent cards
-                  scale = 0.85;
-                  zIndex = 15;
-                  opacity = 0.7;
-                  rotateY = position < 0 ? 15 : -15;
-                } else if (Math.abs(position) === 2) {
-                  // Side cards
-                  scale = 0.7;
-                  zIndex = 10;
-                  opacity = 0.4;
-                  rotateY = position < 0 ? 25 : -25;
-                }
-              }
-              
-              return (
-                <div
-                  key={service.id}
-                  className={`absolute transition-all duration-700 ease-out cursor-grab active:cursor-grabbing transform-style-preserve-3d ${
-                    isVisible ? 'block' : 'hidden'
-                  }`}
-                  style={{
-                    transform: `translateX(${translateX + (dragOffset * 0.5)}px) scale(${scale}) rotateY(${rotateY}deg)`,
-                    zIndex,
-                    opacity
-                  }}
-                  onClick={() => {
-                    if (position !== 0 && !isDragging) {
-                      // Clear existing interval to reset auto-scroll
-                      if (intervalRef.current) {
-                        clearInterval(intervalRef.current);
-                      }
-                      setCurrentIndex(index);
-                    }
-                  }}
-                >
-                  <div className="w-64 h-48 md:w-80 md:h-60 relative group">
-                    <div className={`relative w-full h-full rounded-3xl overflow-hidden transition-all duration-700 ${
-                      position === 0
-                        ? 'shadow-2xl ring-4 ring-[#6D8EEC] ring-opacity-30' 
-                        : 'shadow-lg hover:shadow-xl'
-                    }`}>
-                      <img
-                        src={service.image}
-                        alt={service.alt}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                      <div className={`absolute inset-0 transition-all duration-700 ${
-                        position === 0 ? 'bg-gradient-to-t from-black/20 to-transparent' : 'bg-black/20'
-                      }`} />
-                      <div className="absolute bottom-4 left-4">
-                        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-700 ${
-                          position === 0
-                            ? 'bg-white text-[#292B27] shadow-lg' 
-                            : 'bg-white/90 text-[#292B27]'
-                        }`}>
-                          <div className={`w-1 h-4 rounded-full transition-all duration-700 ${
-                            position === 0 ? 'bg-[#6D8EEC]' : 'bg-[#BADE4F]'
-                          }`}></div>
-                          {service.label}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Navigation controls */}
-          <div className="flex items-center justify-center gap-4 mt-6">
-            <button
-              onClick={() => {
-                // Clear existing interval to reset auto-scroll
-                if (intervalRef.current) {
-                  clearInterval(intervalRef.current);
-                }
-                const newIndex = currentIndex === 0 ? services.length - 1 : currentIndex - 1;
-                setCurrentIndex(newIndex);
-              }}
-              className="p-2 rounded-full bg-[#F0F0F0] text-[#292B27] hover:bg-[#E2E8FB] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2"
-              aria-label="Vorheriger Service"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            {/* Pagination dots */}
-            <div className="flex gap-2">
-              {services.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    // Clear existing interval to reset auto-scroll
-                    if (intervalRef.current) {
-                      clearInterval(intervalRef.current);
-                    }
-                    setCurrentIndex(index);
-                  }}
-                  className={`w-2 h-2 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 ${
-                    index === currentIndex ? 'bg-[#6D8EEC] w-6' : 'bg-[#F0F0F0] hover:bg-[#E2E8FB]'
-                  }`}
-                  aria-label={`Zu Service ${index + 1} wechseln`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={() => {
-                // Clear existing interval to reset auto-scroll
-                if (intervalRef.current) {
-                  clearInterval(intervalRef.current);
-                }
-                const newIndex = currentIndex === services.length - 1 ? 0 : currentIndex + 1;
-                setCurrentIndex(newIndex);
-              }}
-              className="p-2 rounded-full bg-[#F0F0F0] text-[#292B27] hover:bg-[#E2E8FB] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2"
-              aria-label="Nächster Service"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Primary CTA */}
-        <div className="text-center">
-          <button 
-            onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white font-bold rounded-full hover:from-[#5A7BE8] hover:to-[#4A6DE8] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 shadow-xl hover:shadow-2xl border border-white/20"
+          <h1
+            className="text-[36px] md:text-[48px] lg:text-[54px] font-bold text-[#292B27] leading-[1.1] tracking-tight mb-6"
             style={{ fontFamily: 'League Spartan, sans-serif' }}
           >
-            Beta-Zugang sichern
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </button>
-          <p className="mt-3 text-sm text-[#292B27] opacity-70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-            Kostenlos & unverbindlich
+            Finde geprüfte Gesundheitsexpert:innen
+          </h1>
+
+          <p
+            className="text-base md:text-lg text-[#292B27]/80 leading-relaxed mb-8 max-w-xl"
+            style={{ fontFamily: 'Open Sans, sans-serif' }}
+          >
+            Persönliche Vorschläge, verschlüsselter Chat und sichere Buchung – vor Ort oder online. Alles an einem Ort.
           </p>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={() => scrollTo('signup')}
+              className="btn-primary gap-2 px-7 py-3.5 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#BADE4F]"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              Zur Warteliste
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollTo('how-it-works')}
+              className="inline-flex items-center justify-center px-7 py-3.5 bg-white text-[#292B27] font-semibold rounded-full border border-[#292B27]/15 hover:border-[#292B27]/40 transition-all duration-300 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#BADE4F]"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              So funktioniert’s
+            </button>
+          </div>
+        </div>
+
+        <div className="relative overflow-hidden rounded-[2rem] shadow-[0_24px_60px_-24px_rgba(41,43,39,0.25)]">
+          <img
+            src="/images/hero-physio.jpg"
+            alt="Physiotherapie – therapeutische Behandlung und Taping"
+            className="w-full aspect-[4/3] max-h-[280px] sm:max-h-none object-cover object-center transition-transform duration-700 ease-out hover:scale-[1.03]"
+          />
         </div>
       </div>
     </section>

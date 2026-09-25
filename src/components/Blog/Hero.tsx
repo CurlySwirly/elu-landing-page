@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative bg-gradient-to-b from-white to-[#F8F4F4] overflow-hidden">
+    <section className="relative bg-light overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#6D8EEC]/5 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#BADE4F]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>

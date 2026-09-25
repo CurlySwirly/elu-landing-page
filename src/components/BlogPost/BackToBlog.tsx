@@ -14,7 +14,7 @@ export default function BackToBlog({ onBack }: BackToBlogProps) {
   };
 
   return (
-    <div className="bg-[#F8F4F4] py-8">
+    <div className="bg-light py-8">
       <div className="max-w-5xl mx-auto px-6">
         <a
           href="/blog"

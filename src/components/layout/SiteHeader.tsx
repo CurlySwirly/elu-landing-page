@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface SiteHeaderProps {
   onNavigate?: (page: string) => void;
@@ -8,62 +8,62 @@ const focusRing =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#BADE4F]';
 
 const SiteHeader: React.FC<SiteHeaderProps> = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const goToWaitlist = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (window.location.pathname !== '/') {
+      return;
+    }
+    event.preventDefault();
+    window.history.replaceState({}, '', '/#signup');
+    document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#292B27] text-white shadow-sm">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 bg-white/90 text-[#292B27] backdrop-blur-md border-b transition-shadow duration-300 ${
+        scrolled
+          ? 'border-[#292B27]/10 shadow-[0_8px_24px_-16px_rgba(41,43,39,0.2)]'
+          : 'border-[#292B27]/8 shadow-none'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 min-w-0">
             <a
               href="/"
-              className={`flex items-center gap-3 text-left ${focusRing}`}
+              className={`shrink-0 ${focusRing} rounded-lg`}
             >
               <img
-                src="/favicon.png"
-                alt="elu – elevate you"
-                className="w-8 h-8 lg:w-10 lg:h-10 rounded-full"
+                src="/images/elu-heart-logo.png"
+                alt="elu"
+                className="h-8 w-8 lg:h-10 lg:w-10 object-contain"
               />
-              <span
-                className="text-xl lg:text-2xl text-white"
-                style={{ fontFamily: 'League Spartan, sans-serif' }}
-              >
-                <span className="font-bold">elu.</span>{' '}
-                <span className="hidden lg:inline font-extralight italic">elevate you</span>
-              </span>
             </a>
-          </div>
-
-          <div className="flex items-center gap-4 lg:gap-8">
-            <div className="hidden lg:flex flex-col items-center">
-              <p
-                className="text-xs tracking-wide uppercase text-white/80"
-                style={{ fontFamily: 'Open Sans, sans-serif' }}
-              >
-                Beta Launch
-              </p>
-              <span
-                className="text-xl font-bold text-[#BADE4F]"
-                style={{ fontFamily: 'League Spartan, sans-serif' }}
-              >
-                Coming Soon
-              </span>
-            </div>
-
-            <a
-              href="/#signup"
-              className={`hidden lg:inline-flex bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] text-white px-6 py-3 rounded-full text-sm font-semibold transition-transform duration-300 hover:scale-105 shadow-[0_2px_8px_rgba(0,0,0,0.06)] ${focusRing}`}
+            <span
+              className="inline-flex items-center rounded-full bg-[#E2E8FB] px-2.5 py-1 text-[11px] lg:text-xs font-semibold tracking-wide text-[#6D8EEC]"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
-              Zur Warteliste
-            </a>
-
-            <a
-              href="/#signup"
-              className={`lg:hidden inline-flex items-center gap-2 rounded-full border border-[#BADE4F] px-4 py-2 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#BADE4F] hover:text-[#292B27] ${focusRing}`}
-              style={{ fontFamily: 'Open Sans, sans-serif' }}
-            >
-              Zur Warteliste
-            </a>
+              Coming Soon
+            </span>
           </div>
+
+          <a
+            href="/#signup"
+            onClick={goToWaitlist}
+            className={`btn-primary shrink-0 px-4 py-2 lg:px-6 lg:py-3 text-sm ${focusRing}`}
+            style={{ fontFamily: 'Open Sans, sans-serif' }}
+          >
+            <span className="sm:hidden">Warteliste</span>
+            <span className="hidden sm:inline">Zur Warteliste</span>
+          </a>
         </div>
       </div>
     </header>

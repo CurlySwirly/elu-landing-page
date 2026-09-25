@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
 import { supabase, BlogPost } from '../lib/supabase';
 import Hero from './Blog/Hero';
 import SearchFilter from './Blog/SearchFilter';
 import BlogGrid from './Blog/BlogGrid';
 import RecommendedTopics from './Blog/RecommendedTopics';
 import Newsletter from './Blog/Newsletter';
+import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
 
 interface BlogPageProps {
@@ -14,7 +14,7 @@ interface BlogPageProps {
   onNavigate?: (page: string) => void;
 }
 
-const BlogPage: React.FC<BlogPageProps> = ({ onBack, onPostSelect }) => {
+const BlogPage: React.FC<BlogPageProps> = ({ onPostSelect }) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -99,36 +99,10 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack, onPostSelect }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-[#292B27] text-white py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img 
-                src="/favicon.png" 
-                alt="elu – elevate you" 
-                className="w-8 h-8"
-              />
-              <h1 className="text-xl font-bold" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                elu – elevate you
-              </h1>
-            </div>
-            {onBack && (
-              <button
-                onClick={onBack}
-                className="inline-flex items-center gap-2 text-white hover:text-[#BADE4F] transition-colors duration-200 font-medium"
-                style={{ fontFamily: 'Open Sans, sans-serif' }}
-              >
-                <ArrowRight className="w-4 h-4 rotate-180" />
-                Zurück
-              </button>
-            )}
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-light">
+      <SiteHeader />
 
-      <div className="min-h-screen">
+      <div className="pt-16 lg:pt-20">
         <Hero />
         <SearchFilter
           searchQuery={searchQuery}
@@ -137,7 +111,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack, onPostSelect }) => {
           onCategoryChange={setSelectedCategory}
         />
         {loading ? (
-          <div className="bg-[#F8F4F4] py-16">
+          <div className="bg-light py-16">
             <div className="max-w-7xl mx-auto px-6 text-center">
               <p className="font-['Open_Sans'] text-[#292B27] text-lg">
                 Lade Artikel...
@@ -145,7 +119,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack, onPostSelect }) => {
             </div>
           </div>
         ) : error ? (
-          <div className="bg-[#F8F4F4] py-16">
+          <div className="bg-light py-16">
             <div className="max-w-7xl mx-auto px-6">
               <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#E2E8FB]">
                 <h3 className="font-['League_Spartan'] font-bold text-[#292B27] text-xl mb-4">

@@ -54,7 +54,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-light">
       {/* Header */}
       <header className="bg-[#292B27] text-white py-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

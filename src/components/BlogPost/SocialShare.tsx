@@ -19,7 +19,7 @@ export default function SocialShare({ title, url }: SocialShareProps) {
   const shareTitle = encodeURIComponent(title);
 
   return (
-    <div className="bg-[#E2E8FB] py-12">
+    <div className="bg-light py-12">
       <div className="max-w-3xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">

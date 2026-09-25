@@ -30,7 +30,7 @@ export default function BlogGrid({ posts, onPostClick }: BlogGridProps) {
 
   if (posts.length === 0) {
     return (
-      <section className="bg-[#F8F4F4] py-16">
+      <section className="bg-light py-16">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="font-['Open_Sans'] text-[#292B27] text-lg">
             Keine Artikel gefunden. Versuche eine andere Suche oder Kategorie.
@@ -41,7 +41,7 @@ export default function BlogGrid({ posts, onPostClick }: BlogGridProps) {
   }
 
   return (
-    <section className="bg-[#F8F4F4] py-20">
+    <section className="bg-light py-20">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {currentPosts.map((post) => (

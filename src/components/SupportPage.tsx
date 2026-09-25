@@ -10,6 +10,12 @@ interface SupportPageProps {
   onNavigate?: (page: string) => void;
 }
 
+const focusRing =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#BADE4F]';
+
+const fieldClass =
+  'w-full px-5 py-3.5 bg-light border border-[#E2E8FB] text-[#292B27] focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300';
+
 const SupportPage: React.FC<SupportPageProps> = () => {
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
   const accordionRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -168,8 +174,8 @@ const SupportPage: React.FC<SupportPageProps> = () => {
       answer: (
         <p>
           Du kannst deine Daten jederzeit löschen lassen. Schreib uns einfach an{' '}
-          <a href="mailto:info@eluforwork.com" className="text-[#6D8EEC] hover:underline">
-            info@eluforwork.com
+          <a href="mailto:info@elevateyou.app" className="text-[#6D8EEC] hover:underline">
+            info@elevateyou.app
           </a>{' '}
           mit dem Betreff „Datenlöschung“. Wir bestätigen dir die Löschung schriftlich.
         </p>
@@ -180,8 +186,8 @@ const SupportPage: React.FC<SupportPageProps> = () => {
       answer: (
         <p>
           Persönlich per E-Mail:{' '}
-          <a href="mailto:info@eluforwork.com" className="text-[#6D8EEC] hover:underline">
-            info@eluforwork.com
+          <a href="mailto:info@elevateyou.app" className="text-[#6D8EEC] hover:underline">
+            info@elevateyou.app
           </a>
           . Wir antworten in der Regel innerhalb von 24 Stunden.
         </p>
@@ -258,140 +264,155 @@ const SupportPage: React.FC<SupportPageProps> = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F8F4F4] text-[#292B27]">
+    <div className="min-h-screen bg-light text-[#292B27]">
       <SiteHeader />
 
       <main className="pt-28 lg:pt-36 pb-20">
         <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
-          <section className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-[#E2E8FB] text-[#292B27] rounded-full text-sm font-medium">
-              <HelpCircle className="w-4 h-4 text-[#6D8EEC]" />
-              Wir helfen dir gerne weiter
-            </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#292B27] mb-8 tracking-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              <span className="text-[#6D8EEC]">Kontakt</span> &amp; Support
-            </h1>
-            <p className="text-lg md:text-xl text-[#292B27] opacity-80 max-w-3xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Deine zentrale Anlaufstelle: Finde Antworten, kontaktiere uns direkt und bleib mit elu in Verbindung.
-            </p>
-          </section>
+          <nav aria-label="Breadcrumb" className="mb-8">
+            <ol
+              className="flex items-center gap-2 text-sm text-[#292B27]/80"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              <li>
+                <a href="/" className={`${focusRing} rounded-sm hover:underline`}>
+                  Home
+                </a>
+              </li>
+              <li aria-hidden="true">›</li>
+              <li className="font-semibold">Kontakt &amp; Support</li>
+            </ol>
+          </nav>
 
           <section className="mb-16">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-[#6D8EEC] to-[#5A7BE8] rounded-2xl p-6 text-white hover:shadow-xl transition-shadow duration-300">
-                <div className="flex items-center gap-3 mb-4">
-                  <HelpCircle className="w-8 h-8" />
-                  <h3 className="text-xl font-bold" style={{ fontFamily: 'League Spartan, sans-serif' }}>FAQ</h3>
-                </div>
-                <p className="text-blue-100 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Schnelle Antworten auf häufige Fragen
-                </p>
-                <button
-                  onClick={() => document.getElementById('faq-section')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="inline-flex items-center gap-2 text-white font-medium hover:text-blue-100 transition-colors duration-200"
-                >
-                  Zur FAQ <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="bg-gradient-to-br from-[#BADE4F] to-[#A8D13F] rounded-2xl p-6 text-white hover:shadow-xl transition-shadow duration-300">
-                <div className="flex items-center gap-3 mb-4">
-                  <MessageCircle className="w-8 h-8" />
-                  <h3 className="text-xl font-bold" style={{ fontFamily: 'League Spartan, sans-serif' }}>Kontakt aufnehmen</h3>
-                </div>
-                <p className="text-green-100 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Direkter Draht zu unserem Team – wir antworten persönlich.
-                </p>
-                <button
-                  onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="inline-flex items-center gap-2 text-white font-medium hover:text-green-100 transition-colors duration-200"
-                >
-                  Nachricht schreiben <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
+            <div className="rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-8 md:p-12 lg:p-16">
+              <p
+                className="inline-flex items-center gap-2 rounded-full bg-light px-4 py-1.5 mb-6 text-sm font-medium text-[#292B27]"
+                style={{ fontFamily: 'Open Sans, sans-serif' }}
+              >
+                <HelpCircle className="w-4 h-4 text-[#6D8EEC]" />
+                Wir helfen dir gerne weiter
+              </p>
+              <h1
+                className="text-[36px] md:text-[48px] lg:text-[54px] font-bold text-[#292B27] leading-[1.1] tracking-tight mb-6"
+                style={{ fontFamily: 'League Spartan, sans-serif' }}
+              >
+                Kontakt &amp; Support
+              </h1>
+              <p
+                className="text-lg text-[#292B27]/80 max-w-2xl leading-relaxed"
+                style={{ fontFamily: 'Open Sans, sans-serif' }}
+              >
+                Deine zentrale Anlaufstelle: Finde Antworten, kontaktiere uns direkt und bleib mit elu in Verbindung.
+              </p>
             </div>
           </section>
 
-          <section id="contact-section" className="mb-16">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Kontaktformular
+          <section className="grid md:grid-cols-2 gap-6 mb-16">
+            <button
+              type="button"
+              onClick={() => document.getElementById('faq-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className={`text-left rounded-3xl bg-white p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_16px_rgba(109,142,236,0.12)] transition-shadow duration-300 ${focusRing}`}
+            >
+              <span className="flex items-center justify-center w-14 h-14 rounded-full bg-light mb-5">
+                <HelpCircle className="w-6 h-6 text-[#6D8EEC]" />
+              </span>
+              <h2 className="text-xl font-bold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                FAQ
               </h2>
-              <p className="text-lg text-[#292B27] opacity-70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              <p className="text-[#292B27]/70 mb-5" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Schnelle Antworten auf häufige Fragen
+              </p>
+              <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#6D8EEC]" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Zur FAQ <ArrowRight className="w-4 h-4" />
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className={`text-left rounded-3xl bg-white p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_16px_rgba(109,142,236,0.12)] transition-shadow duration-300 ${focusRing}`}
+            >
+              <span className="flex items-center justify-center w-14 h-14 rounded-full bg-light mb-5">
+                <MessageCircle className="w-6 h-6 text-[#6D8EEC]" />
+              </span>
+              <h2 className="text-xl font-bold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                Kontakt aufnehmen
+              </h2>
+              <p className="text-[#292B27]/70 mb-5" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Direkter Draht zu unserem Team – wir antworten persönlich.
+              </p>
+              <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#6D8EEC]" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Nachricht schreiben <ArrowRight className="w-4 h-4" />
+              </span>
+            </button>
+          </section>
+
+          <section id="contact-section" className="mb-20">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                Nachricht senden
+              </h2>
+              <p className="text-lg text-[#292B27]/70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                 Unser Team ist für dich da – schreib uns einfach
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              <div className="bg-gradient-to-br from-[#F8F9FA] to-[#E2E8FB] rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-3 h-8 bg-gradient-to-b from-[#6D8EEC] to-[#BADE4F] rounded-full" />
-                  <h3 className="text-2xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Unternehmen
-                  </h3>
-                </div>
-                <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
-                  <h4 className="text-lg font-bold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Elevate You GmbH (in Gründung)
-                  </h4>
-                  <p className="text-[#292B27] opacity-70 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Wien, Österreich
-                  </p>
-                  <div className="w-full h-px bg-gradient-to-r from-[#6D8EEC] to-[#BADE4F] mb-4" />
-                  <a
-                    href="mailto:info@elevateyou.app"
-                    className="inline-flex items-center gap-3 text-[#6D8EEC] hover:text-[#5a7ae8] transition-all duration-200 font-medium hover:scale-105 transform"
-                    style={{ fontFamily: 'Open Sans, sans-serif' }}
-                  >
-                    <div className="bg-[#E2E8FB] p-2 rounded-lg">
-                      <Mail className="w-5 h-5" />
-                    </div>
-                    info@elevateyou.app
-                  </a>
-                  <p className="text-sm text-[#292B27] opacity-60 mt-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Antwortzeit: 1-2 Werktage
-                  </p>
-                </div>
+            <div className="grid lg:grid-cols-2 gap-8">
+              <div className="rounded-3xl bg-white p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                <h3 className="text-2xl font-bold text-[#292B27] mb-6" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Unternehmen
+                </h3>
+                <p className="text-lg font-semibold text-[#292B27] mb-1" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Elevate You GmbH
+                </p>
+                <p className="text-[#292B27]/70 mb-6" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                  Petrusgasse 16/1<br />
+                  1030 Wien
+                </p>
+                <a
+                  href="mailto:info@elevateyou.app"
+                  className={`inline-flex items-center gap-3 text-[#6D8EEC] font-medium hover:text-[#5a7ae8] ${focusRing} rounded-full`}
+                  style={{ fontFamily: 'Open Sans, sans-serif' }}
+                >
+                  <span className="flex items-center justify-center w-10 h-10 rounded-full bg-light">
+                    <Mail className="w-5 h-5" />
+                  </span>
+                  info@elevateyou.app
+                </a>
+                <p className="text-sm text-[#292B27]/60 mt-3 mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                  Antwortzeit: 1–2 Werktage
+                </p>
 
-                <div className="bg-white rounded-xl p-6 shadow-sm">
-                  <h4 className="text-lg font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Folge uns
-                  </h4>
-                  <div className="flex gap-4">
-                    <a
-                      href="https://www.linkedin.com/company/108662379/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-4 bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white rounded-xl hover:from-[#5A7BE8] hover:to-[#4A6DE8] focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 transition-all duration-300 transform hover:scale-110 shadow-lg"
-                    >
-                      <Linkedin className="w-5 h-5" />
-                    </a>
-                    <a
-                      href="https://www.instagram.com/elevateyou.app/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-4 bg-gradient-to-r from-[#BADE4F] to-[#A8D13F] text-white rounded-xl hover:from-[#A8D13F] hover:to-[#98C12F] focus:outline-none focus:ring-2 focus:ring-[#BADE4F] focus:ring-offset-2 transition-all duration-300 transform hover:scale-110 shadow-lg"
-                    >
-                      <Instagram className="w-5 h-5" />
-                    </a>
-                  </div>
+                <h4 className="text-lg font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  Folge uns
+                </h4>
+                <div className="flex gap-3">
+                  <a
+                    href="https://www.linkedin.com/company/108662379/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    className={`flex items-center justify-center w-12 h-12 rounded-full bg-light text-[#6D8EEC] hover:bg-[#E2E8FB] ${focusRing}`}
+                  >
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/elevateyou.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className={`flex items-center justify-center w-12 h-12 rounded-full bg-light text-[#6D8EEC] hover:bg-[#E2E8FB] ${focusRing}`}
+                  >
+                    <Instagram className="w-5 h-5" />
+                  </a>
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow duration-300">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-3 h-8 bg-gradient-to-b from-[#BADE4F] to-[#6D8EEC] rounded-full" />
-                  <h3 className="text-2xl font-bold text-[#292B27]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Nachricht senden
-                  </h3>
-                </div>
-                <p className="text-[#292B27] opacity-70 mb-6" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Teile deine Fragen oder Anregungen mit uns – wir antworten schnellstmöglich.
-                </p>
-
-                <form onSubmit={handleFormSubmit} className="space-y-6">
+              <div className="rounded-3xl bg-white p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                <form onSubmit={handleFormSubmit} className="space-y-5">
                   <div>
-                    <label htmlFor="support-name" className="block text-sm font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    <label htmlFor="support-name" className="block text-sm font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                       Name *
                     </label>
                     <input
@@ -401,14 +422,14 @@ const SupportPage: React.FC<SupportPageProps> = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-4 bg-[#F8F9FA] border border-[#E2E8FB] rounded-xl focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300 text-[#292B27]"
+                      className={`${fieldClass} rounded-full`}
                       placeholder="Dein vollständiger Name"
                       style={{ fontFamily: 'Open Sans, sans-serif' }}
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="support-email" className="block text-sm font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    <label htmlFor="support-email" className="block text-sm font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                       E-Mail *
                     </label>
                     <input
@@ -418,14 +439,14 @@ const SupportPage: React.FC<SupportPageProps> = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-4 bg-[#F8F9FA] border border-[#E2E8FB] rounded-xl focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300 text-[#292B27]"
+                      className={`${fieldClass} rounded-full`}
                       placeholder="deine@email.de"
                       style={{ fontFamily: 'Open Sans, sans-serif' }}
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="support-message" className="block text-sm font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    <label htmlFor="support-message" className="block text-sm font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                       Nachricht *
                     </label>
                     <textarea
@@ -435,77 +456,73 @@ const SupportPage: React.FC<SupportPageProps> = () => {
                       onChange={handleInputChange}
                       required
                       rows={6}
-                      className="w-full px-4 py-4 bg-[#F8F9FA] border border-[#E2E8FB] rounded-xl focus:ring-2 focus:ring-[#6D8EEC] focus:border-[#6D8EEC] focus:bg-white transition-all duration-300 text-[#292B27] resize-none"
+                      className={`${fieldClass} rounded-2xl resize-none`}
                       placeholder="Teile deine Fragen, Anregungen oder dein Feedback mit uns."
                       style={{ fontFamily: 'Open Sans, sans-serif' }}
                     />
                   </div>
 
-                  <div className="pt-4">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className={`w-full py-5 rounded-xl font-bold transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform ${
-                        isSubmitting
-                          ? 'bg-gray-400 cursor-not-allowed text-white'
-                          : 'bg-gradient-to-r from-[#6D8EEC] to-[#5A7BE8] text-white hover:from-[#5A7BE8] hover:to-[#4A6DE8] hover:scale-105'
-                      }`}
-                      style={{ fontFamily: 'League Spartan, sans-serif' }}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          Wird gesendet...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-5 h-5" />
-                          Nachricht senden
-                        </>
-                      )}
-                    </button>
-                    <p className="text-sm text-[#292B27] opacity-60 text-center mt-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                      * Pflichtfelder – Wir antworten normalerweise innerhalb von 24 Stunden
-                    </p>
-                  </div>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full py-3.5 gap-2 ${
+                      isSubmitting
+                        ? 'inline-flex items-center justify-center rounded-full bg-gray-400 text-white font-semibold cursor-not-allowed'
+                        : 'btn-primary'
+                    }`}
+                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Wird gesendet...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Nachricht senden
+                      </>
+                    )}
+                  </button>
+                  <p className="text-sm text-[#292B27]/60 text-center" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    * Pflichtfelder – wir antworten in der Regel innerhalb von 24 Stunden
+                  </p>
                 </form>
               </div>
             </div>
           </section>
 
-          <section id="faq-section" className="mb-12">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+          <section id="faq-section">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                 Häufig gestellte Fragen
               </h2>
-              <p className="text-lg text-[#292B27] opacity-70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              <p className="text-lg text-[#292B27]/70" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                 Die Antworten auf die wichtigsten Fragen rund um elu
               </p>
             </div>
-            <div className="space-y-4 max-w-4xl mx-auto">
+            <div className="space-y-3 max-w-4xl mx-auto">
               {faqItems.map((item, index) => (
                 <div
                   key={item.question}
-                  className="rounded-2xl border border-gray-100 shadow-sm overflow-hidden bg-white hover:shadow-md transition-shadow duration-300"
+                  className="rounded-3xl overflow-hidden bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
                 >
                   <button
-                    className="w-full px-6 py-6 text-left bg-white hover:bg-[#F8F9FA] focus:bg-[#F8F9FA] focus:outline-none focus:ring-2 focus:ring-[#6D8EEC] focus:ring-offset-2 transition-all duration-300"
+                    className={`w-full px-6 py-5 text-left bg-white hover:bg-light focus:bg-light transition-colors duration-200 ${focusRing}`}
                     onClick={() => toggleAccordion(index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     aria-expanded={openAccordionIndex === index}
                     aria-controls={`faq-answer-${index}`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-[#292B27] text-lg pr-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="font-bold text-[#292B27] text-lg" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                         {item.question}
                       </span>
-                      <div className="flex-shrink-0">
-                        <ChevronDown
-                          className={`w-6 h-6 text-[#6D8EEC] transition-all duration-300 ${
-                            openAccordionIndex === index ? 'rotate-180 text-[#BADE4F]' : ''
-                          }`}
-                        />
-                      </div>
+                      <ChevronDown
+                        className={`w-5 h-5 text-[#6D8EEC] shrink-0 transition-transform duration-300 ${
+                          openAccordionIndex === index ? 'rotate-180' : ''
+                        }`}
+                      />
                     </div>
                   </button>
                   <div
@@ -516,8 +533,8 @@ const SupportPage: React.FC<SupportPageProps> = () => {
                     }`}
                     aria-hidden={openAccordionIndex !== index}
                   >
-                    <div className="px-6 pb-6 pt-2">
-                      <div className="border-t border-[#E2E8FB] pt-4 text-[#292B27] opacity-80 leading-relaxed text-lg space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                    <div className="px-6 pb-6">
+                      <div className="border-t border-[#E2E8FB] pt-4 text-[#292B27]/80 leading-relaxed space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                         {item.answer}
                       </div>
                     </div>

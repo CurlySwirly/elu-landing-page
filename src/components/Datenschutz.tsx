@@ -5,7 +5,7 @@ import SiteFooter from './layout/SiteFooter';
 
 const Datenschutz: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-light">
       <SiteHeader />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-28 lg:pt-36">
@@ -17,6 +17,7 @@ const Datenschutz: React.FC = () => {
           Zurück zur Startseite
         </a>
 
+        <div className="rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-8 md:p-12">
         <h1 className="text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
           Datenschutzerklärung
         </h1>
@@ -142,6 +143,7 @@ const Datenschutz: React.FC = () => {
               Die Übertragung erfolgt verschlüsselt (TLS). Wir setzen angemessene technische und organisatorische Maßnahmen ein, um deine Daten vor Verlust und unbefugtem Zugriff zu schützen.
             </p>
           </section>
+        </div>
         </div>
       </div>
 

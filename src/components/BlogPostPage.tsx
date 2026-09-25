@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
 import { supabase, BlogPost } from '../lib/supabase';
+import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
 import Breadcrumb from './BlogPost/Breadcrumb';
 import BackToBlog from './BlogPost/BackToBlog';
@@ -83,7 +83,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onBack, onRelatedPost
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F8F4F4] flex items-center justify-center">
+      <div className="min-h-screen bg-light flex items-center justify-center">
         <p className="font-['Open_Sans'] text-[#292B27] text-lg">
           Lade Artikel...
         </p>
@@ -93,34 +93,9 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onBack, onRelatedPost
 
   if (error || !post) {
     return (
-      <div className="min-h-screen bg-[#F8F4F4]">
-        <header className="bg-[#292B27] text-white py-6">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img 
-                  src="/favicon.png" 
-                  alt="elu – elevate you" 
-                  className="w-8 h-8"
-                />
-                <h1 className="text-xl font-bold" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  elu – elevate you
-                </h1>
-              </div>
-              {onBack && (
-                <button
-                  onClick={handleBackToBlog}
-                  className="inline-flex items-center gap-2 text-white hover:text-[#BADE4F] transition-colors duration-200 font-medium"
-                  style={{ fontFamily: 'Open Sans, sans-serif' }}
-                >
-                  <ArrowRight className="w-4 h-4 rotate-180" />
-                  Zurück
-                </button>
-              )}
-            </div>
-          </div>
-        </header>
-        <div className="max-w-5xl mx-auto px-6 py-24 text-center">
+      <div className="min-h-screen bg-light">
+        <SiteHeader />
+        <div className="max-w-5xl mx-auto px-6 py-24 pt-32 text-center">
           <h1 className="font-['League_Spartan'] font-bold text-[#292B27] text-[32px] md:text-[46px] mb-6">
             Artikel nicht gefunden
           </h1>
@@ -141,35 +116,9 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onBack, onRelatedPost
   const currentUrl = typeof window !== 'undefined' ? `${window.location.origin}/blog/${post.slug}` : '';
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-[#292B27] text-white py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img 
-                src="/favicon.png" 
-                alt="elu – elevate you" 
-                className="w-8 h-8"
-              />
-              <h1 className="text-xl font-bold" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                elu – elevate you
-              </h1>
-            </div>
-            {onBack && (
-              <button
-                onClick={handleBackToBlog}
-                className="inline-flex items-center gap-2 text-white hover:text-[#BADE4F] transition-colors duration-200 font-medium"
-                style={{ fontFamily: 'Open Sans, sans-serif' }}
-              >
-                <ArrowRight className="w-4 h-4 rotate-180" />
-                Zurück
-              </button>
-            )}
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-light">
+      <SiteHeader />
+      <div className="pt-16 lg:pt-20">
       <Breadcrumb category={post.category} title={post.title} />
       <BackToBlog onBack={handleBackToBlog} />
       <ArticleHeader
@@ -191,6 +140,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onBack, onRelatedPost
       <SocialShare title={post.title} url={currentUrl} />
       <RelatedPosts posts={relatedPosts} onPostClick={onRelatedPostClick} />
       <Newsletter />
+      </div>
 
       <SiteFooter />
     </div>

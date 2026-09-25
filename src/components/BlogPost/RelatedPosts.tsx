@@ -19,7 +19,7 @@ export default function RelatedPosts({ posts, onPostClick }: RelatedPostsProps) 
   };
 
   return (
-    <section className="bg-[#F8F4F4] py-24">
+    <section className="bg-light py-24">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
           <div className="inline-block mb-4 px-5 py-2 rounded-full bg-[#6D8EEC]/10 border border-[#6D8EEC]/20">
