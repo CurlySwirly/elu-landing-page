@@ -20,7 +20,7 @@ export default function SocialShare({ title, url }: SocialShareProps) {
 
   return (
     <div className="bg-light py-12">
-      <div className="max-w-3xl mx-auto px-6">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <Share2 className="w-6 h-6 text-[#6D8EEC]" />

@@ -19,8 +19,8 @@ export default function RelatedPosts({ posts, onPostClick }: RelatedPostsProps) 
   };
 
   return (
-    <section className="bg-light py-24">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="bg-light py-12 md:py-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <div className="inline-block mb-4 px-5 py-2 rounded-full bg-[#6D8EEC]/10 border border-[#6D8EEC]/20">
             <span className="font-['Open_Sans'] font-semibold text-xs text-[#6D8EEC] uppercase tracking-wide">Ähnliche Artikel</span>
