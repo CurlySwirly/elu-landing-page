@@ -31,13 +31,14 @@ import SupportPage from './components/SupportPage';
 import BlogPage from './components/BlogPage';
 import BlogPostPage from './components/BlogPostPage';
 import { formServices } from './lib/formServices';
-import { GENERIC_FORM_ERROR } from './lib/formErrors';
 import { getPageFromPath, pageToPath } from './lib/navigation';
 import UeberUnsPage from './components/UeberUnsPage';
 import SiteHeader from './components/layout/SiteHeader';
 import SiteFooter from './components/layout/SiteFooter';
+import { useLocale } from './i18n';
 
 function App() {
+  const { t, messages } = useLocale();
   const [currentPage, setCurrentPage] = useState<string>(() => getPageFromPath(window.location.pathname));
   const [currentExpert, setCurrentExpert] = useState(0);
   const [blogPostSlug, setBlogPostSlug] = useState('');
@@ -275,7 +276,7 @@ function App() {
     e.preventDefault();
 
     if (!formData.firstName || !formData.email || !formData.userType || !formData.privacy) {
-      toast.error('Bitte fülle alle Felder aus und stimme der Datenschutzerklärung zu.');
+      toast.error(t('forms.fillAll'));
       return;
     }
 
@@ -294,13 +295,12 @@ function App() {
 
       // Check if it's a duplicate email error
       if (result.error && typeof result.error === 'object' && 'code' in result.error && result.error.code === '23505') {
-        toast.info('Du stehst bereits auf der Warteliste! Wir melden uns bei dir, sobald der Beta-Start verfügbar ist.');
+        toast.info(t('forms.alreadyWaitlist'));
       } else if (result.success) {
-        // Success - added to waitlist
-        toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+        toast.success(t('forms.waitlistThanks'));
       } else {
         console.error('Form submission error:', result.error);
-        toast.error(GENERIC_FORM_ERROR);
+        toast.error(t('forms.genericError'));
         return;
       }
 
@@ -308,7 +308,7 @@ function App() {
 
     } catch (error) {
       console.error('Form submission exception:', error);
-      toast.error(GENERIC_FORM_ERROR);
+      toast.error(t('forms.genericError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -378,56 +378,56 @@ function App() {
         <CategoryGrid />
 
       {/* How it Works Section */}
-      <section id="how-it-works" className="py-16 lg:py-24 bg-white">
+      <section id="how-it-works" className="py-12 md:py-16 lg:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              So einfach funktioniert elu.
+          <div className="text-center mb-8 md:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#292B27] mb-3 md:mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              {t('how.title')}
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Gesundheit beginnt mit der richtigen Verbindung.
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              {t('how.sub')}
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12 mb-12">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-12 mb-8 md:mb-12">
             <Reveal className="text-center group">
-              <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
-                <Search className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
+              <div className="bg-[#E2E8FB] rounded-full w-14 h-14 md:w-20 md:h-20 mx-auto mb-4 md:mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
+                <Search className="w-7 h-7 md:w-10 md:h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm">
+              <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  1. Expert:in finden
+                  {t('how.step1Title')}
                 </h3>
                 <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Filtere nach Bereich, Standort und Format.
+                  {t('how.step1Body')}
                 </p>
               </div>
             </Reveal>
             
             <Reveal className="text-center group" delay={80}>
-              <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
-                <User className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
+              <div className="bg-[#E2E8FB] rounded-full w-14 h-14 md:w-20 md:h-20 mx-auto mb-4 md:mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
+                <User className="w-7 h-7 md:w-10 md:h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm">
+              <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  2. Kennenlernen
+                  {t('how.step2Title')}
                 </h3>
                 <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Profile, Bewertungen und Chat helfen dir bei der Wahl.
+                  {t('how.step2Body')}
                 </p>
               </div>
             </Reveal>
             
             <Reveal className="text-center group" delay={160}>
-              <div className="bg-[#E2E8FB] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
-                <Calendar className="w-10 h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
+              <div className="bg-[#E2E8FB] rounded-full w-14 h-14 md:w-20 md:h-20 mx-auto mb-4 md:mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
+                <Calendar className="w-7 h-7 md:w-10 md:h-10 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm">
+              <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  3. Termin buchen
+                  {t('how.step3Title')}
                 </h3>
                 <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  direkt in der App, sicher bezahlt.
+                  {t('how.step3Body')}
                 </p>
               </div>
             </Reveal>
@@ -436,10 +436,10 @@ function App() {
           <div className="text-center">
             <button 
               onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="btn-primary gap-2 px-8 py-4 text-lg"
+              className="btn-primary gap-2 px-6 py-3 md:px-8 md:py-4 text-sm md:text-lg"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
-              Beta-Platz sichern
+              {t('how.cta')}
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
@@ -447,18 +447,18 @@ function App() {
       </section>
 
       {/* Experts Carousel */}
-      <section className="py-16 lg:py-24 bg-light">
+      <section className="py-12 md:py-16 lg:py-24 bg-light">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Expert:innen auf elu
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#292B27] mb-3 md:mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              {t('carousel.title')}
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Entdecke qualifizierte Fachpersonen in deiner Nähe und online.
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              {t('carousel.sub')}
             </p>
-            <div className="mt-8">
-              <p className="text-2xl font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Gesund bleiben liegt bei dir. Die richtigen Expert:innen findest du hier.
+            <div className="mt-5 md:mt-8">
+              <p className="text-lg sm:text-xl md:text-2xl font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                {t('carousel.tagline')}
               </p>
             </div>
           </div>
@@ -467,14 +467,16 @@ function App() {
             {/* Navigation Arrows */}
             <button
               onClick={prevExpert}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 group"
+              className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 group"
+              aria-label={t('carousel.prev')}
             >
               <ChevronLeft className="w-6 h-6 text-[#6D8EEC] group-hover:text-[#5a7ae8]" />
             </button>
             
             <button
               onClick={nextExpert}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 group"
+              className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 group"
+              aria-label={t('carousel.next')}
             >
               <ChevronRight className="w-6 h-6 text-[#6D8EEC] group-hover:text-[#5a7ae8]" />
             </button>
@@ -505,7 +507,7 @@ function App() {
                     </div>
                     <div className="p-6">
                       <p className="text-xs font-semibold uppercase tracking-wide text-[#6D8EEC] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                        Neu auf elu
+                        {t('carousel.newOnElu')}
                       </p>
                       {/* First Name */}
                       <h3 className="text-xl font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
@@ -514,7 +516,7 @@ function App() {
                       
                       {/* Profession Name */}
                       <p className="text-[#6D8EEC] font-medium text-sm mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                        {expert.specialty}
+                        {messages.expertsData.specialties[expert.specialty as keyof typeof messages.expertsData.specialties] ?? expert.specialty}
                       </p>
                       
                       {/* Icons with Information */}
@@ -523,7 +525,7 @@ function App() {
                           <div className="flex items-center gap-2">
                             <Target className="w-4 h-4 text-[#BADE4F]" />
                             <span className="text-sm text-gray-700" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                              {expert.focus}
+                              {messages.expertsData.focus[expert.focus as keyof typeof messages.expertsData.focus] ?? expert.focus}
                             </span>
                           </div>
                         
@@ -531,7 +533,7 @@ function App() {
                         <div className="flex items-center gap-2">
                           <MapPin className="w-4 h-4 text-[#BADE4F]" />
                           <span className="text-sm text-gray-700" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                            {expert.availability}
+                            {messages.expertsData.availability[expert.availability as keyof typeof messages.expertsData.availability] ?? expert.availability}
                           </span>
                         </div>
                       </div>
@@ -558,83 +560,83 @@ function App() {
       </section>
 
       {/* Why elu Section */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-12 md:py-16 lg:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Warum elu?
+          <div className="text-center mb-8 md:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#292B27] mb-3 md:mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              {t('why.title')}
             </h2>
             <p className="text-2xl font-bold text-[#6D8EEC] mb-8" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Weil Gesundheit Vertrauen verdient.
+              {t('why.claim')}
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Flexibel vor Ort oder online – du entscheidest, welches Format zu dir passt. Erst kennenlernen, dann buchen: Stell deine Fragen vorab im verschlüsselten Chat.
+              {t('why.p1')}
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Jede Qualifikation wird vor der Freischaltung geprüft.
+              {t('why.p2')}
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-[#E2E8FB] p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center">
                 <CheckCircle className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Persönliche Vorschläge
+                {t('why.card1Title')}
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Wir zeigen dir Expert:innen, die zu deinen Zielen, deinem Standort und deinen Vorlieben passen.
+                {t('why.card1Body')}
               </p>
             </div>
             
-            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-[#E2E8FB] p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center">
                 <Award className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Vielfältige Bereiche
+                {t('why.card2Title')}
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Physiotherapie, Personal Training, Massage, Ernährung, Yoga und Coaching.
+                {t('why.card2Body')}
               </p>
             </div>
             
-            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-[#E2E8FB] p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center">
                 <Shield className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Sichere Bezahlung
+                {t('why.card3Title')}
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Du bezahlst bei der Buchung über Stripe. Alle Kosten siehst du vorher.
+                {t('why.card3Body')}
               </p>
             </div>
             
-            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-[#E2E8FB] p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center">
                 <MapPin className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Geprüfte Qualifikation
+                {t('why.card4Title')}
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Jede Qualifikation wird vor der Freischaltung geprüft.
+                {t('why.card4Body')}
               </p>
             </div>
           </div>
           
           <div className="text-center">
             <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              elu bringt dich mit Menschen zusammen, die dich verstehen und unterstützen – für mehr Energie, Beweglichkeit und Lebensqualität.
+              {t('why.closer')}
             </p>
             <button 
               onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="btn-primary gap-2 px-8 py-4 text-lg"
+              className="btn-primary gap-2 px-6 py-3 md:px-8 md:py-4 text-sm md:text-lg"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
-              Mehr über elu erfahren
+              {t('why.cta')}
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
@@ -642,14 +644,14 @@ function App() {
       </section>
 
       {/* Beta Launch Benefits */}
-      <section className="py-16 lg:py-24 bg-gradient-to-br from-light to-white">
+      <section className="py-12 md:py-16 lg:py-24 bg-gradient-to-br from-light to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Sei von Anfang an dabei.
+          <div className="text-center mb-8 md:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#292B27] mb-3 md:mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              {t('beta.title')}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Werde Teil der Beta. Sichere dir Vorteile, teste neue Funktionen und gestalte elu mit deinem Feedback aktiv mit.
+              {t('beta.sub')}
             </p>
           </div>
           
@@ -661,10 +663,10 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Als Erste:r dabei
+                    {t('beta.b1Title')}
                   </h3>
                   <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Du erfährst vor allen anderen, wenn elu in deiner Region startet.
+                    {t('beta.b1Body')}
                   </p>
                 </div>
               </div>
@@ -677,10 +679,10 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Frühzeitiger Zugang zu geprüften Expert:innen
+                    {t('beta.b2Title')}
                   </h3>
                   <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Buche als Erste:r, sobald deine Region freigeschaltet ist.
+                    {t('beta.b2Body')}
                   </p>
                 </div>
               </div>
@@ -693,10 +695,10 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Mitgestaltung durch dein Feedback
+                    {t('beta.b3Title')}
                   </h3>
                   <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Gestalte elu aktiv mit und hilf dabei, Gesundheit für alle zugänglich zu machen.
+                    {t('beta.b3Body')}
                   </p>
                 </div>
               </div>
@@ -709,10 +711,10 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Früher Zugang zu neuen Funktionen
+                    {t('beta.b4Title')}
                   </h3>
                   <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Teste neue Features und Updates, bevor sie offiziell veröffentlicht werden.
+                    {t('beta.b4Body')}
                   </p>
                 </div>
               </div>
@@ -722,10 +724,10 @@ function App() {
           <div className="text-center">
             <button 
               onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="btn-primary gap-2 px-8 py-4 text-lg"
+              className="btn-primary gap-2 px-6 py-3 md:px-8 md:py-4 text-sm md:text-lg"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
-              Beta-Platz sichern
+              {t('beta.cta')}
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
@@ -733,16 +735,16 @@ function App() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-12 md:py-16 lg:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Was unsere Testpersonen sagen
+          <div className="text-center mb-8 md:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#292B27] mb-3 md:mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              {t('testimonials.title')}
             </h2>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-light p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-light p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
                   src="/images/testimonial-katrin.jpg"
@@ -761,11 +763,11 @@ function App() {
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed italic" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                "Ich habe endlich die richtige Ernährungsberaterin gefunden – in nur 2 Minuten."
+                “{t('testimonials.katrin')}”
               </p>
             </div>
             
-            <div className="bg-light p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-light p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
                   src="/images/testimonial-thomas.jpg"
@@ -784,11 +786,11 @@ function App() {
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed italic" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                "Endlich eine App, die wirklich hilft. Mein Physiotherapeut war nur einen Klick entfernt."
+                “{t('testimonials.thomas')}”
               </p>
             </div>
             
-            <div className="bg-light p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-light p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
                   src="/images/testimonial-mona.jpg"
@@ -807,7 +809,7 @@ function App() {
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed italic" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                "Ich liebe die Einfachheit – keine endlosen Recherchen mehr."
+                “{t('testimonials.mona')}”
               </p>
             </div>
           </div>
@@ -815,78 +817,78 @@ function App() {
       </section>
 
       {/* Target Audience Section */}
-      <section className="py-16 lg:py-24 bg-white">
+      <section className="py-12 md:py-16 lg:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-8" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Persönliche Begleitung statt Standardprogramm
+          <div className="text-center mb-8 md:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#292B27] mb-4 md:mb-8" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              {t('audience.title')}
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Immer mehr Menschen suchen individuelle Unterstützung statt generischer Programme. elu hilft dir, Expert:innen zu finden, die wirklich zu dir passen.
+              {t('audience.sub')}
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300 group">
+            <div className="bg-[#E2E8FB] p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300 group">
               <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <HeartPulse className="w-8 h-8 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Bei Beschwerden
+                {t('audience.a1Title')}
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                mit Physiotherapie und Massage
+                {t('audience.a1Body')}
               </p>
             </div>
             
-            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300 group">
+            <div className="bg-[#E2E8FB] p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300 group">
               <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <Dumbbell className="w-8 h-8 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Für mehr Energie und Kraft
+                {t('audience.a2Title')}
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                mit Personal Training, Yoga und Bewegungsprogrammen
+                {t('audience.a2Body')}
               </p>
             </div>
             
-            <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300 group">
+            <div className="bg-[#E2E8FB] p-5 sm:p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300 group">
               <div className="bg-white rounded-full w-16 h-16 mb-6 flex items-center justify-center group-hover:bg-[#6D8EEC] transition-all duration-300">
                 <Apple className="w-8 h-8 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Für langfristige Gesundheit
+                {t('audience.a3Title')}
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                mit Ernährungsberatung, Coaching und nachhaltigen Routinen
+                {t('audience.a3Body')}
               </p>
             </div>
           </div>
           
           <div className="text-center">
             <p className="text-lg text-gray-700 max-w-3xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              elu macht es leichter, gesunde Entscheidungen in deinen Alltag zu integrieren.
+              {t('audience.closer')}
             </p>
           </div>
         </div>
       </section>
 
       {/* Experts Section */}
-      <section className="py-16 lg:py-24 bg-gradient-to-br from-light to-white">
+      <section className="py-12 md:py-16 lg:py-24 bg-gradient-to-br from-light to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Für Expert:innen, die Gesundheit mitgestalten.
+          <div className="text-center mb-8 md:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#292B27] mb-3 md:mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              {t('expertsHome.title')}
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              elu bringt qualifizierte Gesundheitsprofis mit Menschen zusammen, die aktiv an ihrem Wohlbefinden arbeiten möchten.
+              {t('expertsHome.p1')}
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Wenn du in den Bereichen Physiotherapie, Personal Training, Massage, Ernährung, Yoga oder Coaching tätig bist, erhältst du über elu eine Bühne, auf der Qualität und Vertrauen im Mittelpunkt stehen.
+              {t('expertsHome.p2')}
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Werde Teil einer Plattform, die Prävention neu denkt und Expert:innen sichtbar macht, die wirklich etwas bewirken wollen.
+              {t('expertsHome.p3')}
             </p>
           </div>
           
@@ -898,7 +900,7 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Werde von Klient:innen gefunden, die zu deinem Angebot passen
+                    {t('expertsHome.c1')}
                   </h3>
                 </div>
               </div>
@@ -911,7 +913,7 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Buchung, Zahlung und Rechnung laufen über elu
+                    {t('expertsHome.c2')}
                   </h3>
                 </div>
               </div>
@@ -924,7 +926,7 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Die ersten 3 Buchungen ohne Plattformgebühr
+                    {t('expertsHome.c3')}
                   </h3>
                 </div>
               </div>
@@ -934,10 +936,10 @@ function App() {
           <div className="text-center">
             <a 
               href="/experts"
-              className="btn-primary gap-2 px-8 py-4 text-lg"
+              className="btn-primary gap-2 px-6 py-3 md:px-8 md:py-4 text-sm md:text-lg"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
-              Mehr für Expert:innen
+              {t('expertsHome.cta')}
               <ArrowRight className="w-5 h-5" />
             </a>
           </div>
@@ -945,26 +947,26 @@ function App() {
       </section>
 
       {/* Final Signup Section */}
-      <section id="signup" className="py-16 lg:py-24 bg-gradient-to-br from-[#6D8EEC] to-[#5a7ae8]">
+      <section id="signup" className="py-12 md:py-16 lg:py-24 bg-gradient-to-br from-[#6D8EEC] to-[#5a7ae8]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Finde deine Expert:in
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              {t('signup.title')}
             </h2>
-            <p className="text-xl text-white mb-6 max-w-2xl mx-auto" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Stöbern geht ohne Login – ein Konto brauchst du erst beim Buchen.
+            <p className="text-lg sm:text-xl text-white mb-4 md:mb-6 max-w-2xl mx-auto" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+              {t('signup.claim')}
             </p>
-            <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Melde dich jetzt für den Beta-Zugang an und erhalte als Erste:r Zugang zur Plattform.
+            <p className="text-base sm:text-lg text-blue-100 max-w-2xl mx-auto mb-6 md:mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              {t('signup.sub')}
             </p>
           </div>
           
-          <div className="bg-white rounded-2xl p-8 shadow-2xl max-w-2xl mx-auto">
+          <div className="bg-white rounded-2xl p-5 sm:p-8 shadow-2xl max-w-2xl mx-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="firstName" className="block text-sm font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Vorname*
+                    {t('signup.firstName')}
                   </label>
                   <input
                     type="text"
@@ -980,7 +982,7 @@ function App() {
                 
                 <div>
                   <label htmlFor="email" className="block text-sm font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    E-Mail*
+                    {t('signup.email')}
                   </label>
                   <input
                     type="email"
@@ -997,7 +999,7 @@ function App() {
               
               <div>
                 <label htmlFor="userType" className="block text-sm font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Ich bin...*
+                  {t('signup.role')}
                 </label>
                 <select
                   id="userType"
@@ -1008,9 +1010,9 @@ function App() {
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                   required
                 >
-                  <option value="">Bitte wählen</option>
-                  <option value="client">Klient:in</option>
-                  <option value="expert">Expert:in</option>
+                  <option value="">{t('signup.choose')}</option>
+                  <option value="client">{t('signup.client')}</option>
+                  <option value="expert">{t('signup.expert')}</option>
                 </select>
               </div>
               
@@ -1025,14 +1027,14 @@ function App() {
                   required
                 />
                 <label htmlFor="privacy" className="text-sm text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
+                  {t('signup.privacy').split('{privacy}')[0]}
                   <a 
                     href="/datenschutz" 
                     className="text-[#6D8EEC] hover:underline"
                   >
-                    Datenschutzerklärung
-                  </a>{' '}
-                  zu.*
+                    {t('signup.privacyLink')}
+                  </a>
+                  {t('signup.privacy').split('{privacy}')[1]}
                 </label>
               </div>
               
@@ -1052,12 +1054,12 @@ function App() {
                   }`}
                 ></div>
                 <span className="select-none">
-                  {isSubmitting ? 'Wird verarbeitet...' : 'Kostenlos vormerken'}
+                  {isSubmitting ? t('signup.submitting') : t('signup.submit')}
                 </span>
               </button>
             </form>
             <p className="mt-6 text-sm text-gray-500 text-center" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              (Kostenlos und unverbindlich. Wir melden uns, sobald es losgeht.)
+              {t('signup.note')}
             </p>
           </div>
         </div>

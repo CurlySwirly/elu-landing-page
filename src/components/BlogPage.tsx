@@ -112,7 +112,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onPostSelect }) => {
         />
         {loading ? (
           <div className="bg-light py-16">
-            <div className="max-w-7xl mx-auto px-6 text-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
               <p className="font-['Open_Sans'] text-[#292B27] text-lg">
                 Lade Artikel...
               </p>
@@ -120,8 +120,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ onPostSelect }) => {
           </div>
         ) : error ? (
           <div className="bg-light py-16">
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#E2E8FB]">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+              <div className="bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-[#E2E8FB]">
                 <h3 className="font-['League_Spartan'] font-bold text-[#292B27] text-xl mb-4">
                   Hinweis
                 </h3>
