@@ -7,34 +7,40 @@ interface HeroProps {
 
 const services = [
   {
-    id: 'massage',
-    label: 'Massage',
-    image: 'https://images.pexels.com/photos/275768/pexels-photo-275768.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-    alt: 'Massage – Linderung bei Verspannungen'
-  },
-  {
     id: 'physio',
     label: 'Physiotherapie',
-    image: 'https://images.pexels.com/photos/8219055/pexels-photo-8219055.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+    image: '/images/hero-physio.jpg',
     alt: 'Physiotherapie – Therapeutische Behandlung und Taping'
   },
   {
     id: 'pt',
     label: 'Personal Training',
-    image: 'https://images.pexels.com/photos/6455783/pexels-photo-6455783.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+    image: '/images/hero-pt.jpg',
     alt: 'Personal Training – Individuelles Fitnesstraining und Workouts'
+  },
+  {
+    id: 'massage',
+    label: 'Massage',
+    image: '/images/hero-massage.jpg',
+    alt: 'Massage – Linderung bei Verspannungen'
   },
   {
     id: 'ernaehrung',
     label: 'Ernährung',
-    image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+    image: '/images/hero-ernaehrung.jpg',
     alt: 'Ernährung – Gesunde Ernährungsberatung'
+  },
+  {
+    id: 'yoga',
+    label: 'Yoga',
+    image: '/images/hero-yoga.jpg',
+    alt: 'Yoga – Beweglichkeit, Atmung und mentale Stärke'
   },
   {
     id: 'coaching',
     label: 'Coaching',
-    image: 'https://images.pexels.com/photos/7176319/pexels-photo-7176319.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-    alt: 'Coaching – Mentale Gesundheit und Beratung'
+    image: '/images/hero-coaching.jpg',
+    alt: 'Coaching – Beratung und mentale Stärke'
   }
 ];
 
@@ -117,7 +123,7 @@ const Hero: React.FC<HeroProps> = ({ showDoodles = false }) => {
 
   return (
     <section 
-      className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-12 pb-16 md:pt-16 md:pb-24"
+      className="relative min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center px-4 pt-10 pb-16 md:pt-14 md:pb-24"
       style={{
         background: 'linear-gradient(135deg, rgba(186, 222, 79, 0.2) 0%, rgba(240, 240, 240, 0.3) 25%, rgba(240, 240, 240, 0.3) 75%, rgba(109, 142, 236, 0.2) 100%)'
       }}
@@ -153,24 +159,24 @@ const Hero: React.FC<HeroProps> = ({ showDoodles = false }) => {
 
       <div className="relative z-10 w-full max-w-4xl mx-auto text-center">
         {/* Top pill badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 md:mb-12 bg-[#E2E8FB] text-[#292B27] rounded-full text-sm font-medium">
-          <AlertTriangle className="w-4 h-4 text-[#6D8EEC]" />
-          Beta-Plätze limitiert
+        <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 md:mb-12 bg-[#E2E8FB] text-[#292B27] rounded-full text-sm font-medium relative z-10">
+          <AlertTriangle className="w-4 h-4 text-[#6D8EEC] shrink-0" />
+          <span>Gesundheit, die zu dir passt</span>
         </div>
 
         {/* Main headline */}
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#292B27] mb-6 md:mb-8 leading-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-          <span className="text-[#BADE4F]">Gesund bleiben</span> beginnt hier.
+          <span className="text-[#BADE4F]">Finde geprüfte</span> Gesundheitsexpert:innen
         </h1>
 
         {/* Subline */}
         <p className="text-lg md:text-xl text-[#292B27] mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Finde geprüfte Expert:innen für Körper, Geist und Wohlbefinden – vereint auf einer Plattform.
+          Persönliche Vorschläge, verschlüsselter Chat und sichere Buchung – vor Ort oder online. Alles an einem Ort.
         </p>
         
         {/* Additional subline */}
         <p className="text-base md:text-lg text-[#292B27] mb-12 md:mb-16 max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Ob Physiotherapie, Massage, Personal Training oder Ernährungsberatung – bei elu findest du professionelle Unterstützung, die zu dir und deinem Lebensstil passt. Einfach, sicher und ganzheitlich.
+          elu verbindet dich mit qualifizierten Fachpersonen aus Bewegung, Ernährung und Prävention – Physiotherapie, Personal Training, Massage, Ernährung, Yoga, Coaching, Rückengesundheit, Stressmanagement, Prävention und Langlebigkeit.
         </p>
 
         {/* Services carousel */}

@@ -22,20 +22,21 @@ import Hero from './components/Hero';
 import Impressum from './components/Impressum';
 import FAQ from './components/FAQ';
 import Datenschutz from './components/Datenschutz';
-import AGB from './components/AGB';
+import Nutzungsbedingungen from './components/Nutzungsbedingungen';
 import ExpertPage from './components/ExpertPage';
 import SupportPage from './components/SupportPage';
 // import PressPage from './components/PressPage';
 import BlogPage from './components/BlogPage';
 import BlogPostPage from './components/BlogPostPage';
-import CookieConsent from './components/CookieConsent';
 import { formServices } from './lib/formServices';
+import { GENERIC_FORM_ERROR } from './lib/formErrors';
+import { getPageFromPath, pageToPath } from './lib/navigation';
 import UeberUnsPage from './components/UeberUnsPage';
 import SiteHeader from './components/layout/SiteHeader';
 import SiteFooter from './components/layout/SiteFooter';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState<string>(() => getPageFromPath(window.location.pathname));
   const [currentExpert, setCurrentExpert] = useState(0);
   const [blogPostSlug, setBlogPostSlug] = useState('');
   const [formData, setFormData] = useState({
@@ -47,18 +48,44 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
 
-  // Scroll to top when page changes
   useEffect(() => {
+    const onPopState = () => {
+      setCurrentPage(getPageFromPath(window.location.pathname));
+    };
+    window.addEventListener('popstate', onPopState);
+
+    if (window.location.pathname === '/agb') {
+      window.history.replaceState({}, '', '/nutzungsbedingungen');
+    }
+
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  useEffect(() => {
+    if (currentPage === 'home' && window.location.hash === '#signup') {
+      requestAnimationFrame(() => {
+        document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
+      });
+      return;
+    }
     window.scrollTo(0, 0);
   }, [currentPage]);
+
+  const navigate = (page: string) => {
+    const path = pageToPath(page);
+    if (window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+    setCurrentPage(page);
+  };
 
   const experts = [
     {
       name: 'Dominik Weber',
       specialty: 'Physiotherapie',
-      image: 'https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop&object-position=center',
+      image: '/images/expert-dominik.jpg',
       rating: '4.9',
-      specialtyInfo: 'Rückenschmerzen & Haltung',
+      specialtyInfo: 'Rückengesundheit & Haltung',
       focus: 'Knieverletzungen & Rehabilitation',
       experience: '8+ Jahre Praxis',
       availability: 'Praxis & Online',
@@ -72,12 +99,12 @@ function App() {
     {
       name: 'Anna Schmidt, MSc.',
       specialty: 'Ernährungsberatung',
-      image: 'https://images.pexels.com/photos/3767342/pexels-photo-3767342.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop&object-position=center',
+      image: '/images/expert-anna.jpg',
       rating: '4.8',
       specialtyInfo: 'Diabetes & Gewichtsmanagement',
       focus: 'Adipositas & Diabetes',
       experience: '12+ Jahre Praxis',
-      availability: 'Online & Hausbesuche',
+      availability: 'Online & Praxis',
       usp: 'Zertifizierte Diabetesberaterin',
       certificationLevel: 'Master',
       location: 'Wien-Landstraße',
@@ -88,7 +115,7 @@ function App() {
     {
       name: 'Julian Müller',
       specialty: 'Personal Training',
-      image: 'https://images.pexels.com/photos/10498088/pexels-photo-10498088.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
+      image: '/images/expert-julian.jpg',
       rating: '5.0',
       specialtyInfo: 'Muskelaufbau & Fitness',
       focus: 'Krafttraining & Mobility',
@@ -104,12 +131,12 @@ function App() {
     {
       name: 'Marie Chen',
       specialty: 'Yoga',
-      image: 'https://images.pexels.com/photos/8068113/pexels-photo-8068113.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
+      image: '/images/expert-marie.jpg',
       rating: '4.9',
       specialtyInfo: 'Stressabbau & Entspannung',
       focus: 'Stressmanagement & Meditation',
       experience: '10+ Jahre Praxis',
-      availability: 'Online, Zuhause & Studio',
+      availability: 'Online & Studio',
       usp: 'Zertifiziert in Mindful Yoga',
       certificationLevel: 'Bachelor',
       location: 'Wien-Wieden',
@@ -120,12 +147,12 @@ function App() {
     {
       name: 'Robert Novak',
       specialty: 'Massage',
-      image: 'https://images.pexels.com/photos/17637126/pexels-photo-17637126.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
+      image: '/images/expert-robert.jpg',
       rating: '4.8',
       specialtyInfo: 'Verspannungen & Schmerzen',
       focus: 'Triggerpunktmassage',
       experience: '15+ Jahre Praxis',
-      availability: 'Praxis & Hausbesuche',
+      availability: 'Praxis',
       usp: 'Spezialist für Tiefengewebsmassage',
       certificationLevel: 'Diploma',
       location: 'Wien-Josefstadt',
@@ -136,7 +163,7 @@ function App() {
     {
       name: 'Sophie Bauer',
       specialty: 'Physiotherapie',
-      image: 'https://images.pexels.com/photos/8019267/pexels-photo-8019267.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
+      image: '/images/expert-sophie.jpg',
       rating: '4.9',
       specialtyInfo: 'Knieschmerzen & Rehabilitation',
       focus: 'Sportverletzungen & Prävention',
@@ -152,7 +179,7 @@ function App() {
     {
       name: 'David Wagner, MA',
       specialty: 'Leistungscoaching',
-      image: 'https://images.pexels.com/photos/30767572/pexels-photo-30767572.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
+      image: '/images/expert-david.jpg',
       rating: '5.0',
       specialtyInfo: 'Burnout & Stressmanagement',
       focus: 'Burnout-Prävention & Resilienz',
@@ -168,7 +195,7 @@ function App() {
     {
       name: 'Tom Fischer',
       specialty: 'Personal Training',
-      image: 'https://images.pexels.com/photos/7983716/pexels-photo-7983716.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
+      image: '/images/expert-tom.jpg',
       rating: '4.7',
       specialtyInfo: 'Beweglichkeit & Koordination',
       focus: 'Beweglichkeitstraining & Koordination',
@@ -184,12 +211,12 @@ function App() {
     {
       name: 'Petra Hoffmann',
       specialty: 'Ernährungsberatung',
-      image: 'https://images.pexels.com/photos/18243763/pexels-photo-18243763.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
+      image: '/images/expert-petra.jpg',
       rating: '4.8',
       specialtyInfo: 'Naturheilkunde & Prävention',
       focus: 'Phytotherapie & Prävention',
       experience: '20+ Jahre Praxis',
-      availability: 'Praxis & Beratung',
+      availability: 'Praxis & Online',
       usp: 'Ganzheitliche Gesundheitsberatung',
       certificationLevel: 'Diploma',
       location: 'Wien-Hietzing',
@@ -200,7 +227,7 @@ function App() {
     {
       name: 'Lisa Kim',
       specialty: 'Yoga',
-      image: 'https://images.pexels.com/photos/4534868/pexels-photo-4534868.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop',
+      image: '/images/expert-lisa.jpg',
       rating: '4.9',
       specialtyInfo: 'Core-Training & Haltung',
       focus: 'Core-Stabilität & Haltungskorrektur',
@@ -242,19 +269,6 @@ function App() {
     }
   };
 
-  // Cookie consent handlers
-  const handleCookieAccept = () => {
-    // Here you can add logic to enable analytics, marketing cookies, etc.
-  };
-
-  const handleCookieDecline = () => {
-    // Here you can add logic to disable non-essential cookies
-  };
-
-  const handleCookieCustomize = () => {
-    // Here you can add logic to open detailed cookie settings
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -283,22 +297,16 @@ function App() {
         // Success - added to waitlist
         toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
       } else {
-        // Any other error - still show success to user
         console.error('Form submission error:', result.error);
-        toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
+        toast.error(GENERIC_FORM_ERROR);
+        return;
       }
 
-      // Clear form
       setFormData({ firstName: '', email: '', userType: '', privacy: false });
 
     } catch (error) {
       console.error('Form submission exception:', error);
-
-      // Always show success message even on error
-      toast.success('Vielen Dank! Du wurdest erfolgreich zur Warteliste hinzugefügt.');
-
-      // Clear form
-      setFormData({ firstName: '', email: '', userType: '', privacy: false });
+      toast.error(GENERIC_FORM_ERROR);
     } finally {
       setIsSubmitting(false);
     }
@@ -306,38 +314,38 @@ function App() {
 
   // Render different pages based on currentPage state
   if (currentPage === 'impressum') {
-    return <Impressum onBack={() => setCurrentPage('home')} />;
+    return <Impressum />;
   }
   
   if (currentPage === 'datenschutz') {
-    return <Datenschutz onBack={() => setCurrentPage('home')} />;
+    return <Datenschutz />;
   }
   
-  if (currentPage === 'agb') {
-    return <AGB onBack={() => setCurrentPage('home')} />;
+  if (currentPage === 'nutzungsbedingungen' || currentPage === 'agb') {
+    return <Nutzungsbedingungen />;
   }
 
   if (currentPage === 'expert') {
-    return <ExpertPage onBack={() => setCurrentPage('home')} />;
+    return <ExpertPage />;
   }
 
   if (currentPage === 'support') {
-    return <SupportPage onNavigate={setCurrentPage} />;
+    return <SupportPage onNavigate={navigate} />;
   }
 
   if (currentPage === 'ueber-uns') {
-    return <UeberUnsPage onNavigate={setCurrentPage} />;
+    return <UeberUnsPage onNavigate={navigate} />;
   }
 
   if (currentPage === 'blog') {
     return (
       <BlogPage 
-        onBack={() => setCurrentPage('home')} 
+        onBack={() => navigate('home')} 
         onPostSelect={(slug) => {
           setBlogPostSlug(slug);
-          setCurrentPage('blogpost');
+          navigate('blogpost');
         }}
-        onNavigate={(page) => setCurrentPage(page)}
+        onNavigate={navigate}
       />
     );
   }
@@ -346,12 +354,12 @@ function App() {
     return (
       <BlogPostPage 
         slug={blogPostSlug}
-        onBack={() => setCurrentPage('blog')}
+        onBack={() => navigate('blog')}
         onRelatedPostClick={(slug) => {
           setBlogPostSlug(slug);
           window.scrollTo(0, 0);
         }}
-        onNavigate={(page) => setCurrentPage(page)}
+        onNavigate={navigate}
       />
     );
   }
@@ -362,8 +370,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
-      <SiteHeader onNavigate={setCurrentPage} />
-      <main className="pt-0">
+      <SiteHeader />
+      <main className="pt-16 lg:pt-20">
         <Hero showDoodles={false} />
 
       {/* How it Works Section */}
@@ -385,10 +393,10 @@ function App() {
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  1. Entdecken
+                  1. Expert:in finden
                 </h3>
                 <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Finde geprüfte Expert:innen in den Bereichen Physiotherapie, Massage, Personal Training oder Ernährungsberatung.
+                  Filtere nach Bereich, Standort und Format.
                 </p>
               </div>
             </div>
@@ -399,10 +407,10 @@ function App() {
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  2. Verbinden
+                  2. Kennenlernen
                 </h3>
                 <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Wähle, wer zu dir passt – nach Standort, Spezialisierung oder persönlichem Schwerpunkt.
+                  Profile, Bewertungen und Chat helfen dir bei der Wahl.
                 </p>
               </div>
             </div>
@@ -413,10 +421,10 @@ function App() {
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm">
                 <h3 className="text-xl font-semibold text-[#292B27] mb-3" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  3. Durchstarten
+                  3. Termin buchen
                 </h3>
                 <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                  Buche Termine direkt über elu und arbeite mit Profis, die dich auf deinem Weg zu mehr Gesundheit und Lebensqualität begleiten.
+                  direkt in der App, sicher bezahlt.
                 </p>
               </div>
             </div>
@@ -428,7 +436,7 @@ function App() {
               className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#5a7ae8] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
-              Jetzt passende Expert:innen entdecken
+              Beta-Platz sichern
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
@@ -440,14 +448,14 @@ function App() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Gesundheit lebt von Verbindung.
+              Expert:innen auf elu
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Bei elu bist du nicht allein. Wir schaffen eine Community, in der Austausch, Motivation und Vertrauen selbstverständlich sind.
+              Entdecke qualifizierte Fachpersonen in deiner Nähe und online.
             </p>
             <div className="mt-8">
               <p className="text-2xl font-bold text-[#BADE4F]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Gesund bleiben liegt bei dir. Wie es richtig geht zeigen wir.
+                Gesund bleiben liegt bei dir. Die richtigen Expert:innen findest du hier.
               </p>
             </div>
           </div>
@@ -490,14 +498,12 @@ function App() {
                           }`}
 
                         />
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur rounded-full px-2 py-1 flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                        <span className="text-sm font-medium text-[#292B27]" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                          {expert.rating}
-                        </span>
-                      </div>
+                      {/* TODO: Sterne nur anzeigen, wenn sie aus echten elu-Bewertungen stammen. */}
                     </div>
                     <div className="p-6">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-[#6D8EEC] mb-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                        Neu auf elu
+                      </p>
                       {/* First Name */}
                       <h3 className="text-xl font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                         {expert.name.split(' ')[0]}
@@ -559,10 +565,10 @@ function App() {
               Weil Gesundheit Vertrauen verdient.
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Bei elu findest du nur geprüfte Expert:innen – von erfahrenen Physiotherapeut:innen über Massageprofis bis hin zu Personal Trainer:innen und Ernährungsberater:innen.
+              Flexibel vor Ort oder online – du entscheidest, welches Format zu dir passt. Erst kennenlernen, dann buchen: Stell deine Fragen vorab im verschlüsselten Chat.
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Jede:r von ihnen wurde sorgfältig ausgewählt, um dir höchste Qualität und Sicherheit zu bieten.
+              Jede Qualifikation wird vor der Freischaltung geprüft.
             </p>
           </div>
           
@@ -572,8 +578,11 @@ function App() {
                 <CheckCircle className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                All-in-One-Plattform für Körper, Geist und Ernährung
+                Persönliche Vorschläge
               </h3>
+              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Wir zeigen dir Expert:innen, die zu deinen Zielen, deinem Standort und deinen Vorlieben passen.
+              </p>
             </div>
             
             <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
@@ -581,8 +590,11 @@ function App() {
                 <Award className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Geprüfte Expert:innen mit nachweisbarer Qualifikation
+                Vielfältige Bereiche
               </h3>
+              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Physiotherapie, Personal Training, Massage, Ernährung, Yoga und Coaching.
+              </p>
             </div>
             
             <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
@@ -590,8 +602,11 @@ function App() {
                 <Shield className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Ganzheitlicher Ansatz für nachhaltige Gesundheit
+                Sichere Bezahlung
               </h3>
+              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Du bezahlst bei der Buchung über Stripe. Alle Kosten siehst du vorher.
+              </p>
             </div>
             
             <div className="bg-[#E2E8FB] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
@@ -599,14 +614,17 @@ function App() {
                 <MapPin className="w-8 h-8 text-[#6D8EEC]" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Einfache Buchung & Kommunikation – digital und sicher
+                Geprüfte Qualifikation
               </h3>
+              <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Jede Qualifikation wird vor der Freischaltung geprüft.
+              </p>
             </div>
           </div>
           
           <div className="text-center">
             <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              elu bringt dich mit Menschen zusammen, die dich verstehen und unterstützen – für ein Leben voller Energie, Balance und Wohlbefinden.
+              elu bringt dich mit Menschen zusammen, die dich verstehen und unterstützen – für mehr Energie, Beweglichkeit und Lebensqualität.
             </p>
             <button 
               onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
@@ -640,10 +658,10 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Exklusive Vergünstigungen
+                    Als Erste:r dabei
                   </h3>
                   <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Profitiere von besonderen Konditionen als Beta-Teilnehmer.
+                    Du erfährst vor allen anderen, wenn elu in deiner Region startet.
                   </p>
                 </div>
               </div>
@@ -656,10 +674,10 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Direkter Zugang zu geprüften Fachpersonen
+                    Frühzeitiger Zugang zu geprüften Expert:innen
                   </h3>
                   <p className="text-gray-600 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                    Erhalte sofortigen Zugang zu qualifizierten Expertinnen und Experten.
+                    Buche als Erste:r, sobald deine Region freigeschaltet ist.
                   </p>
                 </div>
               </div>
@@ -724,7 +742,7 @@ function App() {
             <div className="bg-[#F0F0F0] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
-                  src="https://images.pexels.com/photos/3779947/pexels-photo-3779947.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop&crop=face"
+                  src="/images/testimonial-katrin.jpg"
                   alt="Katrin"
                   className="w-16 h-16 rounded-full object-cover"
                 />
@@ -747,7 +765,7 @@ function App() {
             <div className="bg-[#F0F0F0] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
-                  src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop&crop=face"
+                  src="/images/testimonial-thomas.jpg"
                   alt="Thomas"
                   className="w-16 h-16 rounded-full object-cover"
                 />
@@ -770,7 +788,7 @@ function App() {
             <div className="bg-[#F0F0F0] p-8 rounded-2xl hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-4 mb-6">
                 <img
-                  src="https://images.pexels.com/photos/8558897/pexels-photo-8558897.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop&crop=face"
+                  src="/images/testimonial-mona.jpg"
                   alt="Mona"
                   className="w-16 h-16 rounded-full object-cover"
                 />
@@ -798,10 +816,10 @@ function App() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#292B27] mb-8" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Für alle, die Gesundheit ganzheitlich denken.
+              Persönliche Begleitung statt Standardprogramm
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              elu richtet sich an Menschen, die aktiv etwas für ihr Wohlbefinden tun möchten – egal, ob du Schmerzen lindern, Stress reduzieren oder einfach fitter werden willst.
+              Immer mehr Menschen suchen individuelle Unterstützung statt generischer Programme. elu hilft dir, Expert:innen zu finden, die wirklich zu dir passen.
             </p>
           </div>
           
@@ -814,7 +832,7 @@ function App() {
                 Bei Beschwerden
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Durch erfahrene Physiotherapeut:innen und Massageexpert:innen
+                mit Physiotherapie und Massage
               </p>
             </div>
             
@@ -823,10 +841,10 @@ function App() {
                 <Dumbbell className="w-8 h-8 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Für mehr Energie
+                Für mehr Energie und Kraft
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Mit Personal Training und individuellen Bewegungsprogrammen
+                mit Personal Training, Yoga und Bewegungsprogrammen
               </p>
             </div>
             
@@ -835,17 +853,17 @@ function App() {
                 <Apple className="w-8 h-8 text-[#6D8EEC] group-hover:text-white transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-semibold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Zur Prävention
+                Für langfristige Gesundheit
               </h3>
               <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Dank professioneller Ernährungsberatung und nachhaltiger Routinen
+                mit Ernährungsberatung, Coaching und nachhaltigen Routinen
               </p>
             </div>
           </div>
           
           <div className="text-center">
             <p className="text-lg text-gray-700 max-w-3xl mx-auto" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              elu unterstützt dich, gesunde Entscheidungen leichter in deinen Alltag zu integrieren – damit du langfristig in Balance bleibst.
+              elu macht es leichter, gesunde Entscheidungen in deinen Alltag zu integrieren.
             </p>
           </div>
         </div>
@@ -862,7 +880,7 @@ function App() {
               elu bringt qualifizierte Gesundheitsprofis mit Menschen zusammen, die aktiv an ihrem Wohlbefinden arbeiten möchten.
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Wenn du in den Bereichen Physiotherapie, Massage, Personal Training oder Ernährungsberatung tätig bist, erhältst du über elu eine Bühne, auf der Qualität und Vertrauen im Mittelpunkt stehen.
+              Wenn du in den Bereichen Physiotherapie, Personal Training, Massage, Ernährung, Yoga oder Coaching tätig bist, erhältst du über elu eine Bühne, auf der Qualität und Vertrauen im Mittelpunkt stehen.
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
               Werde Teil einer Plattform, die Prävention neu denkt und Expert:innen sichtbar macht, die wirklich etwas bewirken wollen.
@@ -877,7 +895,7 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Erreiche neue Kundschaft ohne Umwege
+                    Werde von Klient:innen gefunden, die zu deinem Angebot passen
                   </h3>
                 </div>
               </div>
@@ -890,7 +908,7 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Profitiere von einer Community, die Qualität schätzt
+                    Buchung, Zahlung und Rechnung laufen über elu
                   </h3>
                 </div>
               </div>
@@ -903,7 +921,7 @@ function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-[#292B27] mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    Einfache Abwicklung und transparente Strukturen
+                    Die ersten 3 Buchungen ohne Plattformgebühr
                   </h3>
                 </div>
               </div>
@@ -911,14 +929,14 @@ function App() {
           </div>
           
           <div className="text-center">
-            <button 
-              onClick={() => setCurrentPage('expert')}
+            <a 
+              href="/experts"
               className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#5a7ae8] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
-              Erfahre mehr
+              Mehr für Expert:innen
               <ArrowRight className="w-5 h-5" />
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -928,13 +946,13 @@ function App() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Mach Gesundheit zu deiner Priorität.
+              Finde deine Expert:in
             </h2>
             <p className="text-xl text-white mb-6 max-w-2xl mx-auto" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              Werde Teil der elu-Community und entdecke, wie einfach ganzheitliche Gesundheit sein kann.
+              Stöbern geht ohne Login – ein Konto brauchst du erst beim Buchen.
             </p>
             <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Melde dich jetzt für den Beta-Zugang an und erhalte als Erste:r Zugang zur Plattform. Finde geprüfte Expert:innen, entdecke neue Wege zu mehr Wohlbefinden – und starte deine persönliche Gesundheitsreise mit elu.
+              Melde dich jetzt für den Beta-Zugang an und erhalte als Erste:r Zugang zur Plattform.
             </p>
           </div>
           
@@ -988,8 +1006,8 @@ function App() {
                   required
                 >
                   <option value="">Bitte wählen</option>
-                  <option value="client">Klient</option>
-                  <option value="expert">Experte</option>
+                  <option value="client">Klient:in</option>
+                  <option value="expert">Expert:in</option>
                 </select>
               </div>
               
@@ -1005,12 +1023,12 @@ function App() {
                 />
                 <label htmlFor="privacy" className="text-sm text-gray-700 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                   Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
-                  <span 
-                    onClick={() => setCurrentPage('datenschutz')} 
-                    className="text-[#6D8EEC] hover:underline cursor-pointer"
+                  <a 
+                    href="/datenschutz" 
+                    className="text-[#6D8EEC] hover:underline"
                   >
                     Datenschutzerklärung
-                  </span>{' '}
+                  </a>{' '}
                   zu.*
                 </label>
               </div>
@@ -1036,7 +1054,7 @@ function App() {
               </button>
             </form>
             <p className="mt-6 text-sm text-gray-500 text-center" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              (Kein Abo, keine Verpflichtung – nur dein erster Schritt zu mehr Gesundheit.)
+              (Kostenlos und unverbindlich. Wir melden uns, sobald es losgeht.)
             </p>
           </div>
         </div>
@@ -1046,7 +1064,7 @@ function App() {
       <FAQ />
       </main>
 
-      <SiteFooter onNavigate={setCurrentPage} />
+      <SiteFooter />
 
       {/* Mobile Sticky CTA */}
       <div className="fixed bottom-4 left-4 right-4 md:hidden z-50">
@@ -1059,13 +1077,6 @@ function App() {
           <ArrowRight className="w-5 h-5" />
         </button>
       </div>
-
-      {/* Cookie Consent */}
-      <CookieConsent 
-        onAccept={handleCookieAccept}
-        onDecline={handleCookieDecline}
-        onCustomize={handleCookieCustomize}
-      />
     </div>
   );
 }

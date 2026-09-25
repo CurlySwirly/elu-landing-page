@@ -8,32 +8,40 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "Wie wird mir der passende Experte vorgeschlagen?",
+    question: "Wie wird mir die passende Expertin oder der passende Experte vorgeschlagen?",
     answer: "Unsere Matching-Funktion berücksichtigt deine Angaben zu Zielen, Standort und Präferenzen. So erhältst du personalisierte Vorschläge und findest schnell die richtige Expertin oder den richtigen Experten für dein Anliegen."
   },
   {
-    question: "Kostet mich die App etwas?",
-    answer: "Die App selbst ist kostenlos. Du zahlst nur für gebuchte Leistungen. Es fällt keine zusätzliche Buchungsgebühr für dich an – der Preis ist transparent und entspricht dem, was die Expert:innen angeben."
+    question: "Was kostet mich elu?",
+    answer: "Die Registrierung ist kostenlos. Du zahlst den Preis, den die Expert:innen für ihre Leistung festlegen, plus eine kleine Servicegebühr für die Buchung über elu. Alle Kosten siehst du transparent, bevor du buchst."
   },
   {
     question: "Kann ich mit den Expert:innen vorab schreiben?",
-    answer: "Ja, du kannst über die integrierte Chat-Funktion Fragen stellen, Details abklären und Vertrauen aufbauen, bevor du buchst."
+    answer: "Ja. Über den Ende-zu-Ende-verschlüsselten Chat kannst du Fragen stellen und Details abklären, bevor du buchst."
   },
   {
-    question: "Wie buche und bezahle ich eine Einheit?",
-    answer: "Du wählst die Expertin oder den Experten, entscheidest dich für eine Leistung und buchst direkt in der App. Die Zahlung läuft sicher über unseren Zahlungsdienstleister, sodass alles transparent und geschützt ist."
+    question: "Wie buche und bezahle ich einen Termin?",
+    answer: "Du wählst eine Expertin oder einen Experten, entscheidest dich für eine Leistung – vor Ort oder online – und buchst direkt in der App. Die Zahlung läuft sicher über unseren Zahlungsdienstleister Stripe."
   },
   {
     question: "Was passiert, wenn ein Termin abgesagt wird?",
-    answer: "Sollten Expert:innen einen Termin absagen müssen, wirst du sofort informiert. In diesem Fall kannst du kostenlos umbuchen oder erhältst dein Geld automatisch zurück."
+    answer: "Sagst du bis 24 Stunden vor dem Termin ab, erhältst du den Preis der Leistung vollständig zurück. Die Servicegebühr wird in diesem Fall nicht erstattet. Bei späteren Absagen ist keine Rückerstattung möglich. Sagen Expert:innen ab, wirst du sofort informiert und erhältst den gesamten Betrag inklusive Servicegebühr zurück – oder buchst kostenlos um."
   },
   {
-    question: "Kann ich Bewertungen anderer Kund:innen sehen?",
-    answer: "Ja, nach jeder Einheit geben Kund:innen Feedback. Diese Bewertungen helfen dir, die Qualität besser einzuschätzen und die passende Wahl zu treffen."
+    question: "Kann ich Bewertungen anderer Klient:innen sehen?",
+    answer: "Ja. Nach jedem Termin können Klient:innen eine Bewertung abgeben. So kannst du die Qualität besser einschätzen."
+  },
+  {
+    question: "Wie werden die Expert:innen geprüft?",
+    answer: "TODO: Antwort von Linda – Prüfprozess beschreiben (welche Nachweise, wer prüft)."
+  },
+  {
+    question: "Wann startet elu?",
+    answer: "TODO: Antwort von Linda – Startdatum/Region."
   },
   {
     question: "Ist elu nur für Fitness?",
-    answer: "Nein, bei uns findest du ein breites Angebot – von Personal Training über Physiotherapie und Massage bis hin zu Ernährungsberatung und Coaching."
+    answer: "Nein. Bei elu findest du Physiotherapie, Personal Training, Massage, Ernährungsberatung, Yoga und Coaching."
   }
 ];
 

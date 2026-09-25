@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Mail } from 'lucide-react';
 import { formServices } from '../../lib/formServices';
+import { GENERIC_FORM_ERROR } from '../../lib/formErrors';
 
 export default function Newsletter() {
   const [email, setEmail] = useState('');
@@ -30,7 +31,7 @@ export default function Newsletter() {
 
       // Check if formServices is available
       if (!formServices || !formServices.submitNewsletterSubscription) {
-        setError('Newsletter-Service ist nicht verfügbar. Bitte kontaktiere uns.');
+        setError(GENERIC_FORM_ERROR);
         setLoading(false);
         return;
       }
@@ -48,23 +49,16 @@ export default function Newsletter() {
           setSubmitted(false);
         }, 5000);
       } else {
-        const errorMsg = typeof result.error === 'string' 
-          ? result.error 
-          : typeof result.error === 'object' && result.error !== null && 'message' in result.error
-            ? String(result.error.message)
-            : 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.';
+        const errorMsg = typeof result.error === 'string'
+          ? result.error
+          : GENERIC_FORM_ERROR;
         setError(errorMsg);
       }
     } catch (err: unknown) {
       if (import.meta.env.DEV) {
         console.error('Newsletter subscription error:', err);
       }
-      const errorMessage = err instanceof Error 
-        ? err.message 
-        : typeof err === 'object' && err !== null && 'message' in err
-          ? String(err.message)
-          : 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneut.';
-      setError(errorMessage);
+      setError(GENERIC_FORM_ERROR);
     } finally {
       setLoading(false);
     }

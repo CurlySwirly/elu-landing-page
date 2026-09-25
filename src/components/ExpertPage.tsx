@@ -13,18 +13,18 @@ import {
   ChevronLeft,
   ChevronRight,
   Mail,
-  User,
-  Instagram,
-  Facebook,
-  Linkedin
+  User
 } from 'lucide-react';
 import { formServices } from '../lib/formServices';
+import { GENERIC_FORM_ERROR } from '../lib/formErrors';
+import { EXPERT_PRICING } from '../lib/pricing';
+import SiteFooter from './layout/SiteFooter';
 
 interface ExpertPageProps {
   onBack?: () => void;
 }
 
-const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
+const ExpertPage: React.FC<ExpertPageProps> = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [currentCard, setCurrentCard] = useState(0);
   const [email, setEmail] = useState('');
@@ -32,23 +32,12 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
   const [expertise, setExpertise] = useState<string[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [standardEmail, setStandardEmail] = useState('');
-  const [proEmail, setProEmail] = useState('');
-  const [standardEmailSubmitted, setStandardEmailSubmitted] = useState(false);
-  const [proEmailSubmitted, setProEmailSubmitted] = useState(false);
 
   const scrollToBereitLoszulegen = () => {
     const element = document.getElementById('bereit-loszulegen');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-  };
-
-  // Pricing configuration - can be updated to show actual prices when available
-  const pricingConfig = {
-    beta: { price: "0", range: null },
-    standard: { price: null, range: null },
-    pro: { price: null, range: null }
   };
 
   // Initialize carousel to show first card
@@ -83,13 +72,13 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
           setExpertise([]);
         }, 3000);
       } else {
-        alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
+        alert(GENERIC_FORM_ERROR);
       }
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error('Error submitting expert application:', error);
       }
-      alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
+      alert(GENERIC_FORM_ERROR);
     }
   };
 
@@ -120,94 +109,13 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
     }
   }, [isDropdownOpen]);
 
-  const handleStandardEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const result = await formServices.submitPricingInfoEmail({
-        email: standardEmail,
-        plan_type: 'standard'
-      });
-
-      if (result.success) {
-        setStandardEmailSubmitted(true);
-        setTimeout(() => {
-          setStandardEmailSubmitted(false);
-          setStandardEmail('');
-        }, 3000);
-      } else {
-        if (import.meta.env.DEV) {
-          console.error('Form submission failed:', result.error);
-        }
-        alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error submitting standard plan email:', error);
-      }
-      alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
-    }
-  };
-
-  const handleProEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const result = await formServices.submitPricingInfoEmail({
-        email: proEmail,
-        plan_type: 'pro'
-      });
-
-      if (result.success) {
-        setProEmailSubmitted(true);
-        setTimeout(() => {
-          setProEmailSubmitted(false);
-          setProEmail('');
-        }, 3000);
-      } else {
-        if (import.meta.env.DEV) {
-          console.error('Form submission failed:', result.error);
-        }
-        alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error submitting pro plan email:', error);
-      }
-      alert('Es gab einen Fehler beim Absenden. Bitte versuche es erneut.');
-    }
-  };
-
-  const renderPriceDisplay = (planConfig: { price: string | null, range: string | null }) => {
-    if (planConfig.price) {
-      return (
-        <div className="mb-4">
-          <span className="text-4xl font-bold text-[#6D8EEC]">{planConfig.price} €</span>
-          <span className="text-[#292B27] opacity-60"> / Monat</span>
-        </div>
-      );
-    } else if (planConfig.range) {
-      return (
-        <div className="mb-4">
-          <span className="text-4xl font-bold text-[#6D8EEC]">ab {planConfig.range} €</span>
-          <span className="text-[#292B27] opacity-60">/Monat</span>
-        </div>
-      );
-    } else {
-      return (
-        <div className="mb-4">
-          <span className="text-2xl font-bold text-[#6D8EEC]">Preis in Arbeit</span>
-        </div>
-      );
-    }
-  };
-
   const expertiseOptions = [
     'Personal Training',
     'Ernährungsberatung',
     'Coaching',
     'Physiotherapie',
     'Massage',
+    'Yoga',
     'Andere'
   ];
 
@@ -215,32 +123,32 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
     {
       icon: CreditCard,
       title: "Sichere Zahlungsabwicklung",
-      description: "Transparente und sichere Abwicklung aller Zahlungen über die Plattform."
+      description: "Klient:innen bezahlen bei der Buchung über Stripe."
     },
     {
       icon: Calendar,
       title: "Flexible Terminverwaltung",
-      description: "Kalender-Integration für einfache Terminplanung und -verwaltung."
+      description: "Verfügbarkeiten und Buchungen an einem Ort."
     },
     {
       icon: Eye,
-      title: "Profil-Sichtbarkeit",
-      description: "Optimale Sichtbarkeit bei deiner relevanten Zielgruppe."
+      title: "Sichtbarkeit bei deiner Zielgruppe",
+      description: "Klient:innen finden dich über Fachgebiet, Standort und Schwerpunkte."
     },
     {
       icon: FileText,
-      title: "Vereinfachte Rechnungslegung",
-      description: "Monatsübersicht und automatisierte Rechnungserstellung."
+      title: "Weniger Papierkram",
+      description: "Rechnungen und Übersichten werden automatisch erstellt. [TODO: mit Dominik/Arnold bestätigen, was zum Start automatisiert ist]"
     },
     {
       icon: MessageCircle,
       title: "Direkter Chat",
-      description: "Kommunikation mit deiner Kundschaft direkt über die App."
+      description: "Ende-zu-Ende-verschlüsselt mit deinen Klient:innen."
     },
     {
       icon: Shield,
-      title: "Ausfallschutz inklusive",
-      description: "Storno- und Ausfallschutz für deine finanzielle Sicherheit."
+      title: "Absicherung bei kurzfristigen Absagen",
+      description: "Sagen Klient:innen weniger als 24 Stunden vor dem Termin ab, behältst du dein Honorar."
     }
   ];
 
@@ -267,19 +175,25 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
   const faqData = [
     {
       question: "Wie funktioniert die Abrechnung?",
-      answer: "Die Abrechnung erfolgt automatisch über die App. Du erhältst eine übersichtliche Monatsabrechnung mit allen Details zu deinen Einnahmen und Buchungen."
+      answer: "Deine Klient:innen bezahlen bei der Buchung über Stripe. Dein Honorar wird auf dein Stripe-Konto ausgezahlt, die Plattformgebühr wird dabei automatisch abgezogen. Im Abo zahlst du keine Plattformgebühr. In deinem Dashboard siehst du alle Buchungen und Einnahmen im Überblick."
     },
     {
       question: "Wie werde ich auf der Plattform sichtbar?",
-      answer: "Dein Profil wird basierend auf deiner Expertise und den Suchkriterien der Nutzer:innen angezeigt. In der Beta-Phase profitierst du von einer besonders hohen Sichtbarkeit."
+      answer: "Klient:innen finden dich über dein Fachgebiet, deinen Standort und deine Schwerpunkte. Je vollständiger dein Profil, desto besser passen die Anfragen."
     },
     {
-      question: "Kann ich jederzeit kündigen?",
-      answer: "Ja, du kannst dein Abonnement jederzeit zum Monatsende kündigen. Es gibt keine Mindestlaufzeit oder versteckte Gebühren."
+      question: "Kann ich mein Abo kündigen?",
+      answer: "Ja. Das Monatsabo kannst du zum Ende des jeweiligen Monats kündigen, das Jahresabo zum Ende des Abojahres. Danach buchst du einfach im Provisionsmodell weiter – dein Profil bleibt aktiv."
     },
     {
       question: "Wie sicher sind meine Daten?",
-      answer: "Wir verwenden modernste Verschlüsselungstechnologien und erfüllen alle DSGVO-Anforderungen. Deine Daten werden sicher und vertraulich behandelt."
+      answer: (
+        <>
+          Deine Daten werden verschlüsselt übertragen und auf Servern in der EU gespeichert. Nachrichten im Chat sind Ende-zu-Ende-verschlüsselt. Mehr dazu in unserer{' '}
+          <a href="/datenschutz" className="text-[#6D8EEC] hover:underline">Datenschutzerklärung</a>.
+          {' '}[TODO: EU-Serverstandort für alle Systeme bestätigen]
+        </>
+      )
     }
   ];
 
@@ -306,14 +220,14 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
         {/* Back Button - positioned within hero section */}
         <div className="absolute top-8 left-0 right-0 z-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <button 
-              onClick={onBack}
+            <a 
+              href="/"
               className="inline-flex items-center gap-2 text-[#6D8EEC] hover:text-[#5a7ae8] transition-colors duration-200 font-medium bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm hover:bg-white transition-all duration-200"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
               <ChevronLeft className="w-4 h-4" />
               Zurück
-            </button>
+            </a>
           </div>
         </div>
         {/* Gradient Background */}
@@ -322,10 +236,10 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-[#292B27] leading-tight tracking-tight mb-6">
-              Dein Weg zu neuer Kundschaft – werde Teil von elu
+              Mehr Klient:innen. Weniger Verwaltung.
             </h1>
             <p className="text-lg lg:text-xl text-[#292B27] opacity-80 leading-relaxed mb-16">
-              elu bringt deine Expertise direkt zu den Menschen. Keine Selbstvermarktung mehr notwendig – wir übernehmen das.
+              Werde von Menschen gefunden, die gezielt nach deiner Expertise suchen – online oder vor Ort. Buchung, Zahlung und Rechnung laufen über elu.
             </p>
             
             {/* Responsive Cards Layout */}
@@ -434,191 +348,80 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
             Unsere Preismodelle
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-            {/* Beta */}
             <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-2 border-[#BADE4F] relative flex flex-col">
+              <div className="text-center mb-8 pt-4">
+                <h3 className="text-2xl font-bold text-[#292B27] mb-4 tracking-tight">
+                  Starter
+                </h3>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-[#6D8EEC]">{EXPERT_PRICING.starter.feePercent}</span>
+                </div>
+                <p className="text-sm text-[#292B27] opacity-75">
+                  Plattformgebühr pro Buchung · die ersten {EXPERT_PRICING.starter.freeBookings} Buchungen gratis
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative flex flex-col">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#BADE4F] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold">
-                  Coming Soon
+                  Aktion · nur {EXPERT_PRICING.introSlots} Plätze
                 </span>
               </div>
               <div className="text-center mb-8 pt-4">
                 <h3 className="text-2xl font-bold text-[#292B27] mb-4 tracking-tight">
-                  Beta
+                  Monatsabo
                 </h3>
-                {renderPriceDisplay(pricingConfig.beta)}
+                <div className="mb-4">
+                  <del aria-label={`regulärer Preis ${EXPERT_PRICING.monthly.regular}`} className="block text-lg text-[#292B27] opacity-50">
+                    {EXPERT_PRICING.monthly.regular}
+                  </del>
+                  <span className="text-4xl font-bold text-[#6D8EEC]">{EXPERT_PRICING.monthly.intro}</span>
+                  <span className="text-[#292B27] opacity-60"> / {EXPERT_PRICING.monthly.period}</span>
+                </div>
+                <p className="text-sm text-[#292B27] opacity-75 mb-2">
+                  0 % Plattformgebühr
+                </p>
                 <p className="text-sm text-[#292B27] opacity-75">
-                  + 10 % Kommission pro Buchung
+                  Einführungspreis für die ersten {EXPERT_PRICING.introSlots} Expert:innen · gilt bis {EXPERT_PRICING.introEndsLabel} · danach {EXPERT_PRICING.monthly.regular} / {EXPERT_PRICING.monthly.period}
                 </p>
               </div>
-              <ul className="space-y-4 mb-8 flex-grow">
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#BADE4F] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Volle Profil-Sichtbarkeit</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#BADE4F] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Neue Kundschaft gewinnen</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#BADE4F] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Einfache Abrechnung & Stornoschutz</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#BADE4F] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Keine Selbstvermarktung nötig – wir übernehmen das</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#BADE4F] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Feedback geben und Plattform mitgestalten</span>
-                </li>
-              </ul>
-              <button 
-                onClick={scrollToBereitLoszulegen}
-                className="w-full bg-[#6D8EEC] text-white py-4 rounded-full font-semibold hover:bg-[#5A7BE8] transition-colors duration-200 mt-auto"
-              >
-                Beta-Zugang sichern
-              </button>
             </div>
 
-            {/* Standard */}
             <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative flex flex-col">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#E2E8FB] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold border border-gray-200">
-                  Geplant
+                <span className="bg-[#BADE4F] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold">
+                  Aktion · nur {EXPERT_PRICING.introSlots} Plätze
                 </span>
               </div>
               <div className="text-center mb-8 pt-4">
                 <h3 className="text-2xl font-bold text-[#292B27] mb-4 tracking-tight">
-                  Standard
+                  Jahresabo
                 </h3>
-                {renderPriceDisplay(pricingConfig.standard)}
+                <div className="mb-4">
+                  <del aria-label={`regulärer Preis ${EXPERT_PRICING.yearly.regular}`} className="block text-lg text-[#292B27] opacity-50">
+                    {EXPERT_PRICING.yearly.regular}
+                  </del>
+                  <span className="text-4xl font-bold text-[#6D8EEC]">{EXPERT_PRICING.yearly.intro}</span>
+                  <span className="text-[#292B27] opacity-60"> / {EXPERT_PRICING.yearly.period}</span>
+                </div>
+                <p className="text-sm text-[#292B27] opacity-75 mb-2">
+                  0 % Plattformgebühr · {EXPERT_PRICING.yearly.savingsVsMonthlyRegular} günstiger als 12 × Monatsabo zum regulären Preis
+                </p>
                 <p className="text-sm text-[#292B27] opacity-75">
-                  ab Launch
+                  Einführungspreis für die ersten {EXPERT_PRICING.introSlots} Expert:innen · bei Abschluss bis {EXPERT_PRICING.introEndsLabel} · danach {EXPERT_PRICING.yearly.regular} / {EXPERT_PRICING.yearly.period}
                 </p>
               </div>
-              <ul className="space-y-4 mb-8 flex-grow">
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Bis zu 20 Buchungen pro Monat</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Volle Sichtbarkeit</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Komplette Abwicklung</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Support inklusive</span>
-                </li>
-              </ul>
-              {!pricingConfig.standard.price && !pricingConfig.standard.range ? (
-                <div className="space-y-4 mt-auto">
-                  {standardEmailSubmitted ? (
-                    <div className="text-center p-3 bg-[#BADE4F] bg-opacity-20 rounded-xl" role="status" aria-live="polite">
-                      <p className="text-sm text-[#292B27] font-semibold">Danke! Wir benachrichtigen dich.</p>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleStandardEmailSubmit} className="space-y-3">
-                      <input
-                        type="email"
-                        value={standardEmail}
-                        onChange={(e) => setStandardEmail(e.target.value)}
-                        placeholder="deine@email.de"
-                        required
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-full focus:border-[#6D8EEC] focus:outline-none transition-colors duration-200"
-                        aria-label="E-Mail für Standard Plan Benachrichtigung"
-                      />
-                      <button
-                        type="submit"
-                        className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200"
-                      >
-                        Infos erhalten
-                      </button>
-                    </form>
-                  )}
-                </div>
-              ) : (
-                <button className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200 mt-auto">
-                  Plan auswählen
-                </button>
-              )}
-            </div>
-
-            {/* Pro */}
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md border-2 border-gray-100 relative flex flex-col">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#E2E8FB] text-[#292B27] px-4 py-2 rounded-full text-sm font-semibold border border-gray-200">
-                  Geplant
-                </span>
-              </div>
-              <div className="text-center mb-8 pt-4">
-                <h3 className="text-2xl font-bold text-[#292B27] mb-4 tracking-tight">
-                  Pro
-                </h3>
-                {renderPriceDisplay(pricingConfig.pro)}
-                <p className="text-sm text-[#292B27] opacity-75">
-                  ab Launch
-                </p>
-              </div>
-              <ul className="space-y-4 mb-8 flex-grow">
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Unlimitierte Buchungen</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Markt-Insights & Analytics</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Hilfreiche Business-Tipps</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="text-[#6D8EEC] flex-shrink-0 mt-0.5" size={20} />
-                  <span className="text-[#292B27]">Priority Support</span>
-                </li>
-              </ul>
-              {!pricingConfig.pro.price && !pricingConfig.pro.range ? (
-                <div className="space-y-4 mt-auto">
-                  {proEmailSubmitted ? (
-                    <div className="text-center p-3 bg-[#BADE4F] bg-opacity-20 rounded-xl" role="status" aria-live="polite">
-                      <p className="text-sm text-[#292B27] font-semibold">Danke! Wir benachrichtigen dich.</p>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleProEmailSubmit} className="space-y-3">
-                      <input
-                        type="email"
-                        value={proEmail}
-                        onChange={(e) => setProEmail(e.target.value)}
-                        placeholder="deine@email.de"
-                        required
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-full focus:border-[#6D8EEC] focus:outline-none transition-colors duration-200"
-                        aria-label="E-Mail für Pro Plan Benachrichtigung"
-                      />
-                      <button
-                        type="submit"
-                        className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200"
-                      >
-                        Infos erhalten
-                      </button>
-                    </form>
-                  )}
-                </div>
-              ) : (
-                <button className="w-full border-2 border-[#6D8EEC] text-[#6D8EEC] py-4 rounded-full font-semibold hover:bg-[#E2E8FB] transition-colors duration-200 mt-auto">
-                  Plan auswählen
-                </button>
-              )}
             </div>
           </div>
           
           <div className="text-center mt-8">
-            <p className="text-sm text-[#292B27] opacity-60">
-              Wir informieren dich, sobald die Preise feststehen. Keine Verpflichtung.
-            </p>
+            <button
+              onClick={scrollToBereitLoszulegen}
+              className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#5A7BE8] transition-colors duration-200"
+            >
+              Beta-Zugang sichern
+            </button>
           </div>
         </div>
       </section>
@@ -725,7 +528,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                 
                 <div>
                   <label htmlFor="expertise-final" className="block text-sm font-semibold text-[#292B27] mb-2">
-                    Wähle dein Fachgebiet (Mehrfachauswahl möglich)
+                    Wähle deine Fachgebiete (Mehrfachauswahl möglich)
                   </label>
                   <div className="relative expertise-dropdown">
                     <button
@@ -739,7 +542,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
                     >
                       <span className="text-left">
                         {expertise.length === 0 
-                          ? 'Fachgebiet auswählen...' 
+                          ? 'Fachgebiete auswählen...' 
                           : expertise.length === 1 
                             ? expertise[0]
                             : `${expertise.length} Fachgebiete ausgewählt`
@@ -798,67 +601,7 @@ const ExpertPage: React.FC<ExpertPageProps> = ({ onBack }) => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#292B27] text-white py-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <img 
-                  src="/favicon.png" 
-                  alt="elu – elevate you" 
-                  className="w-10 h-10"
-                />
-                <h3 className="text-2xl font-bold text-[#6D8EEC]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                  <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>
-                </h3>
-              </div>
-              <p className="text-gray-300 leading-relaxed mb-6" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                Gesundheit ohne Umwege. Finde geprüfte Experten für alle Bereiche der Vorsorge und Prävention.
-              </p>
-              <div className="flex gap-4">
-                <a href="https://www.instagram.com/elevateyou.app/" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=61579333094922" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="https://www.linkedin.com/company/108662379/" target="_blank" rel="noopener noreferrer" className="bg-gray-700 hover:bg-[#6D8EEC] p-3 rounded-full transition-colors duration-300">
-                  <Linkedin className="w-5 h-5" />
-                </a>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Rechtliches
-              </h4>
-              <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                <li><button onClick={() => window.location.href = '/impressum'} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Impressum</button></li>
-                <li><button onClick={() => window.location.href = '/datenschutz'} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Datenschutz</button></li>
-                <li><button onClick={() => window.location.href = '/agb'} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">AGB</button></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Kontakt
-              </h4>
-              <ul className="space-y-3" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                <li><button onClick={() => window.location.href = '/contact'} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Kontakt</button></li>
-                <li><button onClick={() => window.location.href = '/support'} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Support</button></li>
-                <li><button onClick={() => window.location.href = '/press'} className="text-gray-300 hover:text-white transition-colors duration-300 cursor-pointer">Presse</button></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-600 mt-12 pt-8 text-center">
-            <p className="text-gray-400" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              © 2025 <span className="font-bold">elu.</span> <span className="font-extralight italic">elevate you</span>. Alle Rechte vorbehalten.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 };

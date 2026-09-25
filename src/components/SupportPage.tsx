@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Mail, Linkedin, Instagram, ArrowRight, HelpCircle, MessageCircle, Send } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { formServices } from '../lib/formServices';
+import { GENERIC_FORM_ERROR } from '../lib/formErrors';
 import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
 
@@ -9,7 +10,7 @@ interface SupportPageProps {
   onNavigate?: (page: string) => void;
 }
 
-const SupportPage: React.FC<SupportPageProps> = ({ onNavigate }) => {
+const SupportPage: React.FC<SupportPageProps> = () => {
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
   const accordionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -233,13 +234,13 @@ const SupportPage: React.FC<SupportPageProps> = ({ onNavigate }) => {
         toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
         setFormData({ name: '', email: '', message: '' });
       } else {
-        toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
+        toast.error(GENERIC_FORM_ERROR);
       }
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error('Error submitting contact form:', error);
       }
-      toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
+      toast.error(GENERIC_FORM_ERROR);
     } finally {
       setIsSubmitting(false);
     }
@@ -256,11 +257,9 @@ const SupportPage: React.FC<SupportPageProps> = ({ onNavigate }) => {
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
 
-  const handleNavigate = onNavigate ?? (() => {});
-
   return (
     <div className="min-h-screen bg-[#F8F4F4] text-[#292B27]">
-      <SiteHeader onNavigate={handleNavigate} />
+      <SiteHeader />
 
       <main className="pt-28 lg:pt-36 pb-20">
         <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -530,7 +529,7 @@ const SupportPage: React.FC<SupportPageProps> = ({ onNavigate }) => {
         </div>
       </main>
 
-      <SiteFooter onNavigate={handleNavigate} />
+      <SiteFooter />
     </div>
   );
 };

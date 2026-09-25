@@ -45,18 +45,18 @@ export default function Footer() {
             <h4 className="font-['League_Spartan'] font-semibold text-lg mb-4">Rechtliches</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="font-['Open_Sans'] text-white/80 hover:text-[#6D8EEC] hover:underline transition-colors text-sm">
+                <a href="/datenschutz" className="font-['Open_Sans'] text-white/80 hover:text-[#6D8EEC] hover:underline transition-colors text-sm">
                   Datenschutz
                 </a>
               </li>
               <li>
-                <a href="#" className="font-['Open_Sans'] text-white/80 hover:text-[#6D8EEC] hover:underline transition-colors text-sm">
+                <a href="/impressum" className="font-['Open_Sans'] text-white/80 hover:text-[#6D8EEC] hover:underline transition-colors text-sm">
                   Impressum
                 </a>
               </li>
               <li>
-                <a href="#" className="font-['Open_Sans'] text-white/80 hover:text-[#6D8EEC] hover:underline transition-colors text-sm">
-                  AGB
+                <a href="/nutzungsbedingungen" className="font-['Open_Sans'] text-white/80 hover:text-[#6D8EEC] hover:underline transition-colors text-sm">
+                  Nutzungsbedingungen
                 </a>
               </li>
             </ul>

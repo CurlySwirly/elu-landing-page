@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, Mail, Linkedin, Instagram, Send } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { formServices } from '../lib/formServices';
+import { GENERIC_FORM_ERROR } from '../lib/formErrors';
 
 interface ContactPageProps {
   onBack?: () => void;
@@ -40,13 +41,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
         toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
         setFormData({ name: '', email: '', message: '' });
       } else {
-        toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
+        toast.error(GENERIC_FORM_ERROR);
       }
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error('Error submitting contact form:', error);
       }
-      toast.success('Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.');
+      toast.error(GENERIC_FORM_ERROR);
     } finally {
       setIsSubmitting(false);
     }

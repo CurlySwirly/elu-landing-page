@@ -69,7 +69,7 @@ export default function ArticleHeader({
             className="w-full h-full object-cover"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = 'https://images.pexels.com/photos/3822621/pexels-photo-3822621.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop';
+              target.src = '/images/blog-fallback.jpg';
             }}
           />
         </div>

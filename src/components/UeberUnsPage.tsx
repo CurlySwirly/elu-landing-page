@@ -9,7 +9,9 @@ interface UeberUnsPageProps {
 const focusRing =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6D8EEC]';
 
-const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
+const SHOW_ELU_FOR_WORK = false;
+
+const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
   useEffect(() => {
     const previousTitle = document.title;
     const targetTitle = 'Über uns – elu | Elevate You GmbH';
@@ -18,7 +20,7 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
     const metaDescription = document.querySelector('meta[name="description"]');
     const previousDescription = metaDescription?.getAttribute('content') ?? '';
     const targetDescription =
-      'elu ist die Marke der Elevate You GmbH. Wir verbinden Menschen und Teams mit qualifizierten Expert:innen für präventive Gesundheitsleistungen – inklusive B2B-Lösung elu for work.';
+      'elu ist die Marke der Elevate You GmbH in Wien. Wir verbinden Menschen mit qualifizierten Expert:innen für Bewegung, Ernährung und Prävention.';
 
     if (metaDescription) {
       metaDescription.setAttribute('content', targetDescription);
@@ -49,11 +51,11 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
           '@type': 'Organization',
           'name': 'Elevate You GmbH',
           'url': pageUrl,
-          'email': 'info@eluforwork.com',
+          'email': 'info@elevateyou.app',
           'address': {
             '@type': 'PostalAddress',
-            'streetAddress': 'Osterleitengasse 11',
-            'postalCode': '1190',
+            'streetAddress': 'Petrusgasse 16/1',
+            'postalCode': '1030',
             'addressLocality': 'Wien',
             'addressCountry': 'AT'
           }
@@ -72,15 +74,17 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
           },
           'sameAs': ['https://elevateyou.app']
         },
-        {
-          '@type': 'Product',
-          'name': 'elu for work',
-          'brand': {
-            '@type': 'Brand',
-            'name': 'elu'
-          },
-          'sameAs': ['https://eluforwork.com']
-        }
+        ...(SHOW_ELU_FOR_WORK
+          ? [{
+              '@type': 'Product',
+              'name': 'elu for work',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'elu'
+              },
+              'sameAs': ['https://eluforwork.com']
+            }]
+          : [])
       ]
     });
 
@@ -97,7 +101,7 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="min-h-screen bg-[#F8F4F4] text-[#292B27]">
-      <SiteHeader onNavigate={onNavigate} />
+      <SiteHeader />
 
       <main className="pt-28 lg:pt-36 pb-20">
         <nav
@@ -109,13 +113,12 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
             style={{ fontFamily: 'Open Sans, sans-serif' }}
           >
             <li>
-              <button
-                type="button"
-                onClick={() => onNavigate('home')}
+              <a
+                href="/"
                 className={`${focusRing} hover:underline hover:text-[#1f211d] transition-colors`}
               >
                 Home
-              </button>
+              </a>
             </li>
             <li aria-hidden="true">›</li>
             <li className="font-semibold">Über uns</li>
@@ -137,7 +140,7 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 elu ist die Marke der Elevate You GmbH in Wien. Unsere Mission: präventive Gesundheit zugänglich,
-                alltagstauglich und menschlich machen – für Einzelpersonen ebenso wie für Teams.
+                alltagstauglich und menschlich machen.
               </p>
               <div
                 className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm font-semibold text-[#292B27]"
@@ -170,11 +173,13 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                 className="text-lg text-[#292B27]/80 max-w-2xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Zwei Angebote, ein Ziel: Menschen mit qualifizierten Expert:innen verbinden – persönlich und im Arbeitsumfeld.
+                {SHOW_ELU_FOR_WORK
+                  ? 'Zwei Angebote, ein Ziel: Menschen mit qualifizierten Expert:innen verbinden – persönlich und im Arbeitsumfeld.'
+                  : 'Wir verbinden Menschen mit qualifizierten Expert:innen – persönlich und alltagstauglich.'}
               </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2">
+            <div className={`grid gap-8 ${SHOW_ELU_FOR_WORK ? 'md:grid-cols-2' : ''}`}>
               <article className="rounded-3xl bg-white p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
                 <header className="mb-6">
                   <h3
@@ -189,10 +194,10 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                   className="space-y-3 text-[#292B27]/90"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 >
-                  <li>Plattform für präventive Gesundheitsdienstleistungen (Coaching, Ernährung, Physio, Massage)</li>
+                  <li>Plattform für präventive Gesundheitsdienstleistungen (Physiotherapie, Personal Training, Massage, Ernährung, Yoga, Coaching)</li>
                   <li>Intelligentes Matching, einfache Buchung und digitale Begleitung</li>
                   <li>Qualitätsgesichert durch kuratierte Expert:innen-Profile</li>
-                  <li>Digitaler Assistent für Expert:innen inklusive Termin- und Kund:innenmanagement</li>
+                  <li>Digitaler Assistent für Expert:innen inklusive Termin- und Klient:innenverwaltung</li>
                 </ul>
                 <div className="mt-8">
                   <a
@@ -205,6 +210,7 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                 </div>
               </article>
 
+              {SHOW_ELU_FOR_WORK && (
               <article className="rounded-3xl bg-white p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
                 <header className="mb-6">
                   <h3
@@ -234,6 +240,7 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                   </a>
                 </div>
               </article>
+              )}
             </div>
           </div>
         </section>
@@ -252,7 +259,7 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                 className="text-lg text-[#292B27]/85 mb-8 max-w-3xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Wir verbinden präventive Gesundheitsangebote mit echter Menschlichkeit. Unser Ansatz schafft Vertrauen, Transparenz und nachhaltige Wirkung – für Einzelpersonen, Teams und Expert:innen.
+                Wir verbinden präventive Gesundheitsangebote mit echter Menschlichkeit. Unser Ansatz schafft Vertrauen, Transparenz und nachhaltige Wirkung – für Klient:innen und Expert:innen.
               </p>
               <ul
                 className="grid gap-4 sm:grid-cols-3 text-[#292B27]"
@@ -362,7 +369,7 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                 className="text-[#292B27]/85 mb-6"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Elevate You GmbH, Osterleitengasse 11, 1190 Wien ·{' '}
+                Elevate You GmbH, Petrusgasse 16/1, 1030 Wien · FN 688469f ·{' '}
                 <a
                   href="mailto:info@elevateyou.app"
                   className={`font-semibold text-[#292B27] hover:text-[#1f211d] hover:underline transition-colors ${focusRing}`}
@@ -375,7 +382,7 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
         </section>
       </main>
 
-      <SiteFooter onNavigate={onNavigate} />
+      <SiteFooter />
     </div>
   );
 };
