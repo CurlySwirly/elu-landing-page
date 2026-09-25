@@ -16,16 +16,17 @@ import {
   User
 } from 'lucide-react';
 import { formServices } from '../lib/formServices';
-import { GENERIC_FORM_ERROR } from '../lib/formErrors';
 import { EXPERT_PRICING } from '../lib/pricing';
 import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
+import { useLocale } from '../i18n';
 
 interface ExpertPageProps {
   onBack?: () => void;
 }
 
 const ExpertPage: React.FC<ExpertPageProps> = () => {
+  const { t, messages, locale } = useLocale();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [currentCard, setCurrentCard] = useState(0);
   const [email, setEmail] = useState('');
@@ -73,13 +74,13 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
           setExpertise([]);
         }, 3000);
       } else {
-        alert(GENERIC_FORM_ERROR);
+        alert(t('forms.genericError'));
       }
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error('Error submitting expert application:', error);
       }
-      alert(GENERIC_FORM_ERROR);
+      alert(t('forms.genericError'));
     }
   };
 
@@ -110,48 +111,13 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
     }
   }, [isDropdownOpen]);
 
-  const expertiseOptions = [
-    'Personal Training',
-    'Ernährungsberatung',
-    'Coaching',
-    'Physiotherapie',
-    'Massage',
-    'Yoga',
-    'Andere'
-  ];
-
-  const appBenefits = [
-    {
-      icon: CreditCard,
-      title: "Sichere Zahlungsabwicklung",
-      description: "Klient:innen bezahlen bei der Buchung über Stripe."
-    },
-    {
-      icon: Calendar,
-      title: "Flexible Terminverwaltung",
-      description: "Verfügbarkeiten und Buchungen an einem Ort."
-    },
-    {
-      icon: Eye,
-      title: "Sichtbarkeit bei deiner Zielgruppe",
-      description: "Klient:innen finden dich über Fachgebiet, Standort und Schwerpunkte."
-    },
-    {
-      icon: FileText,
-      title: "Weniger Papierkram",
-      description: "Rechnungen und Übersichten werden automatisch erstellt."
-    },
-    {
-      icon: MessageCircle,
-      title: "Direkter Chat",
-      description: "Ende-zu-Ende-verschlüsselt mit deinen Klient:innen."
-    },
-    {
-      icon: Shield,
-      title: "Absicherung bei kurzfristigen Absagen",
-      description: "Sagen Klient:innen weniger als 24 Stunden vor dem Termin ab, behältst du dein Honorar."
-    }
-  ];
+  const expertiseOptions = messages.expert.fields;
+  const benefitIcons = [CreditCard, Calendar, Eye, FileText, MessageCircle, Shield];
+  const appBenefits = messages.expert.benefits.map((benefit, index) => ({
+    icon: benefitIcons[index],
+    title: benefit.title,
+    description: benefit.body,
+  }));
 
   const nextCard = () => {
     setCurrentCard((prev) => {
@@ -173,134 +139,116 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
     });
   };
 
+  const month = t('expert.periodMonth');
+  const year = t('expert.periodYear');
   const pricingPlans = [
     {
       id: 'starter',
-      name: 'Starter',
+      name: t('expert.starterName'),
       orderClass: 'order-3 md:order-1',
       highlighted: false,
       badge: null as string | null,
       regular: null as string | null,
       price: EXPERT_PRICING.starter.price,
-      period: EXPERT_PRICING.starter.period,
-      priceNote: `+ ${EXPERT_PRICING.starter.feePercent} pro Buchung`,
-      description: 'Ideal zum Ausprobieren',
+      period: month,
+      priceNote: t('expert.perBooking', { fee: EXPERT_PRICING.starter.feePercent }),
+      description: t('expert.starterDesc'),
       features: [
-        `Die ersten ${EXPERT_PRICING.starter.freeBookings} Buchungen ohne Gebühr`,
-        'Professionelles Profil',
-        'Buchung, Zahlung & Chat',
-        'Keine Fixkosten, keine Bindung',
+        t('expert.starterF1', { count: EXPERT_PRICING.starter.freeBookings }),
+        t('expert.starterF2'),
+        t('expert.starterF3'),
+        t('expert.starterF4'),
       ],
       footer: null as string | null,
     },
     {
       id: 'monthly',
-      name: 'Monatsabo',
+      name: t('expert.monthlyName'),
       orderClass: 'order-1 md:order-2',
       highlighted: true,
-      badge: 'Beliebt',
+      badge: t('expert.popular'),
       regular: EXPERT_PRICING.monthly.regular,
       price: EXPERT_PRICING.monthly.intro,
-      period: EXPERT_PRICING.monthly.period,
-      priceNote: null,
-      description: `Lohnt sich ab ca. ${EXPERT_PRICING.monthly.worthwhileFrom} Umsatz im Monat`,
-      features: [
-        '0 % Plattformgebühr',
-        'Alles aus Starter',
-        'Monatlich kündbar',
-      ],
-      footer: `Aktionspreis gilt bis ${EXPERT_PRICING.introEndsShort}, danach ${EXPERT_PRICING.monthly.regular} / ${EXPERT_PRICING.monthly.period}.`,
+      period: month,
+      priceNote: null as string | null,
+      description: t('expert.monthlyDesc', { amount: EXPERT_PRICING.monthly.worthwhileFrom }),
+      features: [t('expert.monthlyF1'), t('expert.monthlyF2'), t('expert.monthlyF3')],
+      footer: t('expert.monthlyFooter', {
+        date: EXPERT_PRICING.introEndsShort,
+        price: EXPERT_PRICING.monthly.regular,
+        period: month,
+      }),
     },
     {
       id: 'yearly',
-      name: 'Jahresabo',
+      name: t('expert.yearlyName'),
       orderClass: 'order-2 md:order-3',
       highlighted: false,
-      badge: null,
+      badge: null as string | null,
       regular: EXPERT_PRICING.yearly.regular,
       price: EXPERT_PRICING.yearly.intro,
-      period: EXPERT_PRICING.yearly.period,
-      priceNote: `entspricht ${EXPERT_PRICING.yearly.monthlyEquivalent} / Monat`,
-      description: 'Für alle, die regelmäßig über elu arbeiten',
-      features: [
-        '0 % Plattformgebühr',
-        'Alles aus Starter',
-        'Preis für 12 Monate gesichert',
-      ],
-      footer: `Bei Abschluss bis ${EXPERT_PRICING.introEndsShort}. Danach ${EXPERT_PRICING.yearly.regular} / ${EXPERT_PRICING.yearly.period}.`,
+      period: year,
+      priceNote: t('expert.yearlyNote', { amount: EXPERT_PRICING.yearly.monthlyEquivalent }),
+      description: t('expert.yearlyDesc'),
+      features: [t('expert.yearlyF1'), t('expert.yearlyF2'), t('expert.yearlyF3')],
+      footer: t('expert.yearlyFooter', {
+        date: EXPERT_PRICING.introEndsShort,
+        price: EXPERT_PRICING.yearly.regular,
+        period: year,
+      }),
     },
   ];
 
-  const faqData = [
-    {
-      question: "Wie funktioniert die Abrechnung?",
-      answer: "Deine Klient:innen bezahlen bei der Buchung über Stripe. Dein Honorar wird auf dein Stripe-Konto ausgezahlt, die Plattformgebühr wird dabei automatisch abgezogen. Im Abo zahlst du keine Plattformgebühr. In deinem Dashboard siehst du alle Buchungen und Einnahmen im Überblick."
-    },
-    {
-      question: "Wie werde ich auf der Plattform sichtbar?",
-      answer: "Klient:innen finden dich über dein Fachgebiet, deinen Standort und deine Schwerpunkte. Je vollständiger dein Profil, desto besser passen die Anfragen."
-    },
-    {
-      question: "Kann ich mein Abo kündigen?",
-      answer: "Ja. Das Monatsabo kannst du zum Ende des jeweiligen Monats kündigen, das Jahresabo zum Ende des Abojahres. Danach buchst du einfach im Provisionsmodell weiter – dein Profil bleibt aktiv."
-    },
-    {
-      question: "Wie sicher sind meine Daten?",
-      answer: (
-        <>
-          Deine Daten werden verschlüsselt übertragen und auf Servern in der EU gespeichert. Nachrichten im Chat sind Ende-zu-Ende-verschlüsselt. Mehr dazu in unserer{' '}
-          <a href="/datenschutz" className="text-[#6D8EEC] hover:underline">Datenschutzerklärung</a>.
-          {' '}[TODO: EU-Serverstandort für alle Systeme bestätigen]
-        </>
-      )
-    }
-  ];
+  const faqData = messages.expert.faq.map((item) => ({
+    question: item.q,
+    answer: item.a,
+  }));
 
   return (
     <div className="min-h-screen bg-light">
       <SiteHeader />
 
-      <main className="pt-28 lg:pt-32 pb-16">
+      <main className="pt-24 lg:pt-32 pb-12 md:pb-16">
       <section className="bg-light">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <a
             href="/"
-            className="inline-flex items-center gap-2 text-[#6D8EEC] hover:text-[#5a7ae8] mb-8 font-medium"
+            className="inline-flex items-center gap-2 text-[#6D8EEC] hover:text-[#5a7ae8] mb-6 md:mb-8 font-medium"
             style={{ fontFamily: 'Open Sans, sans-serif' }}
           >
             <ChevronLeft className="w-4 h-4" />
-            Zurück
+            {t('common.back')}
           </a>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-10 md:mb-14">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center mb-10 md:mb-14">
             <div>
               <p
-                className="inline-flex items-center rounded-full bg-[#E2E8FB] px-5 py-2 mb-6 text-sm font-medium text-[#6D8EEC]"
+                className="inline-flex items-center rounded-full bg-[#E2E8FB] px-4 py-1.5 mb-4 md:mb-6 text-xs sm:text-sm font-medium text-[#6D8EEC]"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Für Expert:innen
+                {t('expert.badge')}
               </p>
               <h1
-                className="text-[32px] md:text-[40px] lg:text-[48px] font-bold text-[#292B27] leading-[1.15] tracking-tight mb-4"
+                className="text-[28px] sm:text-[32px] md:text-[40px] lg:text-[48px] font-bold text-[#292B27] leading-[1.15] tracking-tight mb-3 md:mb-4"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
-                Mehr Klient:innen.
+                {t('expert.title1')}
                 <br />
-                <span className="whitespace-nowrap">Weniger Verwaltung.</span>
+                <span className="whitespace-nowrap">{t('expert.title2')}</span>
               </h1>
               <p
-                className="text-base md:text-lg text-[#292B27]/75 leading-relaxed mb-8 max-w-xl"
+                className="text-sm sm:text-base md:text-lg text-[#292B27]/75 leading-relaxed mb-6 md:mb-8 max-w-xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Werde von Menschen gefunden, die gezielt nach deiner Expertise suchen – online oder vor Ort. Buchung, Zahlung und Rechnung laufen über elu.
+                {t('expert.sub')}
               </p>
               <button
                 type="button"
                 onClick={scrollToBereitLoszulegen}
-                className="btn-primary gap-2 px-7 py-3.5 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#BADE4F]"
+                className="btn-primary gap-2 px-6 py-3 md:px-7 md:py-3.5 text-sm md:text-base focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#BADE4F]"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Jetzt Platz sichern
+                {t('expert.cta')}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -308,7 +256,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
             <div className="relative overflow-hidden rounded-[2rem] shadow-[0_24px_60px_-24px_rgba(41,43,39,0.25)]">
               <img
                 src="/images/hero-pt.jpg"
-                alt="Personal Trainer:in begleitet eine Klientin beim Training"
+                alt={t('expert.imageAlt')}
                 className="w-full aspect-[4/3] max-h-[280px] sm:max-h-none object-cover object-center transition-transform duration-700 ease-out hover:scale-[1.03]"
               />
             </div>
@@ -344,7 +292,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
               <button
                 onClick={prevCard}
                 className="w-10 h-10 bg-white rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex items-center justify-center"
-                aria-label="Vorheriger Vorteil"
+                aria-label={t('expert.prevBenefit')}
               >
                 <ChevronLeft className="text-[#6D8EEC] w-5 h-5" />
               </button>
@@ -363,7 +311,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
               <button
                 onClick={nextCard}
                 className="w-10 h-10 bg-white rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex items-center justify-center"
-                aria-label="Nächster Vorteil"
+                aria-label={t('expert.nextBenefit')}
               >
                 <ChevronRight className="text-[#6D8EEC] w-5 h-5" />
               </button>
@@ -400,20 +348,20 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
         </div>
       </section>
 
-      <section className="bg-light pt-16 md:pt-20 pb-12 md:pb-16">
+      <section className="bg-light pt-10 md:pt-20 pb-10 md:pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-8 md:mb-10">
             <h2
-              className="text-2xl md:text-3xl lg:text-[36px] font-bold text-[#292B27] tracking-tight mb-4"
+              className="text-2xl sm:text-3xl lg:text-[36px] font-bold text-[#292B27] tracking-tight mb-4"
               style={{ fontFamily: 'League Spartan, sans-serif' }}
             >
-              Wähle, wie du mit elu arbeitest
+              {t('expert.pricingTitle')}
             </h2>
             <p
               className="text-base text-[#292B27]/75 leading-relaxed"
               style={{ fontFamily: 'Open Sans, sans-serif' }}
             >
-              Du startest ohne Fixkosten. Buchst du regelmäßig, sparst du mit einem Abo die Plattformgebühr. Wechseln geht jederzeit.
+              {t('expert.pricingSub')}
             </p>
           </div>
 
@@ -421,10 +369,15 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
             className="max-w-3xl mx-auto mb-10 md:mb-12 rounded-2xl bg-[#E2E8FB] px-5 py-3.5 text-center text-sm leading-relaxed text-[#292B27]"
             style={{ fontFamily: 'Open Sans, sans-serif' }}
           >
-            Einführungsaktion: Die ersten {EXPERT_PRICING.introSlots} Expert:innen sichern sich den Abo-Preis ab {EXPERT_PRICING.monthly.intro}/{EXPERT_PRICING.monthly.period} – nur bis {EXPERT_PRICING.introEndsLabel}.
+            {t('expert.pricingBanner', {
+              slots: EXPERT_PRICING.introSlots,
+              price: EXPERT_PRICING.monthly.intro,
+              period: t('expert.periodMonth'),
+              date: locale === 'en' ? EXPERT_PRICING.introEndsLabelEn : EXPERT_PRICING.introEndsLabel,
+            })}
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-5xl mx-auto pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch max-w-5xl mx-auto pt-4">
             {pricingPlans.map((plan) => (
               <div
                 key={plan.id}
@@ -458,7 +411,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
                     )}
                     <div>
                       <span
-                        className="text-4xl font-bold text-[#6D8EEC]"
+                        className="text-3xl sm:text-4xl font-bold text-[#6D8EEC]"
                         style={{ fontFamily: 'League Spartan, sans-serif' }}
                       >
                         {plan.price}
@@ -508,7 +461,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
               onClick={scrollToBereitLoszulegen}
               className="bg-[#6D8EEC] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#5A7BE8] transition-colors duration-200"
             >
-              Jetzt Platz sichern
+              {t('expert.pricingCta')}
             </button>
           </div>
         </div>
@@ -517,10 +470,10 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
       <section className="bg-light py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
-            className="text-2xl md:text-3xl lg:text-[36px] font-bold text-[#292B27] text-center mb-8 md:mb-10 tracking-tight"
+            className="text-2xl sm:text-3xl lg:text-[36px] font-bold text-[#292B27] text-center mb-6 md:mb-10 tracking-tight"
             style={{ fontFamily: 'League Spartan, sans-serif' }}
           >
-            Häufige Fragen
+            {t('expert.faqTitle')}
           </h2>
           <div className="space-y-4">
             {faqData.map((faq, index) => (
@@ -556,26 +509,26 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
       <section id="bereit-loszulegen" className="bg-light py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2
-            className="text-2xl md:text-3xl lg:text-[36px] font-bold text-[#292B27] mb-4 md:mb-6 tracking-tight"
+            className="text-2xl sm:text-3xl lg:text-[36px] font-bold text-[#292B27] mb-4 md:mb-6 tracking-tight"
             style={{ fontFamily: 'League Spartan, sans-serif' }}
           >
-            Bereit loszulegen?
+            {t('expert.formTitle')}
           </h2>
           <p className="text-base md:text-lg text-[#292B27] opacity-80 mb-8 md:mb-12 max-w-2xl mx-auto">
-            Werde Teil einer Community, die Qualität schätzt und neue Wege geht- melde dich jetzt zur Warteliste an.
+            {t('expert.formSub')}
           </p>
           
           <div className="max-w-2xl mx-auto">
             {isSubmitted ? (
-              <div className="bg-[#BADE4F] bg-opacity-20 border-2 border-[#BADE4F] rounded-2xl p-8 text-center">
+              <div className="bg-[#BADE4F] bg-opacity-20 border-2 border-[#BADE4F] rounded-2xl p-5 sm:p-8 text-center">
                 <div className="w-16 h-16 bg-[#BADE4F] rounded-full flex items-center justify-center mx-auto mb-4">
                   <Check className="text-[#292B27]" size={32} />
                 </div>
                 <h3 className="text-2xl font-bold text-[#292B27] mb-2">
-                  Vielen Dank!
+                  {t('expert.formThanksTitle')}
                 </h3>
                 <p className="text-[#292B27] opacity-75">
-                  Du stehst jetzt auf unserer Warteliste. Wir melden uns bald bei dir.
+                  {t('expert.formThanksBody')}
                 </p>
               </div>
             ) : (
@@ -583,7 +536,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <div>
                     <label htmlFor="name-final" className="block text-sm font-semibold text-[#292B27] mb-2">
-                      Name *
+                      {t('expert.formName')}
                     </label>
                     <div className="relative">
                       <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#292B27] opacity-40" size={20} />
@@ -594,14 +547,14 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
                         onChange={(e) => setName(e.target.value)}
                         required
                         className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-full focus:border-[#6D8EEC] focus:outline-none transition-colors duration-200 text-[#292B27]"
-                        placeholder="Dein vollständiger Name"
+                        placeholder={t('expert.formNamePh')}
                       />
                     </div>
                   </div>
                   
                   <div>
                     <label htmlFor="email-final" className="block text-sm font-semibold text-[#292B27] mb-2">
-                      E-Mail *
+                      {t('expert.formEmail')}
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#292B27] opacity-40" size={20} />
@@ -612,7 +565,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-full focus:border-[#6D8EEC] focus:outline-none transition-colors duration-200 text-[#292B27]"
-                        placeholder="deine@email.de"
+                        placeholder={t('expert.formEmailPh')}
                       />
                     </div>
                   </div>
@@ -620,7 +573,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
                 
                 <div>
                   <label htmlFor="expertise-final" className="block text-sm font-semibold text-[#292B27] mb-2">
-                    Wähle deine Fachgebiete (Mehrfachauswahl möglich)
+                    {t('expert.formExpertise')}
                   </label>
                   <div className="relative expertise-dropdown">
                     <button
@@ -633,11 +586,11 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
                       }`}
                     >
                       <span className="text-left">
-                        {expertise.length === 0 
-                          ? 'Fachgebiete auswählen...' 
-                          : expertise.length === 1 
-                            ? expertise[0]
-                            : `${expertise.length} Fachgebiete ausgewählt`
+                        {expertise.length === 0
+                          ? t('expert.formExpertiseEmpty')
+                          : expertise.length === 1
+                            ? t('expert.formExpertiseOne', { name: expertise[0] })
+                            : t('expert.formExpertiseMany', { count: expertise.length })
                         }
                       </span>
                       <ChevronDown className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} size={20} />
@@ -667,7 +620,7 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
                             onClick={() => setIsDropdownOpen(false)}
                             className="w-full bg-[#6D8EEC] text-white py-2 px-4 rounded-lg font-medium hover:bg-[#5A7BE8] transition-colors duration-200"
                           >
-                            Fertig ({expertise.length} ausgewählt)
+                            {t('expert.formDone', { count: expertise.length })}
                           </button>
                         </div>
                       </div>
@@ -680,11 +633,11 @@ const ExpertPage: React.FC<ExpertPageProps> = () => {
                     type="submit"
                     className="bg-[#6D8EEC] text-white px-8 md:px-12 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg hover:bg-[#5A7BE8] transition-colors duration-200 inline-flex items-center gap-2 md:gap-3 shadow-lg"
                   >
-                    Abschicken
+                    {t('expert.formSubmit')}
                     <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                   <p className="text-sm text-[#292B27] opacity-60 mt-4">
-                    * Pflichtfelder. Wir respektieren deine Privatsphäre.
+                    {t('expert.formNote')}
                   </p>
                 </div>
               </form>

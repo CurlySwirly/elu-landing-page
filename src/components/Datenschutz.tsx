@@ -2,23 +2,27 @@ import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
+import LegalLanguageNote from './layout/LegalLanguageNote';
+import { useLocale } from '../i18n';
 
 const Datenschutz: React.FC = () => {
+  const { t } = useLocale();
   return (
     <div className="min-h-screen bg-light">
       <SiteHeader />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-28 lg:pt-36">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-24 lg:pt-36">
         <a
           href="/"
           className="flex items-center gap-2 text-[#6D8EEC] hover:text-[#5a7ae0] transition-colors duration-300 mb-8"
         >
           <ArrowLeft className="w-5 h-5" />
-          Zurück zur Startseite
+          {t('common.backHome')}
         </a>
 
-        <div className="rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-8 md:p-12">
-        <h1 className="text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+        <div className="rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-5 sm:p-8 md:p-12 break-words">
+        <LegalLanguageNote />
+        <h1 className="text-[28px] md:text-4xl font-bold text-[#292B27] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
           Datenschutzerklärung
         </h1>
         <p className="text-gray-600 mb-12" style={{ fontFamily: 'Open Sans, sans-serif' }}>
