@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
+import { useLocale } from '../i18n';
 
 interface UeberUnsPageProps {
   onNavigate: (page: string) => void;
@@ -11,37 +12,37 @@ const focusRing =
 
 const SHOW_ELU_FOR_WORK = false;
 
-const founders = [
-  {
-    name: 'Linda Breuer',
-    role: 'Mitgründerin & Geschäftsführerin · Produkt, Marke & Community',
-    image: '/images/founder-linda.png',
-    bio: 'Über zehn Jahre als Health- und Performance-Coach, davor Leistungsbasketball: Linda kennt die Gesundheitsbranche von beiden Seiten. Sie weiß, wie schwer es ist, die passende Unterstützung zu finden, und wie viel Zeit Selbstständige mit Terminen, Rechnungen und Marketing verlieren. Bei elu gestaltet sie Produkt, Marke und Community. Ihr Ziel: Prävention soll so selbstverständlich werden wie der Arztbesuch.',
-  },
-  {
-    name: 'Dominik Dorr',
-    role: 'Mitgründer & Geschäftsführer · Technologie & Plattform',
-    image: '/images/founder-dominik.png',
-    bio: 'Hinter jeder Buchung auf elu steckt Dominiks Arbeit. Der Software-Engineer baut die technische Basis der Plattform, vom Backend über die Zahlungsabwicklung bis zur Datensicherheit. Sein Anspruch: Alles muss im Hintergrund zuverlässig laufen, damit sich Klient:innen und Expert:innen ganz aufeinander konzentrieren können. Ausgleich findet er beim Laufen.',
-  },
-  {
-    name: 'Arnold Stelzer',
-    role: 'Mitgründer & Geschäftsführer · App & User Experience',
-    image: '/images/founder-arnold.png',
-    bio: 'Arnold denkt Software vom Menschen aus. Als Software-Engineer entwickelt er die elu-App und sorgt dafür, dass sich Suchen, Chatten und Buchen intuitiv anfühlen, auch für alle, die sonst wenig mit Technik am Hut haben. Vom Klettern bringt er Geduld und Präzision mit: Gute Lösungen entstehen Schritt für Schritt.',
-  },
-];
-
 const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
+  const { t } = useLocale();
+  const founders = [
+    {
+      name: 'Linda Breuer',
+      role: t('about.lindaRole'),
+      image: '/images/founder-linda.png',
+      bio: t('about.lindaBio'),
+    },
+    {
+      name: 'Dominik Dorr',
+      role: t('about.dominikRole'),
+      image: '/images/founder-dominik.png',
+      bio: t('about.dominikBio'),
+    },
+    {
+      name: 'Arnold Stelzer',
+      role: t('about.arnoldRole'),
+      image: '/images/founder-arnold.png',
+      bio: t('about.arnoldBio'),
+    },
+  ];
+
   useEffect(() => {
     const previousTitle = document.title;
-    const targetTitle = 'Über uns – elu | Elevate You GmbH';
+    const targetTitle = t('about.title');
     document.title = targetTitle;
 
     const metaDescription = document.querySelector('meta[name="description"]');
     const previousDescription = metaDescription?.getAttribute('content') ?? '';
-    const targetDescription =
-      'elu ist die Marke der Elevate You GmbH in Wien. Wir verbinden Menschen mit qualifizierten Expert:innen für Bewegung, Ernährung und Prävention.';
+    const targetDescription = t('about.description');
 
     if (metaDescription) {
       metaDescription.setAttribute('content', targetDescription);
@@ -118,13 +119,13 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
       }
       document.getElementById(jsonLdId)?.remove();
     };
-  }, []);
+  }, [t]);
 
   return (
     <div className="min-h-screen bg-light text-[#292B27]">
       <SiteHeader />
 
-      <main className="pt-28 lg:pt-32 pb-16">
+      <main className="pt-24 lg:pt-32 pb-12 md:pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav aria-label="Breadcrumb" className="mb-6">
             <ol
@@ -133,37 +134,38 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
             >
               <li>
                 <a href="/" className={`${focusRing} rounded-sm hover:underline`}>
-                  Home
+                  {t('common.home')}
                 </a>
               </li>
               <li aria-hidden="true">›</li>
-              <li className="font-semibold text-[#292B27]">Über uns</li>
+              <li className="font-semibold text-[#292B27]">{t('about.crumb')}</li>
             </ol>
           </nav>
 
-          <section className="mb-12 lg:mb-16">
-            <div className="rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-6 md:p-10">
+          <section className="mb-10 md:mb-12 lg:mb-16">
+            <div className="rounded-3xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-5 sm:p-6 md:p-10">
               <p
                 className="inline-flex items-center rounded-full bg-[#E2E8FB] px-4 py-1.5 mb-5 text-sm font-medium text-[#6D8EEC]"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Elevate You GmbH · Wien
+                {t('about.badge')}
               </p>
               <h1
-                className="text-[32px] md:text-[44px] lg:text-[48px] font-bold leading-[1.1] tracking-tight text-[#292B27] mb-4"
+                className="text-[24px] sm:text-[32px] md:text-[44px] lg:text-[48px] font-bold leading-[1.2] tracking-tight text-[#292B27] mb-3 md:mb-4"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
-                elu – Elevating Health &amp; Wellbeing
+                {t('about.h1Lead')}
+                <br className="sm:hidden" />{' '}
+                {t('about.h1Tail')}
               </h1>
               <p
-                className="text-base md:text-lg leading-relaxed text-[#292B27]/75 max-w-2xl mb-6"
+                className="text-sm sm:text-base md:text-lg leading-relaxed text-[#292B27]/75 max-w-2xl mb-5 md:mb-6"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                elu ist die Marke der Elevate You GmbH in Wien. Unsere Mission: präventive Gesundheit zugänglich,
-                alltagstauglich und menschlich machen.
+                {t('about.intro')}
               </p>
               <div className="flex flex-wrap gap-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-                {['EU-Hosting', 'DSGVO-konform', 'Sichere Zahlung'].map((item) => (
+                {[t('about.chip1'), t('about.chip2'), t('about.chip3')].map((item) => (
                   <span
                     key={item}
                     className="inline-flex items-center rounded-full bg-[#E2E8FB] px-4 py-1.5 text-sm font-medium text-[#6D8EEC]"
@@ -175,19 +177,19 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
             </div>
           </section>
 
-          <section className="mb-12 lg:mb-16">
+          <section className="mb-10 md:mb-12 lg:mb-16">
             <div className="mb-8">
               <h2
                 className="text-2xl md:text-3xl font-bold mb-2"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
-                Das Gründungsteam
+                {t('about.teamTitle')}
               </h2>
               <p
                 className="text-base text-[#292B27]/70 max-w-2xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Drei Geschäftsführer:innen, ein Ziel: Prävention alltagstauglich machen.
+                {t('about.teamSub')}
               </p>
             </div>
             <div className="grid gap-5 md:grid-cols-3">
@@ -224,21 +226,19 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
             </div>
           </section>
 
-          <section className="mb-12 lg:mb-16">
+          <section className="mb-10 md:mb-12 lg:mb-16">
             <div className="mb-6">
               <h2
                 className="text-2xl md:text-3xl font-bold mb-2"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
-                Unsere Lösungen
+                {t('about.solutionsTitle')}
               </h2>
               <p
                 className="text-base text-[#292B27]/70 max-w-2xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                {SHOW_ELU_FOR_WORK
-                  ? 'Zwei Angebote, ein Ziel: Menschen mit qualifizierten Expert:innen verbinden – persönlich und im Arbeitsumfeld.'
-                  : 'Wir verbinden Menschen mit qualifizierten Expert:innen – persönlich und alltagstauglich.'}
+                {t('about.solutionsSub')}
               </p>
             </div>
 
@@ -255,10 +255,10 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
                   className="space-y-2.5 text-sm md:text-base text-[#292B27]/80"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 >
-                  <li>Plattform für präventive Gesundheitsdienstleistungen (Physiotherapie, Personal Training, Massage, Ernährung, Yoga, Coaching)</li>
-                  <li>Intelligentes Matching, einfache Buchung und digitale Begleitung</li>
-                  <li>Qualitätsgesichert durch kuratierte Expert:innen-Profile</li>
-                  <li>Digitaler Assistent für Expert:innen inklusive Termin- und Klient:innenverwaltung</li>
+                  <li>{t('about.sol1')}</li>
+                  <li>{t('about.sol2')}</li>
+                  <li>{t('about.sol3')}</li>
+                  <li>{t('about.sol4')}</li>
                 </ul>
                 <div className="mt-6">
                   <a
@@ -266,7 +266,7 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
                     className={`btn-primary px-6 py-3 text-sm ${focusRing}`}
                     style={{ fontFamily: 'Open Sans, sans-serif' }}
                   >
-                    Zu elu elevate you
+                    {t('about.solCta')}
                   </a>
                 </div>
               </article>
@@ -303,28 +303,28 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
             </div>
           </section>
 
-          <section className="mb-12 lg:mb-16">
+          <section className="mb-10 md:mb-12 lg:mb-16">
             <div className="rounded-3xl bg-white p-6 md:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
               <h2
                 className="text-2xl md:text-3xl font-bold mb-3"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
-                Warum elu?
+                {t('about.whyTitle')}
               </h2>
               <p
                 className="text-base text-[#292B27]/75 mb-6 max-w-3xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Wir verbinden präventive Gesundheitsangebote mit echter Menschlichkeit. Unser Ansatz schafft Vertrauen, Transparenz und nachhaltige Wirkung – für Klient:innen und Expert:innen.
+                {t('about.whyBody')}
               </p>
               <ul
                 className="grid gap-3 sm:grid-cols-3"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 {[
-                  'Verbindung von Mensch & Gesundheit',
-                  'Expertise & Alltag',
-                  'Individuum & Gemeinschaft'
+                  t('about.pillar1'),
+                  t('about.pillar2'),
+                  t('about.pillar3')
                 ].map((pillar) => (
                   <li
                     key={pillar}
@@ -337,37 +337,34 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
             </div>
           </section>
 
-          <section className="mb-12 lg:mb-16">
+          <section className="mb-10 md:mb-12 lg:mb-16">
             <div className="mb-6">
               <h2
                 className="text-2xl md:text-3xl font-bold mb-2"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
-                So funktioniert&apos;s
+                {t('about.howTitle')}
               </h2>
               <p
                 className="text-base text-[#292B27]/70 max-w-2xl"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                Drei Schritte, die Menschen mit der passenden Expertise verbinden – digital begleitet, persönlich umgesetzt.
+                {t('about.howSub')}
               </p>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
               {[
                 {
-                  title: '1) Ziele klären',
-                  description:
-                    'Bedarfe verstehen, Gesundheitsziele definieren und die Ausgangslage einschätzen.'
+                  title: t('about.how1Title'),
+                  description: t('about.how1Body')
                 },
                 {
-                  title: '2) Passende Expertise finden',
-                  description:
-                    'Mit kuratierten Expert:innen matchen – transparent, sicher und DSGVO-konform.'
+                  title: t('about.how2Title'),
+                  description: t('about.how2Body')
                 },
                 {
-                  title: '3) Dranbleiben mit Begleitung',
-                  description:
-                    'Kontinuierliche Check-ins, Feedback und Unterstützung für nachhaltige Wirkung.'
+                  title: t('about.how3Title'),
+                  description: t('about.how3Body')
                 }
               ].map((step) => (
                 <article
@@ -397,13 +394,13 @@ const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
                 className="text-2xl md:text-3xl font-bold mb-3"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
-                Marke &amp; Trägerunternehmen
+                {t('about.brandTitle')}
               </h2>
               <p
                 className="text-base text-[#292B27]/75 mb-3"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
-                elu ist eine Marke der Elevate You GmbH.
+                {t('about.brandBody')}
               </p>
               <p
                 className="text-sm text-[#292B27]/70"
